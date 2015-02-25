@@ -463,25 +463,73 @@ var GuideValueEditor = {
 
 var MedcardSearch = {
 	construct: function() {
-		$("#search-medcard-button").click(function() {
+		$("#medcard-search-button").click(function() {
 			MedcardSearch.search();
+		});
+		$("#medcard-edit-button").click(function() {
+			var me = this;
+			if (!MedcardSearch.id) {
+				return void 0;
+			}
+			$(this).button("loading");
+			$.get(url("/laboratory/medcard/getWidget"), {
+				class: "LMedcardEditor",
+				number: MedcardSearch.id
+			}, function(json) {
+				$(me).button("reset");
+				if (!Message.display(json)) {
+					return void 0;
+				}
+				var m = $("#medcard-edit-modal");
+				var r = m.find(".modal-body .row");
+				r.empty();
+				r.append(
+					$(json["component"])
+				);
+				m.modal("show");
+			}, "json");
+		});
+		$("#medcard-search-table-wrapper").on("click", ".pagination li:not(:disabled)", function() {
+			MedcardSearch.reset();
 		});
 	},
 	search: function() {
+		$("#medcard-search-button").button("loading");
 		$.post(url("/laboratory/medcard/search"), {
 			model: [
 				$("#medcard-search-form").serialize(),
 				$("#medcard-range-form").serialize()
 			]
 		}, function(json) {
+			$("#medcard-search-button").button("reset");
 			if (!Message.display(json)) {
 				return void 0;
 			}
 			$("#medcard-table").replaceWith(
 				$(json["component"])
 			);
+			Laboratory.createMessage({
+				message: "Таблица обновлена",
+				sign: "ok",
+				type: "success",
+				delay: 2000
+			});
 		}, "json");
-	}
+	},
+	click: function(tr, id) {
+		this.active && this.active.removeClass("medcard-table-active");
+		this.active = $(tr).addClass("medcard-table-active");
+		if (this.active) {
+			$("#medcard-edit-button").removeClass("disabled");
+		}
+		this.id = id;
+	},
+	reset: function() {
+		this.active = this.id = null;
+		$("#medcard-edit-button").addClass("disabled");
+	},
+	active: null,
+	id: null
 };
 
 $(document).ready(function() {

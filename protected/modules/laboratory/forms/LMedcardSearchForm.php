@@ -16,7 +16,7 @@ class LMedcardSearchForm extends LFormModel {
                 "label" => "Номер ЛКП",
                 "type" => "text"
             ],
-            "charged_by" => [
+            "enterprise_id" => [
                 "label" => "Направитель",
                 "type" => "DropDown"
             ],
@@ -39,4 +39,8 @@ class LMedcardSearchForm extends LFormModel {
             ]
         ];
     }
+
+	public function getEnterpriseIdData() {
+		return CHtml::listData(Enterprise::model()->findAll(), "id", "shortname");
+	}
 }

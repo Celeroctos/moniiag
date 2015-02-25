@@ -13,11 +13,11 @@ $this->widget("LTable", [
         ],
         "fio" => [
             "label" => "ФИО пациента",
-			"style" => "width: 30%"
+			"style" => "width: 25%"
         ],
-        "charged_by" => [
+        "enterprise" => [
             "label" => "МУ направитель",
-			"style" => "width: 15%"
+			"style" => "width: 20%"
         ],
         "birthday" => [
             "label" => "Дата рождения",
@@ -30,5 +30,6 @@ $this->widget("LTable", [
     "pk" => "number",
 	"sort" => "number",
 	"id" => "medcard-table",
-	"limit" => 10
+	"limit" => 10,
+	"click" => "MedcardSearch.click"
 ]);

@@ -2,15 +2,28 @@
 
 class LMedcardForm extends LFormModel {
 
-	public $id;
-	public $surname;
-	public $name;
-	public $patronymic;
-	public $sex;
-	public $birthday;
-	public $mis_patient_id;
-	public $charge_person;
-	public $number;
+	public $privilege_code;
+	public $snils;
+	public $address;
+	public $address_reg;
+	public $doctype;
+	public $serie;
+	public $docnumber;
+	public $gived_date;
+	public $contact;
+	public $invalid_group;
+	public $card_number;
+	public $enterprise_id;
+	public $policy_id;
+	public $reg_date;
+	public $work_place;
+	public $work_address;
+	public $post;
+	public $profession;
+	public $motion;
+	public $address_str;
+	public $address_reg_str;
+	public $user_created;
 
 	/**
 	 * Override that method to return config. Config should return array associated with
@@ -83,7 +96,8 @@ class LMedcardForm extends LFormModel {
 			],
 			"enterprise_id" => [
 				"label" => "Заведение",
-				"type" => "DropDown"
+				"type" => "DropDown",
+				"rules" => "required"
 			],
 			"policy_id" => [
 				"label" => "Номер полиса ОМС",
@@ -132,13 +146,8 @@ class LMedcardForm extends LFormModel {
 			"user_created" => [
 				"label" => "Зарегестрировал пользователь",
 				"type" => "number",
-				"hidden" => "true"
-			],
-			"date_created" => [
-				"label" => "Дата регистрации",
-				"type" => "date",
 				"hidden" => "true",
-				"value" => date("Y-m-d")
+				"value" => Yii::app()->user->id
 			]
 		];
 	}

@@ -22,7 +22,7 @@
 <div class="row">
 	<div class="col-xs-12">
 		<hr>
-		<button id="search-medcard-button" class="btn btn-success btn-block" type="button">Поиск</button>
+		<button id="medcard-search-button" class="btn btn-success btn-block" type="button" data-loading-text="Загрузка...">Поиск</button>
 		<hr>
 		<div id="medcard-search-table-wrapper">
 			<? $this->widget("LMedcardTable") ?>

@@ -21,6 +21,22 @@ abstract class LFormModel extends CFormModel {
         return isset($this->$field) && $this->$field && $this->$field != -1;
     }
 
+	/**
+	 * Check is field looks like drop down list
+	 * @param $field - Name of field to test
+	 * @return bool - True if field is drop down list
+	 */
+	public function isDropDown($field) {
+		if (!$this->_config) {
+			$this->_config = $this->config();
+		}
+		if (!isset($this->_config[$field]) || (!isset($this->_config[$field]["type"]))) {
+			return false;
+		}
+		$type = strtolower($this->_config[$field]["type"]);
+		return $type == "dropdown" || $type == "multiple";
+	}
+
     /**
      * Construct table with configuration build
      * @param array|null $config - Array with model's configuration
@@ -106,7 +122,11 @@ abstract class LFormModel extends CFormModel {
             }
 
             // Dynamically declare empty variable
-            $this->_container[$key] = null;
+			if (isset($field["value"])) {
+				$this->_container[$key] = $field["value"];
+			} else {
+				$this->_container[$key] = null;
+			}
         }
     }
 
@@ -151,6 +171,7 @@ abstract class LFormModel extends CFormModel {
      * @param string $id - Name of select value
      * @param string $value - Name of select option text
      * @return array - Array with result map
+	 * @see CHtml::listData
      */
     public static function listData($models, $id, $value) {
         $result = [];
@@ -213,5 +234,5 @@ abstract class LFormModel extends CFormModel {
     protected $_rules = null;
     protected $_labels = null;
     protected $_types = null;
-
+	protected $_config = null;
 } 

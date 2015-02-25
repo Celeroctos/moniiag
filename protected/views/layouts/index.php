@@ -32,6 +32,7 @@
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/pagination.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/keyboardcnf.js"></script>
 	<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/ajaxbutton.js"></script>
+	<? WebModule::register(Yii::app()->getController()->getModule()); ?>
 </head>
 <body>
 <?php $this->widget('application.components.widgets.MainNavBar') ?>

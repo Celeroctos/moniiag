@@ -1,8 +1,3 @@
-<link rel="stylesheet" type="text/css" href="<?= Yii::app()->getBaseUrl()?>/css/laboratory.css" />
-<script type="text/javascript" src="<?= Yii::app()->getBaseUrl()?>/js/laboratory/core.js"></script>
-<script type="text/javascript" src="<?= Yii::app()->getBaseUrl()?>/js/laboratory/form.js"></script>
-<script type="text/javascript" src="<?= Yii::app()->getBaseUrl()?>/js/laboratory/laboratory.js"></script>
-
 <?
 
 /**
@@ -25,17 +20,17 @@ $this->widget("LModal", [
     ]
 ]);
 
-$this->widget("LPanel", [
-    "body" => $this->getWidget("LMedcardSearch"),
-    "title" => "Поиск по ЛКП",
-    "collapse" => "true",
-    "id" => "body-test-collapse"
+$this->widget("LPagination", [
+	"pages" => 50,
+	"page" => isset($_GET["page"]) ? $_GET["page"] : 1,
+	"limit" => 10,
+	"action" => "reloadPage.call"
 ]);
 
 ?>
 
 <script>
-    $(document).ready(function() {
-        $("#add-guide-modal").modal();
-    });
+	var reloadPage = function(page) {
+		window.location.href = "/moniiag/laboratory/test/view?page=" + page;
+	};
 </script>
