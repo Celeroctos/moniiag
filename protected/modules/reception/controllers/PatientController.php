@@ -10,7 +10,7 @@ class PatientController extends Controller {
     // Просмотр страницы поиска пациента
     public function actionViewSearch()
 	{
-		$modelOms=new Oms('reception.search'); //сценарий поиска
+		/*$modelOms=new Oms('reception.search'); //сценарий поиска
 		
 		if(isset($_GET['Oms']))
 		{
@@ -20,13 +20,13 @@ class PatientController extends Controller {
 		
 		$this->render('ViewSearch', [
 			'modelOms'=>$modelOms,
-		]);
+		]); */
 		
-//        $this->render('searchPatient', array(
-//            'privilegesList' => $this->getPrivileges(),
-//            'modelMedcard' => new FormPatientWithCardAdd(),
-//            'modelOms' => new FormOmsEdit()
-//        ));
+        $this->render('searchPatient', array(
+            'privilegesList' => $this->getPrivileges(),
+            'modelMedcard' => new FormPatientWithCardAdd(),
+            'modelOms' => new FormOmsEdit()
+        ));
     }
 	
 	
