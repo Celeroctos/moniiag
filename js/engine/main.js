@@ -115,13 +115,11 @@ misEngine = (function() {
             var parts = objPath.split('.');
             var founded = this.searchObjByPath(parts);
             if(founded != -1) {
-                var parent = this.inherits[0];
-                for(var i = 1; i < this.inherits.length; i++) {
-                    var props = parent();
-                    parent = this.extend(this.inherits[i], parent);
+                var extended = founded[0];
+                for(var i = 1; i < founded.length; i++) {
+                    extended = $.extend(extended, founded[i]);
                 }
-                this.inherits = [];
-                return new parent();
+                return extended;
             } else {
                 this.t('Component "' + objPath + '" not created: error by searching component path?..');
                 return -1;
@@ -132,22 +130,19 @@ misEngine = (function() {
             if(!obj) {
                 obj = this.modules;
             }
-
+            var array = [];
             var partOfPath = searchArr.shift();
-            var component = null;
             for(var i = 0; i < obj.length; i++) {
                 if(obj[i].name == partOfPath) {
-                    this.inherits.push(obj[i].script);
+                    array.push(obj[i].script());
                     if(searchArr.length > 0) {
-                        component = this.searchObjByPath(searchArr, obj[i].modules);
-                    } else {
-                        return obj[i].script;
+                        array = array.concat(this.searchObjByPath(searchArr, obj[i].modules));
                     }
                     break;
                 }
             }
 
-            return !component ? -1 : component;  // Error, if some goes wrong...
+            return array;  // Error, if some goes wrong...
         },
 
         extend : function(Child, Parent) {

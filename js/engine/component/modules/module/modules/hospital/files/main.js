@@ -34,7 +34,16 @@ misEngine.class('component.module.hospital', function() {
         displayTabmarks : function() {
             this.tabmarks = [
                 misEngine.create('component.tabmark', {
-                    selector : '#queueTabmark'
+                    selector : '#queueTabmark',
+                    renderConfig : {
+                        mode : 'ajax',
+                        ajaxConf : {
+                            url : '/hospital/hospitalization/components/tabmark',
+                            error : function(jqXHR, status) { },
+                            success : function(jqXHR, status, errorThrown) { },
+                            data : { }
+                        }
+                    }
                 }),
                 misEngine.create('component.tabmark', {
                     selector : '#comissionTabmark'
