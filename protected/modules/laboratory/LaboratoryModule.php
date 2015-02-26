@@ -11,6 +11,7 @@ class LaboratoryModule extends WebModule {
 			"core.js",
 			"laboratory.js",
 			"form.js",
+            "multiple.js",
 			"laboratory.css"
 		];
 	}

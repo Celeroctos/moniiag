@@ -27,7 +27,17 @@ $this->widget("LPagination", [
 	"action" => "reloadPage.call"
 ]);
 
+$this->widget("LModal", [
+    "body" => $this->widget("LForm", [
+        "model" => new TestForm(),
+        "id" => "test-form"
+    ], true),
+    "id" => "test-modal"
+]);
+
 ?>
+
+<button class="btn btn-primary" data-toggle="modal" data-target="#test-modal">Test</button>
 
 <script>
 	var reloadPage = function(page) {

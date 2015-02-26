@@ -7,8 +7,25 @@ abstract class LField extends CComponent {
 	 */
 	public function __construct() {
 		$this->name = $this->name();
-		$this->type = strtolower($this->key());
+		$this->type = strtolower(
+            $this->key()
+        );
 	}
+
+    /**
+     * Get current field instance
+     * @param string $class - Name of field's class
+     * @return LField - Field object
+     */
+    public static function field($class = __CLASS__) {
+        if (!isset(self::$_cached[$class])) {
+            return (self::$_cached[$class] = new $class());
+        } else {
+            return self::$_cached[$class];
+        }
+    }
+
+    private static $_cached = [];
 
 	/**
 	 * Render field with value or data

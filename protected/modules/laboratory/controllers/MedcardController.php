@@ -9,6 +9,13 @@ class MedcardController extends LController {
         $this->render("view");
     }
 
+    /**
+     * Display page with medcard registration
+     */
+    public function actionViewAdd() {
+        $this->render("register");
+    }
+
 	/**
 	 * Search action, which accepts array with search serialized form
 	 * models (LMedcardSearchForm + LSearchRangeForm). That action will

@@ -2,6 +2,13 @@
 
 abstract class LDropDown extends LField {
 
+    /**
+     * Override that method to return associative array
+     * for drop down list
+     * @return array - Array with data
+     */
+    public abstract function data();
+
 	/**
 	 * Override that method to render field base on it's type
 	 * @param CActiveForm $form - Form
@@ -28,11 +35,4 @@ abstract class LDropDown extends LField {
 	public function isBoolean() {
 		return false;
 	}
-
-	/**
-	 * Override that method to return associative array
-	 * for drop down list
-	 * @return array - Array with data
-	 */
-	public abstract function data();
 }
