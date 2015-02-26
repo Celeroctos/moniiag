@@ -170,4 +170,11 @@ class Ward extends MisActiveRecord
             echo $e->getMessage();
         }
     }
+
+    public function getAllForListview() {
+        $all = $this->findAll();
+        return CHtml::listData($all, 'id', 'name');
+    }
 }
+
+?>

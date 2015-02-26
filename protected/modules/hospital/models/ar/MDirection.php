@@ -10,6 +10,8 @@ class MDirection extends MisActiveRecord {
     public $create_date;
     public $id;
     public $pregnant_term;
+    public $hospitalization_date;
+    public $direction_id;
 
     public static function model($className=__CLASS__) {
         return parent::model($className);
@@ -27,6 +29,28 @@ class MDirection extends MisActiveRecord {
 		);
     }
 
+    public function rules() {
+        return array(
+            array(
+                'hospitalization_date', 'date', 'format' => 'yyyy-mm-dd', 'on' => 'hospital.hospitalization.hospitalizationdatechange'
+            ),
+            array(
+                'hospitalization_date', 'required', 'on' => 'hospital.hospitalization.hospitalizationdatechange'
+            ),
+            array(
+                'id', 'numerical', 'on' => 'hospital.hospitalization.hospitalizationdatechange'
+            )
+        );
+    }
+
+    public function beforeValidate() {
+        if($this->hospitalization_date) {
+            $this->hospitalization_date = implode('-', array_reverse(explode('.', $this->hospitalization_date)));
+        }
+
+        return true;
+    }
+
     public function getConnection() {
         return Yii::app()->db;
     }
@@ -40,6 +64,7 @@ class MDirection extends MisActiveRecord {
         $mDirection->ward_id = $formModel->wardId;
         $mDirection->create_date = date('Y-m-d');
         $mDirection->pregnant_term = $formModel->pregnantTerm;
+        $mDirection->card_number = $formModel->cardNumber;
 
         if(!$mDirection->save()) {
             throw new Exception('Невозможно сохранить направление для пациента '.$patient->id);

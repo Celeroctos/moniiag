@@ -1,32 +1,49 @@
 <?php
+    $cs = Yii::app()->clientScript;
+    $cs->scriptMap=array(
+        'jquery.js' => false
+    );
 
-    /* $columns[] = array(
-        'class' => 'CButtonColumn',
-        'template' => '{update}&nbsp;{delete}',
-        'buttons' => array(
-            'update' => array(
-                //url до картинки
-                'imageUrl'=>'/images/icons/edit.png',
-                //здесь должен быть url для редактирования записи
-                'url' => 'Yii::app()->createUrl("/edit/$data->id")',
-            ),
-            'delete' => array(
-                //url до картинки
-                'imageUrl'=>'/images/icons/delete.png',
-                //здесь должен быть url для удаления записи
-                'url' => 'Yii::app()->createUrl("/delete/$data->id")',
-            ),
-        ),
-    ); */
+    // Datepickers
+    foreach($columns as &$column) {
+        if(isset($column['filter']) && $column['filter'] == 'date') {
+            $column['filter'] = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+                'model' => $model,
+                'attribute' => $column['name'],
+                'language' => 'ru',
+                'htmlOptions' => array(
+                    'id' => $column['name'].'_datepicker'
+                ),
+                'options' => array(
+                    'showOn' => 'focus',
+                    'dateFormat' => 'dd.mm.yy',
+                    'showOtherMonths' => true,
+                    'selectOtherMonths' => true,
+                    'changeMonth' => true,
+                    'changeYear' => true,
+                    'showButtonPanel' => true,
+                ),
+            ), true);
+        }
+    }
 
-	$this->widget('zii.widgets.grid.CGridView', array(
+    $this->widget('zii.widgets.grid.CGridView', array(
 		'dataProvider' => $dataProvider,
 		'enablePagination' => true,
 		'enableSorting' => true,
 		'summaryCssClass' => 'summaryPanel',
 		'id' => $gridId, 
 		'ajaxUrl' => array($dataProvider->pagination->route),
-		'columns' => $columns
-
+        'ajaxUpdate' => true,
+		'columns' => $columns,
+        'filter' => $model,
+        'beforeAjaxUpdate' => 'function(id, xhr) {
+            xhr.url += "returnAsJson=1&serverModel='.$serverModel.'";
+        }',
+        'afterAjaxUpdate' => 'function(id, htmlData) {
+            $("'.$container.'").css({
+                "textAlign" : "left"
+            }).html(htmlData);
+        }'
 	)); 
 ?>

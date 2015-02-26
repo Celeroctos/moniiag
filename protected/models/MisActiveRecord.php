@@ -13,6 +13,13 @@ class MisActiveRecord extends CActiveRecord {
         parent::__construct($scenario);
     }
 
+    protected function beforeSave() {
+       /* foreach($this->attributes as $key => $attr) {
+            $this->attributes->$key] = CHtml::encode(strip_tags($attr));
+        } */
+        return true;
+    }
+
     protected function getSearchConditions($conn, $filters, $multipleFields, $aliases, $fieldAliases, $subGroupOp = array()) {
         foreach($filters['rules'] as $index => $filter) {
 	        if(!isset($filter['data']) || (!is_array($filter['data']) && trim($filter['data']) == '') || (is_array($filter['data']) && count($filter['data']) == 0)) { // При пустых входных данных не нужно делать доп. условие

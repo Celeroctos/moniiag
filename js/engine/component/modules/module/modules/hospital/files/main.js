@@ -1,22 +1,15 @@
-misEngine.addToQueue(function() {
+misEngine.class('component.module.hospital', function() {
 	return {
         comissionGrid : null,
+        queueGrid : null,
+        historyGrid : null,
+        hospitalizationGrid : null,
         comissionGridModal : null,
+        tabmarks : [],
 		config : {
 			name : 'hospital'
 		},
-		
-		bindHandlers : function() {
-            $('#hospitalizationNavbar a').click(function (e) {
-				e.preventDefault();
-			});
 
-            $(document).on('click', '#comissionGrid .changeHospitalizationDate', $.proxy(function(e) {
-                this.comissionGridModal.show();
-            }, this));
-            return this;
-		},
-		
 		displayDatetimepickers : function() {
 			var datetimepicker = misEngine.create('component.datetimepicker');
 			datetimepicker
@@ -37,6 +30,35 @@ misEngine.addToQueue(function() {
 				.render()
 				.on();
 		},
+
+        displayTabmarks : function() {
+            this.tabmarks = [
+                misEngine.create('component.tabmark', {
+                    selector : '#queueTabmark',
+                    renderConfig : {
+                        mode : 'ajax',
+                        ajaxConf : {
+                            url : '/hospital/hospitalization/components/tabmark',
+                            error : function(jqXHR, status) { },
+                            success : function(jqXHR, status, errorThrown) { },
+                            data : { }
+                        }
+                    }
+                }),
+                misEngine.create('component.tabmark', {
+                    selector : '#comissionTabmark'
+                }),
+                misEngine.create('component.tabmark', {
+                    selector : '#hospitalizationTabmark'
+                }),
+                misEngine.create('component.tabmark', {
+                    selector : '#historyTabmark'
+                })
+            ];
+            $(this.tabmarks).each(function(index, element) {
+                $(element).trigger('show');
+            });
+        },
 		
 		displayGrids : function() {
 			this.displayQueueGrid();
@@ -46,16 +68,15 @@ misEngine.addToQueue(function() {
 		},
 		
 		displayQueueGrid : function() {
-			var queueGrid = misEngine.create('component.grid');
+			this.queueGrid = misEngine.create('component.grid');
 			var queueGridRequestData = { 
 				returnAsJson : true,
-                model : $.toJSON(this.getQueueModel().getColumns()),
 				id : 'queueGrid',
                 serverModel : 'QueueGrid',
-                gridServerModel : 'QueueGridView'
+                container : '#queue'
 			};
 			
-			queueGrid
+			this.queueGrid
 				.setConfig({
 					renderConfig : {
 						mode : 'ajax',
@@ -65,7 +86,7 @@ misEngine.addToQueue(function() {
 							dataType : 'json',
 							success : function(data, status, jqXHR) {
 								if(data.success) {
-									$('#queue')
+									$(queueGridRequestData.container)
 										.css({
 											'textAlign' : 'left'
 										})
@@ -86,12 +107,10 @@ misEngine.addToQueue(function() {
 			this.comissionGrid = misEngine.create('component.grid');
 			var comissionGridRequestData = {
 				returnAsJson : true,
-                model : $.toJSON(this.getComissionModel().getColumns()),
 				id : 'comissionGrid',
                 serverModel : 'ComissionGrid',
-                gridServerModel : 'ComissionGridView'
+                container : '#comission'
 			};
-
 			this.comissionGrid
 				.setConfig({
 					renderConfig : {
@@ -100,13 +119,13 @@ misEngine.addToQueue(function() {
 							url : '/hospital/components/grid',
 							data : comissionGridRequestData,
 							dataType : 'json',
+                            type : 'GET',
 							success : function(data, status, jqXHR) {
 								if(data.success) {
-									$('#comission')
-										.css({
-											'textAlign' : 'left'
-										})
-										.html(data.data);
+									$(comissionGridRequestData.container).css({
+                                        'textAlign' : 'left'
+                                    })
+                                    .html(data.data);
 								} 
 							},
 							error: function(jqXHR, status, errorThrown) {
@@ -125,16 +144,15 @@ misEngine.addToQueue(function() {
         },
 		
 		displayHospitalizationGrid : function() {
-			var hospitalizationGrid = misEngine.create('component.grid');
+			this.hospitalizationGrid = misEngine.create('component.grid');
 			var hospitalizationGridRequestData = { 
 				returnAsJson : true,
-                model : $.toJSON(this.getHospitalizationModel().getColumns()),
-				id : 'hospitalizationGrid',
                 serverModel : 'HospitalizationGrid',
-                gridServerModel : 'HospitalizationGridView'
+                container : '#hospitalization',
+                id : 'hospitalizationGrid'
 			};
 			
-			hospitalizationGrid
+			this.hospitalizationGrid
 				.setConfig({
 					renderConfig : {
 						mode : 'ajax',
@@ -162,16 +180,14 @@ misEngine.addToQueue(function() {
 		},
 		
 		displayHistoryGrid : function() {
-			var historyGrid = misEngine.create('component.grid');
+			this.historyGrid = misEngine.create('component.grid');
 			var historyGridRequestData = { 
 				returnAsJson : true,
 				id : 'historyGrid',
-                model : $.toJSON(this.getHistoryModel().getColumns()),
                 serverModel : 'HistoryGrid',
-                gridServerModel : 'HistoryGridView'
+                container : '#history'
 			};
-			
-			historyGrid
+			this.historyGrid
 				.setConfig({
 					renderConfig : {
 						mode : 'ajax',
@@ -210,50 +226,6 @@ misEngine.addToQueue(function() {
             return model;
         },
 
-        getComissionModel : function() {
-            var model = misEngine.create('component.model').setConfig({
-                columns : [
-                    {
-                        name : 'direction_id',
-                        type : 'raw',
-                        value : '%direction_id%'
-                    },
-                    {
-                        name : 'fio',
-                        type : 'raw',
-                        value : '%fio%'
-                    },
-                    {
-                        name : 'comission_type_desc',
-                        type : 'raw',
-                        value : '%comission_type_desc%'
-                    },
-                    {
-                        name : 'ward_name',
-                        type : 'raw',
-                        value : '{{%ward_name%|trim}}'
-                    },
-                    {
-                        name : 'age',
-                        type : 'raw',
-                        value : '%age%'
-                    },
-                    {
-                        name : 'pregnant_term',
-                        type : 'raw',
-                        value : '{{%pregnant_term%|int}}." недель"'
-                    },
-                    {
-                        name : 'hospitalization_date',
-                        type : 'raw',
-                        value : '%hospitalization_date%'
-                    }
-
-                ]
-            });
-            return model;
-        },
-
         getHospitalizationModel : function() {
             var model = misEngine.create('component.model').setConfig({
                 columns : [
@@ -284,16 +256,69 @@ misEngine.addToQueue(function() {
 
         getComissionModal : function() {
             this.comissionGridModal = misEngine.create('component.modal').setConfig({
-                selector : '#comissionGridPopup',
+                selector : '#changeHospitalizationDatePopup',
                 renderConfig : {
                     mode : 'internal'
                 }
             }).render().on();
         },
-		
-		init : function() {
+
+        bindHandlers : function() {
+            $('#hospitalizationNavbar a').click(function (e) {
+                e.preventDefault();
+            });
+
+            this.changeComissionDateHandler();
+            this.reloadGridsHandler();
+            return this;
+        },
+
+        /**
+         * Handlers
+         */
+        changeComissionDateHandler : function() {
+            var selector = '.changeHospitalizationDate'
+            var comissionGridModal = this.comissionGridModal;
+            $(document).on('click', selector, function(e) {
+                var directionId = $(this).prop('id').substr(2);
+                var gridId = $(this).parents('.grid-view').prop('id');
+                $.ajax({
+                    'url': '/hospital/hospitalization/getdirectiondata?id=' + directionId,
+                    'cache': false,
+                    'dataType': 'json',
+                    'type': 'GET',
+                    'success': function (data, textStatus, jqXHR) {
+                        if(data.success) {
+                            if(data.data.hospitalization_date) {
+                                $('input[name="FormHospitalizationDateChange[hospitalization_date]"]').val(data.data.hospitalization_date);
+                            }
+                            $('input[name="FormHospitalizationDateChange[id]"]').val(directionId);
+
+                            $('input[name="FormHospitalizationDateChange[grid_id]"]').val(gridId);
+                            $(comissionGridModal).trigger('show');
+                        }
+                    }
+                });
+            });
+        },
+
+        reloadGridsHandler : function() {
+            var comissionGrid = this.comissionGrid;
+            var queueGrid = this.queueGrid;
+            var gridModal = this.comissionGridModal;
+            $(document).on('reload', '#queueGrid, #comissionGrid', function(e) {
+                switch($(this).prop('id')) {
+                   case 'comissionGrid': comissionGrid.reloadGrid(); break;
+                   case 'queueGrid': queueGrid.reloadGrid(); break;
+                }
+                $(gridModal).trigger('hide');
+            });
+        },
+
+        init : function() {
 			this.displayDatetimepickers();
 			this.displayGrids();
+            this.displayTabmarks();
             this.renderModals();
 			this.bindHandlers();
 			return this;

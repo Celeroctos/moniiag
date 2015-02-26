@@ -18,27 +18,22 @@ class GridController extends Controller {
             $perPage = $_GET['perPage'];
         }
 
-        $model = new $_GET['serverModel']();
+        $model = new $_GET['serverModel']('grid.view');
+        $model->unsetAttributes();
 
-		$dataProvider = new CActiveDataProvider($_GET['serverModel'], array(
-			'criteria' => array(
-				//'with' => array('id', 'last_name', 'first_name', 'middle_name'),
-			),
-			'pagination' => array(
-				'pageSize' => $perPage,
-				'route' => 'grid/index'
-			),
-			'sort' => array(
-				'route' => 'grid/index'
-			)
-		));
+        if(isset($_GET[$_GET['serverModel']])) {
+            $model->attributes = Yii::app()->request->getQuery($_GET['serverModel']);
+        }
+        $model->parentController = $this;
+        $grid = new Grid($model->getColumnsModel());
 
-        $grid = new Grid(CJSON::decode($_GET['model']));
 		$answerData =  array(
-			'dataProvider' => $dataProvider,
+			'dataProvider' => $model->search(),
 			'model' => $model,
 			'gridId' => $_GET['id'],
-            'columns' => $grid->parse()->getColumns()
+            'serverModel' => $_GET['serverModel'],
+            'columns' => $grid->parse()->getColumns(),
+            'container' => $_GET['container']
 		);
 
 		if(isset($_GET['returnAsJson'])) {

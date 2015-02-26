@@ -1,4 +1,4 @@
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/engine/modules/hospital/widgets/medical_directions_form.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/engine/component/modules/module/modules/hospital/widgets/medical_directions_form.js"></script>
 <div id="accordionD" class="accordion col-xs-12" >
     <div class="accordion-group">
         <div class="accordion-heading">
@@ -34,6 +34,9 @@
                     )); ?>
                     <?php echo $form->hiddenField($model, 'doctorId', array(
                         'value' => $currentDoctorId
+                    )); ?>
+                    <?php echo $form->hiddenField($model, 'cardNumber', array(
+                        'value' => $currentMedcard
                     )); ?>
                     <div class="form-group col-xs-12">
                         <?php echo $form->labelEx($model,'type', array(
