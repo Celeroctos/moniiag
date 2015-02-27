@@ -13,9 +13,10 @@ class LCollapsible extends LWidget {
     public $body = null;
 
     public function init() {
-        if ($this->body instanceof LWidget) {
-            $this->body = $this->body->call();
-        }
+        if (empty($this->id)) {
+			$this->id = openssl_random_pseudo_bytes(10);
+		}
+		ob_start();
         $this->render(__CLASS__, [], false);
     }
 

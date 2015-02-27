@@ -17,5 +17,5 @@
             </tr>
         </table>
     </div>
-    <div class="panel-body" style="text-align: center">
+    <div class="panel-body">
         <?=$this->body?>

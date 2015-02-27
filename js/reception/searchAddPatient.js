@@ -132,7 +132,7 @@
             PaginationData = '&'+PaginationData;
         }
         $.ajax({
-            'url' : '/reception/patient/search/?withonly=0&filters=' + $.toJSON(filters)+PaginationData,
+            'url' : globalVariables.baseUrl + '/reception/patient/search/?withonly=0&filters=' + $.toJSON(filters)+PaginationData,
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -366,7 +366,7 @@
             PaginationData = '&'+PaginationData;
         }
         $.ajax({
-            'url' : '/reception/patient/search/?withoutonly=0&filters=' + $.toJSON(filters)+PaginationData,
+            'url' : globalVariables.baseUrl + '/reception/patient/search/?withoutonly=0&filters=' + $.toJSON(filters)+PaginationData,
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -414,7 +414,7 @@
             PaginationData = '&'+PaginationData;
         }
         $.ajax({
-            'url' : '/reception/patient/search/?mediateonly=0&filters=' + $.toJSON(filters) + PaginationData,
+            'url' : globalVariables.baseUrl + '/reception/patient/search/?mediateonly=0&filters=' + $.toJSON(filters) + PaginationData,
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',

@@ -296,7 +296,7 @@ var GuideTableViewer = {
         if (id == GuideColumnEditor.id) {
             this.defaults();
         }
-        $.get(url("/laboratory/guide/delete"), {
+        $.post(url("/laboratory/guide/delete"), {
             id: id
         }, function(json) {
             if (!json["status"]) {

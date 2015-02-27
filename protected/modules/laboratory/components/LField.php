@@ -13,7 +13,7 @@ abstract class LField extends CComponent {
 	}
 
     /**
-     * Get current field instance
+     * Override that method to get current field instance
      * @param string $class - Name of field's class
      * @return LField - Field object
      */

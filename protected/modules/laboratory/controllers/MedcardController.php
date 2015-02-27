@@ -17,6 +17,19 @@ class MedcardController extends LController {
     }
 
 	/**
+	 * Display page with card information
+	 */
+	public function actionCard() {
+		if (isset($_GET["number"])) {
+			$this->render("card", [
+				"number" => $_GET["number"]
+			]);
+		} else {
+			header("Location: ".Yii::app()->getBaseUrl()."/laboratory/medcard/view");
+		}
+	}
+
+	/**
 	 * Search action, which accepts array with search serialized form
 	 * models (LMedcardSearchForm + LSearchRangeForm). That action will
 	 * fetch form's values and build search condition form form model

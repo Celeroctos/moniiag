@@ -168,3 +168,12 @@
     background-color: #c3e8f7;
     cursor: pointer;
 }
+
+.medcard-viewer .panel-body {
+    margin: 0;
+    padding: 0;
+}
+
+.medcard-info {
+    font-size: 14px;
+}

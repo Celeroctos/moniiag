@@ -33,6 +33,28 @@ class LMedcard extends LModel {
         return parent::model($className);
     }
 
+	/**
+	 * Find information about patient by it's card number
+	 * @param string $number - Number of patients card (mis.medcards.card_number)
+	 * @return mixed - Mixed object with found row
+	 * @throws CDbException
+	 */
+	public function fetchByNumber($number) {
+		return $this->getDbConnection()->createCommand()
+			->select("*")
+			->from("mis.medcards as m")
+			->join("mis.oms as o", "m.policy_id = o.id")
+			->where("m.card_number = :card_number")
+			->queryRow(true, [
+				":card_number" => $number
+			]);
+	}
+
+	/**
+	 * Fetch list with patients and it's oms information
+	 * @return array - Array with patients
+	 * @throws CDbException
+	 */
     public function fetchListWithPatients() {
         return $this->getDbConnection()->createCommand()
             ->select("m.card_number as number, m.contact as phone, o.first_name as name, o.middle_name as surname, o.last_name as patronymic")
