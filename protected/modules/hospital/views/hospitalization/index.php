@@ -1,28 +1,29 @@
+<div id="helperIcon"></div>
 <div class="col-xs-12 row">
 	<ul class="nav nav-tabs" id="hospitalizationNavbar">
 	  <li role="navigation" class="active">
-		<a href="#queue" aria-controls="queue" role="tab" data-toggle="tab">Очередь</a>
+		<a href="#queue" aria-controls="queue" role="tab" data-toggle="tab" id="queueTab">Очередь</a>
 		<span class="tabmark" id="queueTabmark">
             <span class="roundedLabel"></span>
             <span class="roundedLabelText"></span>
         </span>
 	  </li>
 	  <li role="navigation">
-		<a href="#comission" aria-controls="comission" role="tab" data-toggle="tab">Комиссия на госпитализацию</a>
+		<a href="#comission" aria-controls="comission" role="tab" data-toggle="tab" id="comissionTab">Комиссия на госпитализацию</a>
         <span class="tabmark" id="comissionTabmark">
             <span class="roundedLabel"></span>
             <span class="roundedLabelText"></span>
         </span>
 	  </li>
 	  <li role="navigation">
-		<a href="#hospitalization" aria-controls="hospitalization" role="tab" data-toggle="tab">Госпитализация</a>
+		<a href="#hospitalization" aria-controls="hospitalization" role="tab" data-toggle="tab" id="hospitalizationTab">Госпитализация</a>
         <span class="tabmark" id="hospitalizationTabmark">
             <span class="roundedLabel"></span>
             <span class="roundedLabelText"></span>
         </span>
 	  </li>
 	  <li role="navigation">
-		<a href="#history" aria-controls="history" role="tab" data-toggle="tab">История приёмов</a>
+		<a href="#history" aria-controls="history" role="tab" data-toggle="tab" id="historyTab">История приёмов</a>
         <span class="tabmark" id="historyTabmark">
             <span class="roundedLabel"></span>
             <span class="roundedLabelText"></span>

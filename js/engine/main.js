@@ -29,10 +29,11 @@ misEngine = (function() {
                      'name' : 'hospital',
                      'script' : null
                  }]
-             }]
+            }, {
+                'name' : 'helper',
+                'script' : null
+            }]
         }],
-        inherits : [], // This uses by objects creating
-
 		getConfig : function(key) {
 			if(this.config[key]) {
 				return this.config[key];
@@ -119,7 +120,7 @@ misEngine = (function() {
                 for(var i = 1; i < founded.length; i++) {
                     extended = $.extend(extended, founded[i]);
                 }
-                return extended;
+                return extended.init(config);
             } else {
                 this.t('Component "' + objPath + '" not created: error by searching component path?..');
                 return -1;

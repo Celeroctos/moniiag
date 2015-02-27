@@ -27,7 +27,7 @@
             var module = misEngine.create('component.module.hospital');
             if(module != -1) {
                 clearInterval(timer);
-                module.init();
+                module.run();
             }
         }, 200);
 	</script>

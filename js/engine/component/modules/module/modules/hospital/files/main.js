@@ -315,12 +315,23 @@ misEngine.class('component.module.hospital', function() {
             });
         },
 
-        init : function() {
-			this.displayDatetimepickers();
-			this.displayGrids();
+        renderHelpSystem : function() {
+            var helpSystem = misEngine.create('component.helper', {
+                file : '/js/engine/component/modules/helper/files/text/hospital.js',
+                iconContainer : '#helperIcon'
+            });
+        },
+
+        run : function() {
+            this.displayDatetimepickers();
+            this.displayGrids();
             this.displayTabmarks();
+            this.renderHelpSystem();
             this.renderModals();
-			this.bindHandlers();
+            this.bindHandlers();
+        },
+
+        init : function() {
 			return this;
 		}
 	};
