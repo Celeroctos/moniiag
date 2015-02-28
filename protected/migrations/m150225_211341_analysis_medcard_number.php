@@ -19,7 +19,6 @@ class m150225_211341_analysis_medcard_number extends CDbMigration {
     public function safeDown() {
         $this->getDbConnection()->createCommand(
             "ALTER TABLE lis.analysis DROP medcard_number"
-        )->execute(
-        );
+        )->execute();
     }
 }
