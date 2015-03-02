@@ -26,7 +26,7 @@ class QueueGrid extends MisActiveRecord {
     }
 
     public function tableName() {
-        return 'hospital.comission_grid';
+        return 'hospital.queue_grid';
     }
 
     public function primaryKey() {
@@ -143,12 +143,13 @@ class QueueGrid extends MisActiveRecord {
 
     public function search() {
         $criteria = new CDbCriteria;
+
         $criteria->compare('direction_id', $this->direction_id);
         $criteria->compare('fio', $this->fio);
         $criteria->compare('type', $this->type);
         $criteria->compare('ward_id', $this->ward_id);
         $criteria->compare('pregnant_term', $this->pregnant_term);
-        $criteria->compare('hospitalization_date', $this->pregnant_term);
+        $criteria->compare('hospitalization_date', $this->hospitalization_date);
         $criteria->compare('card_number', $this->card_number);
 
         $dataProvider = new CActiveDataProvider($this, array(

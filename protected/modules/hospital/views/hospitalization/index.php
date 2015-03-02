@@ -91,7 +91,7 @@ $form = $this->beginWidget('CActiveForm', array(
                                 'language' => 'ru',
                                 'flat' => true,
                                 'htmlOptions' => array(
-                                    'id' => 'hospitalization_date_datepicker'
+                                    'id' => 'modal_hospitalization_date_datepicker'
                                 ),
                                 'options' => array(
                                     'showOn' => 'focus',
@@ -142,3 +142,48 @@ $form = $this->beginWidget('CActiveForm', array(
     </div>
 </div>
 <?php $this->endWidget(); ?>
+<div class="modal fade error-popup" id="MedicalExamPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Осмотр пациента</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <?php echo CHtml::ajaxSubmitButton(
+                    'Закончить осмотр',
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/hospital/hospitalization/changehospitalizationdate'),
+                    array(
+                        'success' => 'function(data, textStatus, jqXHR) {
+                            var data = $.parseJSON(data);
+                            $("#" + data.gridId).trigger("reload");
+                        }',
+                        'beforeSend' => 'function(jqXHR, settings) { }'
+                    ),
+                    array(
+                        'class' => 'btn btn-success'
+                    )
+                ); ?>
+                <?php echo CHtml::ajaxSubmitButton(
+                    'Отказать в госпитализации',
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/hospital/hospitalization/dismisshospitalization'),
+                    array(
+                        'success' => 'function(data, textStatus, jqXHR) {
+                             var data = $.parseJSON(data);
+                             $("#" + data.gridId).trigger("reload");
+                         }',
+                        'beforeSend' => 'function(jqXHR, settings) { }'
+                    ),
+                    array(
+                        'class' => 'btn btn-danger'
+                    )
+                ); ?>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>

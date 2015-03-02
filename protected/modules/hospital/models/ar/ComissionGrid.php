@@ -128,6 +128,15 @@ class ComissionGrid extends MisActiveRecord {
 
     public function search() {
         $criteria = new CDbCriteria;
+        $filter = Yii::app()->request->getParam('filter');
+        if($filter != null) {
+            foreach($filter as $field => $value) {
+                $this->$field = $value;
+            }
+            /* if($this->hospitalization_date == date('Y-n-j')) {
+                 $criteria->compare('is_refused', 1, false, 'OR');
+            } */
+        }
 
         $criteria->compare('direction_id', $this->direction_id);
         $criteria->compare('fio', $this->fio, true);
