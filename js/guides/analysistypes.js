@@ -1,61 +1,4 @@
 $(document).ready(function() {
-    $("#analysistypes").jqGrid({
-        url: globalVariables.baseUrl + '/guides/analysistypes/get',
-        datatype: "json",
-        colNames:['Код', 'Наименование', 'Тип учреждения', 'Правило создания номеров карт', ''],
-        colModel:[
-            {
-                name:'id',
-                index:'id',
-                width: 150
-            },
-            {
-                name: 'name',
-                index: 'name',
-                width: 200
-            },
-            {
-                name: 'enterprise_name',
-                index:'enterprise_name',
-                width: 150
-            },
-            {
-                name: 'rule',
-                index: 'rule',
-                width: 250
-            },
-            {
-                name: 'rule_id',
-                index: 'rule_d',
-                hidden: true
-            }
-        ],
-        rowNum: 10,
-        rowList:[10,20,30],
-        pager: '#analysistypesPager',
-        sortname: 'id',
-        viewrecords: true,
-        sortorder: "desc",
-        caption:"Отделения",
-        height: 300,
-        ondblClickRow: editAnalysisType
-    });
-
-    $("#analysistypes").jqGrid('navGrid','#analysistypesPager',{
-        edit: false,
-        add: false,
-        del: false
-        },
-        {},
-        {},
-        {},
-        {
-            closeOnEscape:true,
-            multipleSearch :true,
-            closeAfterSearch: true
-        }
-    );
-
     $("#addAnalysisType").click(function() {
         $('#addAnalysisTypePopup').modal({
 
@@ -67,8 +10,9 @@ $(document).ready(function() {
         if(ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
             $('#addAnalysisTypePopup').modal('hide');
             // Перезагружаем таблицу
-            $("#analysistypes").trigger("reloadGrid");
+//            $("#analysistypes").trigger("reloadGrid");
             $("#analysistype-add-form")[0].reset(); // Сбрасываем форму
+            location.reload();
         } else {
             // Удаляем предыдущие ошибки
             $('#errorAddAnalysisTypePopup .modal-body .row p').remove();
@@ -86,15 +30,13 @@ $(document).ready(function() {
     });
 
     $("#analysistype-edit-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
-        if(Boolean(globalVariables.guideEdit) == false) {
-            return false;
-        }
         var ajaxData = $.parseJSON(ajaxData);
         if(ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
             $('#editAnalysisTypePopup').modal('hide');
             // Перезагружаем таблицу
-            $("#analysistypes").trigger("reloadGrid");
+//            $("#analysistypes").trigger("reloadGrid");
             $("#analysistype-edit-form")[0].reset(); // Сбрасываем форму
+            location.reload();
         } else {
             // Удаляем предыдущие ошибки
             $('#errorAddAnalysisTypePopup .modal-body .row p').remove();
@@ -111,12 +53,14 @@ $(document).ready(function() {
         }
     });
 
-    function editAnalysisType() {
-        var currentRow = $('#analysistypes').jqGrid('getGridParam','selrow');
+    function editAnalysisType(event, currentRow) {
+        if(Boolean(globalVariables.guideEdit) == false) {
+            return false;
+        }
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/guides/analysistypes/getone?id=' + currentRow,
+                'url' : '/guides/laboratory/getoneanalysistype?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -135,16 +79,25 @@ $(document).ready(function() {
                                 formField: 'name'
                             },
                             {
-                                modelField: 'enterprise_id',
-                                formField: 'enterprise'
+                                modelField: 'short_name',
+                                formField: 'short_name'
                             },
                             {
-                                modelField: 'rule_id',
-                                formField: 'ruleId'
+                                modelField: 'automatic',
+                                formField: 'automatic'
+                            },
+                            {
+                                modelField: 'manual',
+                                formField: 'manual'
                             }
                         ];
                         for(var i = 0; i < fields.length; i++) {
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
+//                            if (document.getElementById(fields[i].formField).type == "checkbox") {
+//                                document.getElementById(fields[i].formField).checked = (data.data[fields[i].modelField]);
+//                            } else {
+//                                document.getElementById(fields[i].formField).val = (data.data[fields[i].modelField]);
+//                            }
                         }
                         $("#editAnalysisTypePopup").modal({
 
@@ -155,53 +108,5 @@ $(document).ready(function() {
         }
     }
 
-
     $("#editAnalysisType").click(editAnalysisType);
-
-    $("#deleteAnalysisType").click(function() {
-        var currentRow = $('#analysistypes').jqGrid('getGridParam','selrow');
-        if(currentRow != null) {
-            $.ajax({
-                'url' : '/guides/analysistypes/issetDoctorPerAnalysisType?id=' + currentRow,
-                'cache' : false,
-                'dataType' : 'json',
-                'type' : 'GET',
-                'success' : function(data, textStatus, jqXHR) {
-                    if(data.success) {
-                        if(data.doctors.length > 0) {
-                            $('#noticeIssetDoctorPopup .listOfDoctors').html('');
-                            for(var i in data.doctors) {
-                                $('#noticeIssetDoctorPopup .listOfDoctors').append(
-                                    $('<strong>').append(
-                                        data.doctors[i].last_name + ' ' + data.doctors[i].first_name + ' ' + (data.doctors[i].middle_name ? data.doctors[i].middle_name : '') + ((data.doctors.length - 1 == i) ? '' : ', ')
-                                    )
-                                );
-                            }
-                            $('#noticeIssetDoctorPopup').modal();
-                        } else {
-                            $.ajax({
-                                'url' : '/guides/analysistypes/delete?id=' + currentRow,
-                                'cache' : false,
-                                'dataType' : 'json',
-                                'type' : 'GET',
-                                'success' : function(data, textStatus, jqXHR) {
-                                    if(data.success == 'true') {
-                                        $("#analysistypes").trigger("reloadGrid");
-                                    } else {
-                                        // Удаляем предыдущие ошибки
-                                        $('#errorAddAnalysisTypePopup .modal-body .row p').remove();
-                                        $('#errorAddAnalysisTypePopup .modal-body .row').append("<p>" + data.error + "</p>")
-
-                                        $('#errorAddAnalysisTypePopup').modal({
-
-                                        });
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }
-            });
-        }
-    });
 });

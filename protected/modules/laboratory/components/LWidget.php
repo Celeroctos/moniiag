@@ -18,6 +18,10 @@ class LWidget extends CWidget {
         return null;
     }
 
+	/**
+	 * Executes the widget.
+	 * This method is called by {@link CBaseController::endWidget}.
+	 */
     public function run() {
         $this->render(__CLASS__, null, false);
     }

@@ -1,5 +1,5 @@
 .jaw-message-wrapper {
-    position: absolute;
+    position: fixed;
     left: 5px;
     top: 5px;
     z-index: 2000;
@@ -150,8 +150,9 @@
     text-align: left;
 }
 
-#search-medcard-button,
-#register-medcard-button {
+#medcard-search-button,
+#medcard-register-button,
+#medcard-edit-button {
     width: 200px;
 }
 
@@ -160,4 +161,19 @@
     /*overflow: scroll;*/
     text-align: center;
     margin-bottom: -50px;
+}
+
+#medcard-table tr[data-id]:hover td,
+#medcard-table .medcard-table-active td {
+    background-color: #c3e8f7;
+    cursor: pointer;
+}
+
+.medcard-viewer .panel-body {
+    margin: 0;
+    padding: 0;
+}
+
+.medcard-info {
+    font-size: 14px;
 }

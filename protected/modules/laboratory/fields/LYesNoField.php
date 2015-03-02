@@ -2,7 +2,11 @@
 
 class LYesNoField extends LDropDown {
 
-    /**
+	public function isBoolean() {
+		return true;
+	}
+
+	/**
      * Override that method to return associative array
      * for drop down list
      * @return array - Array with data

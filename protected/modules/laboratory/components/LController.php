@@ -102,7 +102,6 @@ abstract class LController extends Controller {
      * result array of your iterations will be array with row's ids to remove from db.
      *
      * <pre>
-     *
      * // Fetch rows identifications from database by some condition
      * $rows = MyTable::model()->findIds();
      *
@@ -121,6 +120,7 @@ abstract class LController extends Controller {
      * @param $row mixed - Current row with "id" field
      * @param $rows array - Array with rows
      * @param string $id - Primary key name
+	 * @see LModel::findIds
      */
     public static function arrayInDrop($row, array &$rows, $id = "id") {
         if (is_array($row)) {
@@ -301,14 +301,60 @@ abstract class LController extends Controller {
         }
     }
 
+	/**
+	 * Register some form's values in database, it will automatically
+	 * fetch model from $_POST["model"], decode it, build it's LFormModel
+	 * object and save into database. But you must override
+	 * LController::getModel and return instance of controller's model else
+	 * it will throw an exception
+	 *
+	 * @in (POST):
+	 *  + model - String with serialized client form via $("form").serialize(), if you're
+	 * 		using LModal or LPanel widgets that it will automatically find button with
+	 * 		submit type and send ajax request
+	 * @out (JSON):
+	 *  + message - Message with status
+	 *  + status - True if everything ok
+	 *
+	 * @see LController::getModel
+	 * @see LModal
+	 * @see LPanel
+	 */
+	protected function actionRegister() {
+		try {
+			$model = $this->getFormModel("model", "post");
+			if (is_array($model)) {
+				throw new CException("Forms to register mustn't be array");
+			}
+			if (($table = $this->getModel()) == null) {
+				throw new CException("Your controller must override LController::getModel method");
+			}
+			foreach ($model->attributes as $key => $value) {
+				$table->$key = $value;
+			}
+			$table->save();
+			$this->leave([
+				"message" => "Данные успешно сохранены"
+			]);
+		} catch (Exception $e) {
+			$this->exception($e);
+		}
+	}
+
     /**
      * Override that method to remove element from model, by default
      * it will try to find controller's model and remove it
+	 *
+	 * @in (POST):
+	 *  + id - Element's identification number
+	 * @out (JSON):
+	 *  + message - Response message
+	 *  + status - True if everything ok
      */
     protected function actionDelete() {
         try {
-            $this->getModel()->deleteByPk($this->get("id"), "id = :id", [
-                ":id" => $this->get("id")
+            $this->getModel()->deleteByPk($this->post("id"), "id = :id", [
+                ":id" => $this->post("id")
             ]);
             $this->leave([
                 "message" => "Элемент был успешно удален"

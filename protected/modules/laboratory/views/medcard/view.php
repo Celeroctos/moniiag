@@ -1,8 +1,3 @@
-<link rel="stylesheet" type="text/css" href="<?= Yii::app()->getBaseUrl()?>/css/laboratory.css" />
-<script type="text/javascript" src="<?= Yii::app()->getBaseUrl()?>/js/laboratory/core.js"></script>
-<script type="text/javascript" src="<?= Yii::app()->getBaseUrl()?>/js/laboratory/form.js"></script>
-<script type="text/javascript" src="<?= Yii::app()->getBaseUrl()?>/js/laboratory/laboratory.js"></script>
-
 <?
 
 /**
@@ -10,46 +5,43 @@
  */
 
 $this->widget("LModal", [
-	"body" => $this->getWidget("LForm", [
-		"model" => new LDirectionForm(),
-		"url" => Yii::app()->getBaseUrl() . "/laboratory/laboratory/register"
-	]),
-	"title" => "Создание направления",
-	"id" => "add-direction-modal",
-	"buttons" => [
-		"register" => [
-			"class" => "btn btn-primary",
-			"type" => "submit",
-			"text" => "Добавить"
-		]
-	]
-]);
-
-$this->widget("LModal", [
 	"title" => "Регистрация ЛКП",
-	"id" => "register-medcard-modal",
+	"id" => "medcard-register-modal",
 	"body" => $this->getWidget("LForm", [
 		"model" => new LMedcardForm(),
 		"url" => Yii::app()->getBaseUrl() . "/laboratory/medcard/register"
 	]),
 	"buttons" => [
 		"register" => [
-			"text" => "Создать",
+			"text" => "Сохранить",
 			"class" => "btn btn-primary",
 			"type" => "submit"
 		]
 	]
 ]);
 
-//$this->widget("LPanel", [
-//	"body" => $this->getWidget("LMedcardSearch"),
-//	"title" => "Поиск по ЛКП",
-//	"collapse" => "true",
-//	"id" => "body-test-collapse"
-//]);
+$this->widget("LModal", [
+	"title" => "Редактирования ЛКП",
+    "body" => "",
+	"id" => "medcard-edit-modal",
+	"buttons" => [
+		"register" => [
+			"class" => "btn btn-primary",
+			"type" => "submit",
+			"text" => "Сохранить"
+		]
+	]
+]);
 
 $this->widget("LMedcardSearch");
 
 ?>
 <hr>
-<button id="register-medcard-button" class="btn btn-success btn-block" data-toggle="modal" data-target="#register-medcard-modal">Создать ЛКП</button>
+<div class="btn-group" role="group">
+	<a id="medcard-register-button" class="btn btn-success" href="<?= Yii::app()->getBaseUrl() . "/reception/patient/viewadd" ?>">
+		Создать ЛКП
+	</a>
+	<button id="medcard-edit-button" class="btn btn-default disabled" data-loading-text="Загрузка...">
+		Редактировать ЛКП
+	</button>
+</div>

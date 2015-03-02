@@ -29,6 +29,4 @@ class LFormModelAdapter extends LFormModel {
     public function config() {
         return $this->_config;
     }
-
-    private $_config = null;
 }

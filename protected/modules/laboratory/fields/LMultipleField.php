@@ -9,28 +9,37 @@ class LMultipleField extends LField {
 	 * @return String - Just rendered field result
 	 */
 	public function render($form, $model) {
-		$multiple = true;
-		$data = $this->getData();
-		if (!$multiple) {
-			if (!isset($data[-1]) && !$this->getValue()) {
-				$data = [ -1 => "Нет" ] + $data;
-			}
-		}
-		$content = CHtml::openTag("div", [
-			"class" => "multiple"
-		]);
-		$content .=  $form->dropDownList($model, $this->getKey(), $data, [
-			'placeholder' => $this->getLabel(),
-			'id' => $this->getKey(),
-			'class' => 'form-control multiple-value',
-			'value' => $this->getValue(),
-			'options' => [ $this->getValue() => [ 'selected' => true ] ],
-			'multiple' => $multiple
-		]);
-		$content .= CHtml::tag("div", [
-			"class" => "multiple-container form-control"
-		], "", true);
-		return $content.CHtml::closeTag("div");
+        return $form->dropDownList($model, $this->getKey(), $this->getData(), $this->getOptions() + [
+            'placeholder' => $this->getLabel(),
+            'id' => $this->getKey(),
+            'class' => 'form-control',
+            'value' => $this->getValue(),
+            'onchange' => "DropDown && DropDown.change && DropDown.change.call(this)",
+            'options' => [ $this->getValue() => [ 'selected' => true ] ],
+            'multiple' => true
+        ]);
+//		$multiple = true;
+//		$data = $this->getData();
+//		if (!$multiple) {
+//			if (!isset($data[-1]) && !$this->getValue()) {
+//				$data = [ -1 => "Нет" ] + $data;
+//			}
+//		}
+//		$content = CHtml::openTag("div", [
+//			"class" => "multiple"
+//		]);
+//		$content .=  $form->dropDownList($model, $this->getKey(), $data, [
+//			'placeholder' => $this->getLabel(),
+//			'id' => $this->getKey(),
+//			'class' => 'form-control',
+//			'value' => $this->getValue(),
+//			'options' => [ $this->getValue() => [ 'selected' => true ] ],
+//			'multiple' => $multiple
+//		]);
+//		$content .= CHtml::tag("div", [
+//			"class" => "multiple-container form-control"
+//		], "", true);
+//		return $content.CHtml::closeTag("div");
 	}
 
 	/**

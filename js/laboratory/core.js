@@ -341,3 +341,27 @@ var Laboratory = Laboratory || {};
     };
 
 })(Laboratory);
+
+$(document).ready(function() {
+    $("input[data-regexp][type='text']").each(function(i, item) {
+        var regexp = new RegExp($(item).data("regexp"));
+        $(item).keydown(function(e) {
+            console.log($(item).val());
+            console.log(regexp.test($(item).val()));
+        });
+    });
+});
+
+/*
+ var isStrValid = function(str) {
+ return ((str.match(/[^\d^.]/) === null)
+ && (str.replace(/\d+\.?\d?\d?/, "") === ""));
+ };
+
+ var node = dojo.byId("txt");
+ dojo.connect(node, "onkeyup", function() {
+ if (!isStrValid(node.value)) {
+ node.value = node.value.substring(0, node.value.length-1);
+ }
+ });
+* */

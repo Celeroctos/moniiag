@@ -4,11 +4,11 @@
 */
 class AnalysisParam extends MisActiveRecord 
 {
-    public $id;
+/*    public $id;
     public $name;
     public $long_name;
     public $comment;
-
+*/
     public static function model($className=__CLASS__)
     {
         return parent::model($className);

@@ -2,11 +2,37 @@
 
 abstract class LDropDown extends LField {
 
+    /**
+     * Override that method to return associative array
+     * for drop down list
+     * @return array - Array with data
+     */
+    public abstract function data();
+
+	/**
+	 * @param CActiveForm $form
+	 * @param LFormModel $model
+	 * @return string
+	 */
+	public function renderAsRadio($form, $model) {
+		$data = $this->data();
+		if (isset($data[-1])) {
+			unset($data[-1]);
+		}
+		return $form->radioButtonList($model, $this->getKey(), $data, $this->getOptions() + [
+			'value' => $this->getValue(),
+			'class' => 'form-control'
+		]);
+	}
+
+	public function renderAsCheckbox() {
+	}
+
 	/**
 	 * Override that method to render field base on it's type
 	 * @param CActiveForm $form - Form
 	 * @param LFormModel $model - Model
-	 * @return String - Just rendered field result
+	 * @return string - Just rendered field result
 	 */
 	public final function render($form, $model) {
 		$data = $this->data();
@@ -28,11 +54,4 @@ abstract class LDropDown extends LField {
 	public function isBoolean() {
 		return false;
 	}
-
-	/**
-	 * Override that method to return associative array
-	 * for drop down list
-	 * @return array - Array with data
-	 */
-	public abstract function data();
 }

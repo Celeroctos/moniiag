@@ -14,6 +14,7 @@ class LTable extends LWidget {
 	public $conditions = "";
 	public $parameters = [];
 	public $disablePagination = false;
+	public $click = null;
 
 	public function run() {
 

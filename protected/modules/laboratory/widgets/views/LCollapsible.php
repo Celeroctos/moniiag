@@ -6,18 +6,14 @@
 
 ?>
 
-<a class="btn btn-primary" data-toggle="collapse" href="#<?= $this->id ?>" aria-expanded="true" aria-controls="<?= $this->id ?>">
-    <div class="img-circle">
-        <span class="glyphicon glyphicon-chevron-up"></span>
-    </div>
+<a class="btn btn-primary" data-toggle="collapse" href="#<?= $this->id ?>" aria-expanded="false" aria-controls="<?= $this->id ?>">
+	Link with href
 </a>
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#<?= $this->id ?>" aria-expanded="false" aria-controls="<?= $this->id ?>">
+	Button with data-target
+</button>
 <div class="collapse" id="<?= $this->id ?>">
-    <div class="well">
-        <h4>0x7b</h4>
-    </div>
+	<div class="well">
+		...
+	</div>
 </div>
-<script>
-    $(document).ready(function() {
-        $("#<?= $this->id ?>").collapse();
-    });
-</script>

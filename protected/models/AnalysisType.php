@@ -4,16 +4,18 @@
 */
 class AnalysisType extends MisActiveRecord 
 {
-    public $id;
-    public $name;
-    public $short_name;
-    public $automatic;
-    public $manual;
+//    public $id;
+//    public $name;
+//    public $short_name;
+//    public $automatic;
+//    public $manual;
+    public $automatic_n;
+    public $manual_n;
     public $param_count;
     public $analysis_type_id;
 
-    const TRUE_ID=true;
-    const FALSE_ID=false;
+    const TRUE_ID=1;
+    const FALSE_ID=0;
     const TRUE_NAME='Да';
     const FALSE_NAME='Нет';
 
@@ -157,42 +159,6 @@ class AnalysisType extends MisActiveRecord
                 ],
             ],
         ]);
-    }
-
-    /**
-    * Используется в activeDropDownList()
-    * @return array
-    */    
-    public static function getAutomaticList()
-    {
-        return CHtml::listData([
-            [
-                'automatic'=>self::FALSE_ID,
-                'name'=>self::FALSE_NAME,
-            ],
-            [
-                'automatic'=>self::TRUE_ID,
-                'name'=>self::TRUE_NAME
-            ],
-            ], 'automatic', 'name');
-    }
-
-    /**
-    * Используется в activeDropDownList()
-    * @return array
-    */    
-    public static function getManualList()
-    {
-        return CHtml::listData([
-            [
-                'manual'=>self::FALSE_ID,
-                'name'=>self::FALSE_NAME,
-            ],
-            [
-                'manual'=>self::TRUE_ID,
-                'name'=>self::TRUE_NAME
-            ],
-            ], 'manual', 'name');
     }
 
     /**

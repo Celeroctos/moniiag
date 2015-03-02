@@ -312,7 +312,7 @@ $(document).ready(function() {
     // Просмотр медкарты в попапе
     $(document).on('click', '.editMedcard', function(e) {
         $.ajax({
-            'url' : '/reception/patient/getmedcarddata',
+            'url' : globalVariables.baseUrl + '/reception/patient/getmedcarddata',
             'data' : {
                 'cardid' : $(this).prop('href').substr($(this).prop('href').lastIndexOf('#') + 1)
             },
