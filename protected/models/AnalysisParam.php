@@ -57,7 +57,7 @@ class AnalysisParam extends MisActiveRecord
             'name'
         );
     }	
-
+/*
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
         $connection = Yii::app()->db;
         $analysisparams = $connection->createCommand()
@@ -82,7 +82,7 @@ class AnalysisParam extends MisActiveRecord
 
         return $analysisparams->queryAll();
     }
-
+*/
 
     public function getOne($id) {
         try {
@@ -99,6 +99,7 @@ class AnalysisParam extends MisActiveRecord
             echo $e->getMessage();
         }
     }
+
 
     public function attributeLabels() {
         return [

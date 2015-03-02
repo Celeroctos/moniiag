@@ -131,8 +131,8 @@
                 <li <?php echo ($controller == 'test' && $action == 'view') ? 'class="active"' : ''; ?>>
                     <?php echo CHtml::link('Тест', array('/laboratory/test/view')) ?>
                 </li>
-                <li <?php echo ($controller == 'guide' && $action == 'view') ? 'class="active"' : ''; ?>>
-                    <?php echo CHtml::link('Справочники', array('/laboratory/guide/view')) ?>
+                <li <?php echo $module == 'guides' ? 'class="active"' : ''; ?>>
+                    <?php echo CHtml::link('Справочники', array('/guides/analysistypes/view')) ?>
                 </li>
             <?php } ?>
         </ul>

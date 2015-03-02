@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
@@ -40,14 +40,14 @@ return array(
 
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
-		/*
+		
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',
-			'password'=>'Enter Your Password Here',
+			'password'=>'Cvbhyjd1',
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
 			'ipFilters'=>array('127.0.0.1','::1'),
 		),
-		*/
+		 
         'reception' => array(
             'class' => 'application.modules.reception.ReceptionModule',
             'import'=>array(
@@ -166,15 +166,22 @@ return array(
 			// use 'site/error' action to display errors
 			'errorAction'=>'index/error',
 		),
-		/*'log'=>array(
+		'log'=>array(
 			'class'=>'CLogRouter',
 			'routes'=>array(
 				array(
 					'class'=>'CFileLogRoute',
-					'levels'=>'error, warning',
+//					'levels'=>'error, warning, trace, profile, info',
+					'levels'=>'error, warning, info',
 				),
+                array(
+                    'class' => 'CWebLogRoute',
+//                    'categories' => 'application',
+//                    'levels'=>'error, warning, trace, profile, info',
+                    'showInFireBug' => true
+                ),
 			),
-		),*/
+		),
         'ePdf' => array(
             'class'         => 'ext.yii-pdf-0_3_2.EYiiPdf',
             'params'        => array(
