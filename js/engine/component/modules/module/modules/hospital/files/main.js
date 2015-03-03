@@ -50,7 +50,14 @@ misEngine.class('component.module.hospital', function() {
                             dataType : 'json',
                             success : function(data, status, jqXHR) {
                                 if(data.success) {
-                                    $('#queueTabmark .roundedLabelText').text(data.num);
+                                    if(data.num > 0) {
+                                        $('#queueTabmark .roundedLabelText')
+                                            .text(data.num)
+                                            .parent()
+                                            .css('display', 'inline')
+                                    } else {
+                                        $('#queueTabmark').hide();
+                                    }
                                 }
                             },
                             error: function(jqXHR, status, errorThrown) {
@@ -72,7 +79,14 @@ misEngine.class('component.module.hospital', function() {
                             dataType : 'json',
                             success : function(data, status, jqXHR) {
                                 if(data.success) {
-                                    $('#comissionTabmark .roundedLabelText').text(data.num);
+                                    if(data.num > 0) {
+                                        $('#comissionTabmark .roundedLabelText')
+                                            .text(data.num)
+                                            .parent()
+                                            .css('display', 'inline');
+                                    } else {
+                                        $('#comissionTabmark').hide();
+                                    }
                                 }
                             },
                             error: function(jqXHR, status, errorThrown) {
@@ -94,7 +108,14 @@ misEngine.class('component.module.hospital', function() {
                             dataType : 'json',
                             success : function(data, status, jqXHR) {
                                 if(data.success) {
-                                    $('#hospitalizationTabmark .roundedLabelText').text(data.num);
+                                    if(data.num > 0) {
+                                        $('#hospitalizationTabmark .roundedLabelText')
+                                            .text(data.num)
+                                            .parent()
+                                            .css('display', 'inline');
+                                    } else {
+                                        $('#hospitalizationTabmark').hide();
+                                    }
                                 }
                             },
                             error: function(jqXHR, status, errorThrown) {
@@ -116,7 +137,14 @@ misEngine.class('component.module.hospital', function() {
                             dataType : 'json',
                             success : function(data, status, jqXHR) {
                                 if(data.success) {
-                                    $('#historyTabmark .roundedLabelText').text(data.num);
+                                    if(data.num > 0) {
+                                        $('#historyTabmark .roundedLabelText')
+                                            .text(data.num)
+                                            .parent()
+                                            .css('display', 'inline');
+                                    } else {
+                                        $('#historyTabmark').hide();
+                                    }
                                 }
                             },
                             error: function(jqXHR, status, errorThrown) {
@@ -128,7 +156,7 @@ misEngine.class('component.module.hospital', function() {
             ];
 
             $(this.tabmarks).each(function(index, element) {
-                $(element).trigger('show');
+                element.updateTabmark();
             });
         },
 		
@@ -354,6 +382,7 @@ misEngine.class('component.module.hospital', function() {
             this.openMedicalExamPopupHandler();
             this.changeCurrentDateHandler();
             this.changeTabHandler();
+            this.dismissHospitalizationBtnHandler();
             this.reloadGridsHandler();
             return this;
         },
@@ -361,6 +390,27 @@ misEngine.class('component.module.hospital', function() {
         /**
          * Handlers
          */
+        dismissHospitalizationBtnHandler : function() {
+            $('#dismissHospitalizationBtn').on('click', function(e) {
+                $(this).prop('disabled', true)
+                    .popover({
+                        animation: true,
+                        html: true,
+                        placement: 'auto',
+                        title: 'Причина отказа от госпитализации?',
+                        delay: {
+                            show: 300,
+                            hide: 300
+                        },
+                        container: $(this).parent(),
+                        content: $.proxy(function () {
+                            return $('#refuseCommentContainer').children().detach();
+                        }, this)
+                    });
+                $(this).popover('show');
+            });
+        },
+
         changeComissionDateHandler : function() {
             var selector = '.changeHospitalizationDate'
             var comissionGridModal = this.comissionGridModal;
@@ -404,27 +454,10 @@ misEngine.class('component.module.hospital', function() {
             var hospitalizationGird = this.hospitalizationGrid;
 
             var gridModal = this.comissionGridModal;
-            $(document).on('reload', '#queueGrid, #comissionGrid, #hospitalizationGrid, #historyGrid', function(e) {
-                switch($(this).prop('id')) {
-                    case 'comissionGrid':
-                        comissionGrid.reloadGrid();
-                        this.tabmarks[0].updateTabmark();
-                    break;
-                    case 'queueGrid':
-                        queueGrid.reloadGrid();
-                        this.tabmarks[1].updateTabmark();
-                    break;
-                    case 'hospitalizationGrid':
-                        hospitalizationGird.reloadGrid();
-                        this.tabmarks[2].updateTabmark();
-                    break;
-                    case 'historyGrid':
-                        historyGrid.reloadGrid();
-                        this.tabmarks[3].updateTabmark();
-                    break;
-                }
+            $(document).on('reload', '#queueGrid, #comissionGrid, #hospitalizationGrid, #historyGrid', $.proxy(function(e) {
+                this.reloadTab();
                 $(gridModal).trigger('hide');
-            });
+            }, this));
         },
 
         changeCurrentDateHandler : function() {

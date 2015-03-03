@@ -19,6 +19,8 @@ class ComissionGrid extends MisActiveRecord {
     public $comission_type_desc;
     public $age;
     public $hospitalization_date;
+    public $write_type;
+    public $write_type_desc;
     public $id;
 
     public static function model($className=__CLASS__) {
@@ -36,7 +38,7 @@ class ComissionGrid extends MisActiveRecord {
     public function rules() {
         return array(
             array(
-                'id, birthday, pregnant_term, ward_name, ward_id, fio, card_number, direction_id, hospitalization_date', 'safe', 'on' => 'grid.view'
+                'id, birthday, pregnant_term, ward_name, ward_id, fio, card_number, direction_id, hospitalization_date, write_type, write_type_desc', 'safe', 'on' => 'grid.view'
             )
         );
     }
@@ -48,7 +50,7 @@ class ComissionGrid extends MisActiveRecord {
             'birthday' => 'День рождения',
             'ward_name' => 'Отделение',
             'pregnant_term' => 'Срок',
-            'comission_type_desc' => 'Тип записи',
+            'write_type_desc' => 'Тип записи',
             'hospitalization_date' => 'Дата госпитализации',
             'age' => 'Возраст',
             'card_number' => 'Карта'
@@ -76,6 +78,10 @@ class ComissionGrid extends MisActiveRecord {
         } else {
             $this->hospitalization_date = implode('.', array_reverse(explode('-', $this->hospitalization_date)));
         }
+
+        if($this->write_type !== null) {
+            $this->write_type_desc = ($this->write_type == 1) ? 'Живая очередь' : 'По записи';
+        }
     }
 
     public function getColumnsModel() {
@@ -97,9 +103,9 @@ class ComissionGrid extends MisActiveRecord {
             ),
            array(
                'type' => 'raw',
-               'value' => '%comission_type_desc%',
-               'name' => 'comission_type_desc',
-               'filter' => array('Обычная', 'По записи')
+               'value' => '%write_type_desc%',
+               'name' => 'write_type_desc',
+               'filter' => array('По записи', 'Живая очередь')
            ),
            array(
                'type' => 'raw',

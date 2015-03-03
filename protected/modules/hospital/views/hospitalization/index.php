@@ -105,6 +105,37 @@ $form = $this->beginWidget('CActiveForm', array(
                             )); ?>
                         </div>
                     </div>
+                    <div class="form-group col-xs-12">
+                        <?=$form->labelEx($model,'write_type', array(
+                            'class' => 'col-xs-4'
+                        )); ?>
+                        <div class="col-xs-7">
+                            <?php echo $form->dropDownList($model, 'write_type', $writeTypes, array(
+                                'id' => 'writeType',
+                                'class' => 'form-control'
+                            )); ?>
+                        </div>
+                    </div>
+                    <div id="refuseCommentContainer">
+                        <?php echo $form->textArea($model, 'refuse_comment', array(
+                            'class' => 'form-control',
+                            'id' => 'refuseComment'
+                        )); ?>
+                        <?php echo CHtml::ajaxSubmitButton(
+                            'Подтвердить',
+                             CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/hospital/hospitalization/dismisshospitalization'),
+                             array(
+                                 'success' => 'function(data, textStatus, jqXHR) {
+                                      var data = $.parseJSON(data);
+                                      $("#" + data.gridId).trigger("reload");
+                                  }',
+                                 'beforeSend' => 'function(jqXHR, settings) { }'
+                             ),
+                            array(
+                                'class' => 'btn btn-success default-margin-top'
+                            )
+                        ); ?>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -122,18 +153,19 @@ $form = $this->beginWidget('CActiveForm', array(
                         'class' => 'btn btn-success'
                     )
                 ); ?>
-                <?php echo CHtml::ajaxSubmitButton(
+                <?php echo CHtml::button(
                     'Отказ от госпитализации',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/hospital/hospitalization/dismisshospitalization'),
+                   /* CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/hospital/hospitalization/dismisshospitalization'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                              var data = $.parseJSON(data);
                              $("#" + data.gridId).trigger("reload");
                          }',
                         'beforeSend' => 'function(jqXHR, settings) { }'
-                    ),
+                    ), */
                     array(
-                        'class' => 'btn btn-danger'
+                        'class' => 'btn btn-danger',
+                        'id' => 'dismissHospitalizationBtn'
                     )
                 ); ?>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>

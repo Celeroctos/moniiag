@@ -19,6 +19,7 @@ class QueueGrid extends MisActiveRecord {
     public $comission_type_desc;
     public $age;
     public $hospitalization_date;
+    public $write_type;
     public $id;
 
     public static function model($className=__CLASS__) {
@@ -36,7 +37,7 @@ class QueueGrid extends MisActiveRecord {
     public function rules() {
         return array(
             array(
-                'id, birthday, pregnant_term, ward_name, ward_id, fio, direction_id, card_number', 'safe', 'on' => 'grid.view'
+                'id, birthday, pregnant_term, ward_name, ward_id, fio, direction_id, card_number, write_type', 'safe', 'on' => 'grid.view'
             )
         );
     }
@@ -51,7 +52,8 @@ class QueueGrid extends MisActiveRecord {
             'comission_type_desc' => 'Тип записи',
             'hospitalization_date' => 'Дата госпитализации',
             'age' => 'Возраст',
-            'card_number' => 'Карта'
+            'card_number' => 'Карта',
+            'write_type' => 'Тип записи'
         );
     }
 
@@ -90,12 +92,6 @@ class QueueGrid extends MisActiveRecord {
                 'type' => 'raw',
                 'value' => '%card_number%',
                 'name' => 'card_number'
-            ),
-            array(
-                'type' => 'raw',
-                'value' => '%comission_type_desc%',
-                'name' => 'comission_type_desc',
-                'filter' => array('Обычная', 'По записи')
             ),
             array(
                 'type' => 'raw',

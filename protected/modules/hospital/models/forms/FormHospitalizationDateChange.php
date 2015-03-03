@@ -4,6 +4,8 @@ class FormHospitalizationDateChange extends FormMisDefault
     public $id;
     public $hospitalization_date;
     public $grid_id;
+    public $write_type;
+    public $refuse_comment;
 
     public function rules() {
         return array(
@@ -14,10 +16,16 @@ class FormHospitalizationDateChange extends FormMisDefault
                 'hospitalization_date', 'date', 'format' => 'yyyy-mm-dd', 'on' => 'edit'
             ),
             array(
-                'hospitalization_date', 'required'
+                'write_type', 'numerical', 'on' => 'view'
             ),
             array(
-                'id, grid_id', 'safe'
+                'write_type', 'numerical', 'on' => 'edit'
+            ),
+            array(
+                'hospitalization_date, write_type', 'required'
+            ),
+            array(
+                'id, grid_id, refuse_comment', 'safe'
             )
         );
     }
@@ -33,6 +41,7 @@ class FormHospitalizationDateChange extends FormMisDefault
     public function attributeLabels() {
         return array(
             'hospitalization_date' => 'Дата госпитализации',
+            'write_type' => 'Тип записи'
         );
     }
 }

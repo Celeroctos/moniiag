@@ -3,7 +3,8 @@ class HospitalizationController extends Controller {
 	public $layout = 'application.modules.hospital.views.layouts.index';
 	public function actionView() {
 		$this->render('index', array(
-            'model' => new FormHospitalizationDateChange('view')
+            'model' => new FormHospitalizationDateChange('view'),
+            'writeTypes' => array('По записи', 'Живая очередь')
         ));
 	}
 
@@ -22,6 +23,7 @@ class HospitalizationController extends Controller {
         $model = MDirection::model()->findByPk($formModel->id);
         if($model) {
             $model->hospitalization_date = $formModel->hospitalization_date;
+            $model->write_type = $formModel->write_type;
             echo CJSON::encode($answer + array(
                 'success' => $model->save()
             ));
