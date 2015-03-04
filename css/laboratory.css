@@ -177,3 +177,66 @@
 .medcard-info {
     font-size: 14px;
 }
+
+.treatment-header-wrapper {
+    text-align: center;
+    width: 100%;
+}
+
+.treatment-header-wrapper {
+    width: 100%;
+}
+
+.treatment-table-wrapper {
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+}
+
+.treatment-header {
+    margin-left: auto;
+    margin-right: auto;
+    width: 700px;
+    margin-bottom: 75px;
+}
+
+.treatment-header .col-xs-6,
+.treatment-header .col-xs-12,
+.treatment-header .col-xs-4 {
+    padding-right: 2px;
+    padding-left: 2px;
+}
+
+.treatment-header-rounded {
+    display: table;
+    border: 1px #47a347 solid;
+    border-radius: 3px;
+    padding: 5px;
+    width: 100%;
+    margin: 2px;
+    height: 50px;
+    white-space: normal;
+}
+
+.treatment-header .btn-default {
+    border-color: #47a347;
+}
+
+.treatment-header-rounded .row {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.treatment-header-wrapper .active {
+    background-color: #47a347;
+    color: white;
+    border: none;
+}
+
+.treatment-header-wrapper .treatment-header-rounded span.badge {
+    position: absolute;
+    transform: translate(calc(100% - 20px), -2px) scale(0.75);
+    border: 1px darkred solid;
+    background-color: white;
+    color: black;
+}

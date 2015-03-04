@@ -218,7 +218,7 @@
             'class' => 'form-control'
         )); ?>
     </div>
-</div>0
+</div>
 <div class="form-group">
     <?php echo $form->labelEx($model,'privilege', array(
         'class' => 'col-xs-3 control-label'

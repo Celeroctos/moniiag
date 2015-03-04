@@ -22,11 +22,25 @@ class LDirectionForm extends LFormModel {
 				"type" => "number",
 				"rules" => "required"
 			],
-			"status" => [
-				"label" => "Статус",
-				"type" => "DirectionStatus",
-				"rules" => "required"
+            "status" => [
+                "label" => "Статус",
+                "type" => "DirectionStatus",
+                "rules" => "required"
+            ],
+			"analysis_type_id" => [
+				"label" => "Тип анализа",
+				"type" => "DropDown",
+				"rules" => "required",
+                "table" => [
+                    "name" => "lis.analysis_types",
+                    "key" => "id",
+                    "value" => "name"
+                ]
 			],
+            "card_number" => [
+                "label" => "Номер карты",
+                "type" => "text"
+            ],
             "history" => [
                 "label" => "Медикаментозный анамнез",
                 "type" => "TextArea"
@@ -35,58 +49,60 @@ class LDirectionForm extends LFormModel {
 				"label" => "Комментарий",
 				"type" => "TextArea"
 			],
+			"sender_id" => [
+				"label" => "Врач",
+				"type" => "number",
+				"rules" => "required",
+                "value" => Yii::app()->user->getState("doctorId"),
+                "hidden" => "true"
+			],
+            "department_id" => [
+                "label" => "Направитель",
+                "type" => "DropDown",
+                "rules" => "required",
+                "table" => [
+                    "name" => "mis.enterprise_params",
+                    "key" => "id",
+                    "value" => "shortname"
+                ]
+            ],
 			"ward_id" => [
 				"label" => "Отдел",
 				"type" => "DropDown",
-				"rules" => "required"
+				"rules" => "required",
+                "table" => [
+                    "name" => "mis.wards",
+                    "key" => "id",
+                    "value" => "name"
+                ]
 			],
 			"sending_date" => [
 				"label" => "Дата направления",
 				"type" => "date",
-				"rules" => "required",
-				"value" => date("Y-m-d")
+				"rules" => "required"
 			],
-			"treatment_root_employee_id" => [
+			"treatment_room_employee_id" => [
 				"label" => "Сотрудник процедурного кабинета",
 				"type" => "DropDown",
-				"rules" => "required"
+				"rules" => "required",
+                "table" => [
+                    "format" => "%{first_name} %{middle_name} %{last_name}",
+                    "name" => "mis.doctors",
+                    "key" => "id",
+                    "value" => "first_name, middle_name, last_name"
+                ]
 			],
 			"laboratory_employee_id" => [
 				"label" => "Сотрудник лаборатории",
 				"type" => "DropDown",
-				"rules" => "required"
+				"rules" => "required",
+                "table" => [
+                    "format" => "%{first_name} %{middle_name} %{last_name}",
+                    "name" => "mis.doctors",
+                    "key" => "id",
+                    "value" => "first_name, middle_name, last_name"
+                ]
 			]
 		];
 	}
-
-	public function getWardIdData() {
-        return $this->getWards();
-	}
-
-    public function getTreatmentRootEmployeeIdData() {
-        return $this->getDoctors();
-    }
-
-    public function getLaboratoryEmployeeIdData() {
-        return $this->getDoctors();
-    }
-
-    private function getWards() {
-        if (!$this->wards) {
-            return ($this->wards = CHtml::listData(Ward::model()->getAll(), "id", "name"));
-        } else {
-            return $this->wards;
-        }
-    }
-
-    private function getDoctors() {
-        if (!$this->doctors) {
-            return ($this->doctors = CHtml::listData(Doctor::model()->getAll(), "id", "fio"));
-        } else {
-            return $this->doctors;
-        }
-    }
-
-    private $wards = null;
-    private $doctors = null;
 }

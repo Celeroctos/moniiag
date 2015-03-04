@@ -467,31 +467,32 @@ var MedcardSearch = {
 			MedcardSearch.search();
 		});
 		$("#medcard-edit-button").click(function() {
-			var me = this;
-			if (!MedcardSearch.id) {
-				return void 0;
-			}
-			$(this).button("loading");
-			$.get(url("/laboratory/medcard/getWidget"), {
-				class: "LMedcardEditor",
-				number: MedcardSearch.id
-			}, function(json) {
-				$(me).button("reset");
-				if (!Message.display(json)) {
-					return void 0;
-				}
-				var m = $("#medcard-edit-modal");
-				var r = m.find(".modal-body .row");
-				r.empty();
-				r.append(
-					$(json["component"])
-				);
-				m.modal("show");
-			}, "json");
+			MedcardSearch.edit();
 		});
 		$("#medcard-search-table-wrapper").on("click", ".pagination li:not(:disabled)", function() {
 			MedcardSearch.reset();
 		});
+	},
+	edit: function(number) {
+		if (!(number = number || this.id)) {
+			return void 0;
+		}
+		$.get(url("/reception/patient/getMedcardData"), {
+			cardid: number
+		}, function(data) {
+			if(data.success == true) {
+				data = data.data["formModel"];
+				var form = $('#patient-medcard-edit-form');
+				$('#patient-medcard-edit-modal').modal();
+				for(var i in data) {
+					$(form).find('#' + i).val(data[i]);
+				}
+			} else {
+				$('#errorSearchPopup .modal-body .row p').remove();
+				$('#errorSearchPopup .modal-body .row').append('<p>' + data.data + '</p>')
+				$('#errorSearchPopup').modal();
+			}
+		}, "json");
 	},
 	search: function() {
 		$("#medcard-search-button").button("loading");
@@ -532,6 +533,39 @@ var MedcardSearch = {
 	id: null
 };
 
+var TreatmentViewHeader = {
+	construct: function() {
+		$("button.treatment-header-rounded[data-toggle!='modal']").click(function() {
+			TreatmentViewHeader.activate($(this));
+		});
+		$("#direction-register-modal").on("show.bs.modal", function() {
+			$(this).find("input, textarea").val("");
+			$(this).find("select:not([multiple])").each(function(i, item) {
+				$(item).val($(item).find("option:eq(0)").val());
+			});
+			$(this).find("select[multiple]").val("");
+		});
+	},
+	activate: function(item) {
+		this.active && this.active.removeClass("active");
+		return (this.active = item.addClass("active"));
+	},
+	active: null
+};
+
+var LogoutButton = {
+	construct: function() {
+		var form = $("#logout-form");
+		$(".logout-button").click(function() {
+			$.get(form.attr("action"), form.serialize(), function(json) {
+				if (json.success) {
+					window.location.href = url("");
+				}
+			}, "json");
+		});
+	}
+};
+
 $(document).ready(function() {
 	GuideColumnEditor.construct();
 	ConfirmDelete.construct();
@@ -539,4 +573,6 @@ $(document).ready(function() {
 	GuideTableViewer.construct();
 	GuideValueEditor.construct();
 	MedcardSearch.construct();
+	TreatmentViewHeader.construct();
+	LogoutButton.construct();
 });

@@ -152,11 +152,11 @@ class LMedcardForm extends LFormModel {
 		];
 	}
 
-	public function getDoctypeData() {
+	public function getDoctype() {
 		return CHtml::listData(Doctype::model()->findAll(), "id", "name");
 	}
 
-	public function getEnterpriseIdData() {
+	public function getEnterpriseId() {
 		return CHtml::listData(Enterprise::model()->findAll(), "id", "shortname");
 	}
 }

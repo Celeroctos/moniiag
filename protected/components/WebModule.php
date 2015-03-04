@@ -11,6 +11,7 @@ abstract class WebModule extends CWebModule {
 	/**
 	 * Register module scripts
 	 * @param $webModule - Module instance
+	 * @throws CException
 	 */
 	public static function register($webModule) {
 		if (!$webModule || !($webModule instanceof WebModule)) {
@@ -18,10 +19,10 @@ abstract class WebModule extends CWebModule {
 		}
 		foreach ($webModule->getClientScripts() as $script) {
 			$extension = self::getExtension($script);
-			if ($extension == "less" || $extension == "css") {
-				$src = Yii::app()->request->baseUrl."/css/";
+			if ($extension == "less") {
+				$src = Yii::app()->getBaseUrl()."/css/";
 			} else {
-				$src = Yii::app()->request->baseUrl."/$extension/";
+				$src = Yii::app()->getBaseUrl()."/$extension/";
 			}
 			if ($extension == "js") {
 				$src .= $webModule->getName()."/";
@@ -34,7 +35,8 @@ abstract class WebModule extends CWebModule {
 			$method = "render".$extension;
 			if (method_exists("WebModule", $method)) {
 				self::$method($src);
-			}
+			} else
+				throw new CException("Unresolved script type \"$extension\"");
 			print "\r\n";
 		}
 	}

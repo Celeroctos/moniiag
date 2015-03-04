@@ -919,7 +919,7 @@
 
 
         $.ajax({
-            'url' : '/reception/patient/getomsdata',
+            'url' : globalVariables.baseUrl + '/reception/patient/getomsdata',
             'data' : {
                 'omsid' : $(this).prop('href').substr($(this).prop('href').lastIndexOf('#') + 1)
             },
@@ -1035,7 +1035,7 @@
         var hiddenData = $(clickedRow).find('input[type="hidden"]').val();
         if($.trim(hiddenData) != '') {
             $.ajax({
-                'url' : '/guides/cladr/getcladrdata',
+                'url' : globalVariables.baseUrl + '/guides/cladr/getcladrdata',
                 'data' : {
                     'data' : hiddenData
                 },
@@ -1085,7 +1085,6 @@
         } else {
             $('#editAddressPopup').modal('show');
         }
-
         return false;
     });
 

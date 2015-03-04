@@ -40,7 +40,7 @@ class LMedcardSearchForm extends LFormModel {
         ];
     }
 
-	public function getEnterpriseIdData() {
+	public function getEnterpriseId() {
 		return CHtml::listData(Enterprise::model()->findAll(), "id", "shortname");
 	}
 }

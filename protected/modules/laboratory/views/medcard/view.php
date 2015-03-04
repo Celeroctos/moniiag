@@ -1,36 +1,22 @@
+<script type="text/javascript" src="<?= Yii::app()->getBaseUrl() ?>\js\chooser.js"></script>
+<script type="text/javascript" src="<?= Yii::app()->getBaseUrl() ?>\js\reception\searchAddPatient.js"></script>
 <?
 
 /**
- * @var $this LController
+ * @var $this MedcardController
  */
 
 $this->widget("LModal", [
-	"title" => "Регистрация ЛКП",
-	"id" => "medcard-register-modal",
-	"body" => $this->getWidget("LForm", [
-		"model" => new LMedcardForm(),
-		"url" => Yii::app()->getBaseUrl() . "/laboratory/medcard/register"
-	]),
+	"title" => "Редактирование данных медкарты пациента",
+	"body" => $this->getWidget("LMedcardEditor"),
 	"buttons" => [
-		"register" => [
+		"save" => [
 			"text" => "Сохранить",
 			"class" => "btn btn-primary",
 			"type" => "submit"
 		]
-	]
-]);
-
-$this->widget("LModal", [
-	"title" => "Редактирования ЛКП",
-    "body" => "",
-	"id" => "medcard-edit-modal",
-	"buttons" => [
-		"register" => [
-			"class" => "btn btn-primary",
-			"type" => "submit",
-			"text" => "Сохранить"
-		]
-	]
+	],
+	"id" => "patient-medcard-edit-modal"
 ]);
 
 $this->widget("LMedcardSearch");
@@ -44,4 +30,7 @@ $this->widget("LMedcardSearch");
 	<button id="medcard-edit-button" class="btn btn-default disabled" data-loading-text="Загрузка...">
 		Редактировать ЛКП
 	</button>
+    <button id="medcard-show-button" class="btn btn-default disabled" data-loading-text="Загрузка...">
+        Открыть ЛКП
+    </button>
 </div>

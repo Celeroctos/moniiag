@@ -125,6 +125,9 @@
                 <li <?php echo ($controller == 'medcard' && $action == 'view') ? 'class="active"' : ''; ?>>
                     <?php echo CHtml::link('Медицинские карты', array('/laboratory/medcard/view')) ?>
                 </li>
+				<li <?php echo ($controller == 'treatment' && $action == 'view') ? 'class="active"' : ''; ?>>
+					<?php echo CHtml::link('Процедурный кабинет', array('/laboratory/treatment/view')) ?>
+				</li>
                 <li <?php echo ($controller == 'direction' && $action == 'view') ? 'class="active"' : ''; ?>>
                     <?php echo CHtml::link('Направления', array('/laboratory/direction/view')) ?>
                 </li>

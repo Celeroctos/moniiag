@@ -195,7 +195,9 @@ var Laboratory = Laboratory || {};
                 });
             }
             $("#" + me.selector().attr("id")).trigger("success", json);
-        }, "json");
+        }, "json").fail(function() {
+			after && after(me, false, arguments[2]);
+		});
         form.serialize();
         return true;
     };
@@ -216,11 +218,15 @@ var Laboratory = Laboratory || {};
             });
             $(item).find("button.btn[type='submit']").click(function() {
                 var btn = this;
-                var c = function(me, status) {
+                var c = function(me, status, msg) {
                     $(btn).button("reset");
                     if (status) {
                         $(item).modal("hide");
-                    }
+                    } else if (msg) {
+						Laboratory.createMessage({
+							message: "Произошла ошибка при отправке запроса. Обратитесь к администратору"
+						});
+					}
                 };
                 if (f.send(c)) {
                     $(this).data("loading-text", "Загрузка ...").button("loading");

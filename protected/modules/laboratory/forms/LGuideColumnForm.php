@@ -11,7 +11,7 @@ class LGuideColumnForm extends LFormModel {
 	public $display_id;
 	public $default_value;
 
-	public function getTypeData() {
+	public function getType() {
 		return LFieldCollection::getCollection()->getDropDown([
 			"Text",
 			"TextArea",
@@ -92,15 +92,15 @@ class LGuideColumnForm extends LFormModel {
 		];
 	}
 
-	public function getGuideIdData() {
+	public function getGuideId() {
 		return LGuide::model()->findForDropDown();
 	}
 
-	public function getLisGuideIdData() {
+	public function getLisGuideId() {
 		return LGuide::model()->findForDropDown();
 	}
 
-	public function getDisplayIdData() {
+	public function getDisplayId() {
 		if ($this->isActive("lis_guide_id")) {
 			$columns = LGuideColumn::model()->findDisplayableAndOrdered("guide_id = :guide_id", [
 				$this->lis_guide_id
@@ -112,7 +112,7 @@ class LGuideColumnForm extends LFormModel {
 		return $columns;
 	}
 
-	public function getDefaultValueData() {
+	public function getDefaultValue() {
 		if (!$this->isActive("lis_guide_id") || !$this->isActive("display_id") || $this->hasListType()) {
 			return [];
 		}

@@ -137,7 +137,7 @@ abstract class LFormModel extends CFormModel {
 	 * @return array - Array with data or null, if method hasn't been declared
 	 */
 	public function getKeyData($key) {
-		$method = "get".self::changeNotation($key)."Data";
+		$method = "get".self::changeNotation($key);
 		if (method_exists($this, $method)) {
 			return $this->$method();
 		} else {
@@ -235,4 +235,5 @@ abstract class LFormModel extends CFormModel {
     protected $_labels = null;
     protected $_types = null;
 	protected $_config = null;
+    protected $_data = null;
 } 

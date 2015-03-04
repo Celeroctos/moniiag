@@ -29,7 +29,7 @@ $this->widget("LPagination", [
 
 $this->widget("LModal", [
     "body" => $this->widget("LForm", [
-        "model" => new TestForm(),
+        "model" => new LMedcardForm(),
         "id" => "test-form"
     ], true),
     "id" => "test-modal"

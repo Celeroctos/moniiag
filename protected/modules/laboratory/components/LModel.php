@@ -12,6 +12,43 @@ abstract class LModel extends CActiveRecord {
 	}
 
     /**
+     * Override that method to return list with table
+     * keys for CGridView widget
+     * @return array - Array with keys names
+     */
+    public function getKeys() {
+        return [];
+    }
+
+    /**
+     * Override that method to return data for grid view
+     * @throws CDbException
+     * @return array - Array with fetched rows
+     */
+    public function getGridViewData() {
+        $query = $this->getDbConnection()->createCommand()
+            ->select("*")
+            ->from($this->tableName());
+        return $query->queryAll();
+    }
+
+    /**
+     * Returns the attribute labels.
+     * Attribute labels are mainly used in error messages of validation.
+     * By default an attribute label is generated using {@link generateAttributeLabel}.
+     * This method allows you to explicitly specify attribute labels.
+     *
+     * Note, in order to inherit labels defined in the parent class, a child class needs to
+     * merge the parent labels with child labels using functions like array_merge().
+     *
+     * @return array attribute labels (name=>label)
+     * @see generateAttributeLabel
+     */
+    public function attributeLabels() {
+        return $this->getKeys();
+    }
+
+	/**
      * Find elements and format for drop down list
      * @param string $condition - List with condition
      * @param array $params - Query's parameters
@@ -67,26 +104,49 @@ abstract class LModel extends CActiveRecord {
 		return $select;
 	}
 
-	/**
-	 * Find all identification numbers for this table
-	 * @param string $conditions - Search condition
-	 * @param array $params - Array with parameters
-	 * @return array - Array with identification numbers
-	 * @throws CDbException
-	 */
-	public function findIds($conditions = '', $params = []) {
+    /**
+     * Find all identification numbers for this table
+     * @param string $conditions - Search condition
+     * @param array $params - Array with parameters
+     * @param string $pk - Primary key
+     * @throws CDbException
+     * @return array - Array with identification numbers
+     */
+	public function findIds($conditions = '', $params = [], $pk = "id") {
 		$query = $this->getDbConnection()->createCommand()
-			->select("id")
+			->select($pk)
 			->from($this->tableName())
 			->where($conditions, $params);
 		$array = [];
 		foreach ($query->queryAll() as $a) {
-			$array[] = $a["id"];
+			$array[] = $a[$pk];
 		}
 		return $array;
 	}
 
-	/**
+    /**
+     * Get data provider for CGridView widget
+     * @return CActiveDataProvider - Data provider
+     */
+    public function getDataProvider() {
+        $criteria = new CDbCriteria();
+        foreach ($this->getKeys() as $key => $ignored) {
+            $criteria->compare($key, $this->$key, true, '');
+        }
+        return new LActiveDataProvider($this, [
+            'criteria' => $criteria,
+            'sort' => [
+                'defaultOrder' => [
+                    'id' => CSort::SORT_DESC,
+                ],
+            ],
+            'pagination' => [
+                'pageSize' => 20,
+            ]
+        ]);
+    }
+
+    /**
 	 * Override that method to return command for jqGrid
 	 * @return CDbCommand - Command with query
 	 * @throws CDbException
