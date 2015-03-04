@@ -13,7 +13,7 @@ class LPanel extends LWidget {
             $this->body = $this->body->call();
         }
 		if (empty($this->id)) {
-			$this->id = bin2hex(openssl_random_pseudo_bytes(5));
+			$this->id = Yii::app()->getSecurityManager()->generateRandomString(5);
 		}
 		ob_start();
         $this->render(__CLASS__, [], false);

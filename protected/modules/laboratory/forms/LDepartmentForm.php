@@ -30,7 +30,7 @@ class LDepartmentForm extends LFormModel {
 		];
 	}
 
-	public function getDepartmentIdData() {
+	public function getDepartmentId() {
 		return LModel::toDropDownStatic(Ward::model()->findAll());
 	}
 }

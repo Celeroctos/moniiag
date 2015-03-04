@@ -3,14 +3,6 @@
  * @var LPatientInfo $this - Self instance
  */
 
-$first = [
-    "surname",
-    "name",
-    "patronymic",
-    "sex",
-    "birthday"
-];
-
 ?>
 
 <table width="100%" class="patient-info">

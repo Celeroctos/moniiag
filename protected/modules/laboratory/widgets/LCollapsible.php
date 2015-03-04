@@ -14,7 +14,7 @@ class LCollapsible extends LWidget {
 
     public function init() {
         if (empty($this->id)) {
-			$this->id = openssl_random_pseudo_bytes(10);
+			$this->id = Yii::app()->getSecurityManager()->generateRandomString(10);
 		}
 		ob_start();
         $this->render(__CLASS__, [], false);

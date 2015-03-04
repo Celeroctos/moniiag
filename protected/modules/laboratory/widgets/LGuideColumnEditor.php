@@ -12,7 +12,7 @@ class LGuideColumnEditor extends LForm {
 	 * @var string - Name of widget's identification value
 	 * to render, by default it has id "guide-edit"
 	 */
-	public $id = "guide-edit";
+	public $id = "guide-column-editor";
 
 	/**
 	 * @var null - Guide columns with form models. We need form's models, cuz

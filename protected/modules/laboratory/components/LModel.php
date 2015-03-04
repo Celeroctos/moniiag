@@ -11,7 +11,7 @@ abstract class LModel extends CActiveRecord {
 		return parent::model($className);
 	}
 
-    /**
+	/**
      * Find elements and format for drop down list
      * @param string $condition - List with condition
      * @param array $params - Query's parameters

@@ -330,8 +330,9 @@ abstract class LController extends Controller {
 				throw new CException("Your controller must override LController::getModel method");
 			}
 			foreach ($model->attributes as $key => $value) {
-				$table->$key = $value;
+				$table->__set($key, $value);
 			}
+			$table->__unset("id");
 			$table->save();
 			$this->leave([
 				"message" => "Данные успешно сохранены"
