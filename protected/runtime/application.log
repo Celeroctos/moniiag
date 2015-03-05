@@ -128,3 +128,22 @@ Stack trace:
 #9 F:\moniiag\protected\yiic.php(7): require_once()
 
 2015/02/26 01:21:30 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  отношение "mis.analysis" не существует. The SQL statement executed was: ALTER TABLE mis.analysis ADD medcard_number VARCHAR(50) REFERENCES mis.medcards(card_number).
+2015/03/04 23:14:17 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42701]: Duplicate column: 7 ОШИБКА:  колонка "history" отношения "direction" уже существует. The SQL statement executed was: ALTER TABLE lis.direction ADD history TEXT DEFAULT ''.
+2015/03/04 23:15:09 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42701]: Duplicate column: 7 ОШИБКА:  колонка "history" отношения "direction" уже существует. The SQL statement executed was: ALTER TABLE lis.direction ADD history TEXT DEFAULT ''.
+2015/03/04 23:15:53 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42701]: Duplicate column: 7 ОШИБКА:  колонка "ward_id" отношения "direction" уже существует. The SQL statement executed was: ALTER TABLE lis.direction ADD ward_id INT REFERENCES mis.wards(id).
+2015/03/04 23:51:11 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42P07]: Duplicate table: 7 ОШИБКА:  отношение "analysis_params" уже существует. The SQL statement executed was: CREATE TABLE "lis"."analysis_params" (
+	"id" serial primary key,
+	"name" varchar(30),
+	"long_name" varchar(200),
+	"comment" text
+).
+2015/03/05 00:00:18 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: ")")
+LINE 8: )
+        ^. The SQL statement executed was: CREATE TABLE "lis"."machine" (
+	"id" serial primary key,
+	"name" varchar(50),
+	"serial" int,
+	"model" varchar(20),
+	"software_version" varchar(10),
+	"analyzer_type_id" int references
+).

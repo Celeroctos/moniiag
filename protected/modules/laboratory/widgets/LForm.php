@@ -81,15 +81,55 @@ class LForm extends LWidget {
 				$model = $value;
 			}
             $matches = [];
-            preg_match_all("/%\\{([a-zA-Z_0-9]+)\\}/", $format, $matches);
-            $value = $format;
-            if (!count($matches)) {
-                continue;
-            }
-            foreach ($matches[1] as $m) {
-                $value = preg_replace("/%\\{([({$m})]+)\\}/", $model[$m], $value);
+            if (is_string($format)) {
+                preg_match_all("/%\\{([a-zA-Z_0-9]+)\\}/", $format, $matches);
+                $value = $format;
+                if (count($matches)) {
+                    foreach ($matches[1] as $m) {
+                        $value = preg_replace("/%\\{([({$m})]+)\\}/", $model[$m], $value);
+                    }
+                }
+            } else if (is_callable($format)) {
+                $value = $format($value);
             }
         }
+    }
+
+    /**
+     * Fetch data for current table configuration, it will
+     * throw an exception if value or name won't be defined, where
+     *  + key - Name of table's primary key
+     *  + value - Name of table's value to display
+     *  + name - Name of displayable table
+     * @param array $table - Array with table configuration
+     * @return array - Array with prepared data
+     * @throws CException
+     */
+    private function fetch($table) {
+        if (!isset($table["name"]) && !isset($table["value"])) {
+            throw new CException("Table configuration requires key, value and name");
+        }
+        if (!isset($table["key"])) {
+            $table["key"] = "id";
+        }
+        $key = $table["key"];
+        $value = $table["value"];
+        $data = Yii::app()->getDb()->createCommand()
+            ->select("$key, $value")
+            ->from($table["name"])
+            ->queryAll();
+        $result = [];
+        if (isset($table["format"])) {
+            foreach ($data as $row) {
+                $result[$row[$key]] = $row;
+            }
+            $this->format($table["format"], $result);
+        } else {
+            foreach ($data as $row) {
+                $result[$row[$key]] = $row[$value];
+            }
+        }
+        return $result;
     }
 
     /**
@@ -141,6 +181,10 @@ class LForm extends LWidget {
 
         if (isset($config["update"])) {
             $options["data-update"] = $config["update"];
+        }
+
+        if (isset($config["table"])) {
+            $data = $this->fetch($config["table"]);
         }
 
         $result = LFieldCollection::getCollection()->find($type)->renderEx(

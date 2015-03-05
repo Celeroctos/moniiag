@@ -27,10 +27,10 @@ $this->widget("LMedcardSearch");
 	<a id="medcard-register-button" class="btn btn-success" href="<?= Yii::app()->getBaseUrl() . "/reception/patient/viewadd" ?>">
 		Создать ЛКП
 	</a>
-	<a id="medcard-show-button" class="btn btn-success" href="<?= Yii::app()->getBaseUrl() . "/reception/patient/viewadd" ?>">
-		Открыть ЛКП
-	</a>
 	<button id="medcard-edit-button" class="btn btn-default disabled" data-loading-text="Загрузка...">
 		Редактировать ЛКП
 	</button>
+    <button id="medcard-show-button" class="btn btn-default disabled" data-loading-text="Загрузка...">
+        Открыть ЛКП
+    </button>
 </div>

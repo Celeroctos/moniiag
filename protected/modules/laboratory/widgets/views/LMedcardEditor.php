@@ -28,4 +28,12 @@ $this->widget('application.modules.reception.components.widgets.MedcardFormWidge
 	'template' => 'application.modules.reception.components.widgets.views.MedcardFormWidget'
 ]);
 
+$this->widget('application.modules.reception.components.widgets.MedcardFormWidget', [
+    'form' => $form,
+    'model' => $model,
+    'privilegesList' => $privileges,
+    'showEditIcon' => 1,
+    'template' => 'application.modules.reception.components.widgets.views.addressEditPopup'
+]);
+
 $this->endWidget();

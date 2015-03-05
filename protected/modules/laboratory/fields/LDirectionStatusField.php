@@ -2,7 +2,11 @@
 
 class LDirectionStatusField extends LDropDown {
 
-	public function isBoolean() {
+    public static function field($class = __CLASS__) {
+        return parent::field($class);
+    }
+
+    public function isBoolean() {
 		return true;
 	}
 

@@ -20,45 +20,9 @@ $this->widget("LModal", [
 	]
 ]);
 
-$table = $this->getWidget("zii.widgets.grid.CGridView", [
-	"dataProvider" => LDirection::model()->getDataProvider(),
-	"id" => "direction-grid",
-	'itemsCssClass' => 'table table-bordered table-striped',
-	'pager' => [
-		'class' => 'CLinkPager',
-		'selectedPageCssClass' => 'active',
-		'header' => '',
-		'htmlOptions' => [
-			'class' => 'pagination',
-		]
-	],
-	'htmlOptions' => array(
-		'class' => 'container', // this is the class for the whole CGridView
-	),
-	'cssFile' => false, // Prevents Yii default CSS for CGridView
-	"columns" => [
-		"id" => [
-			"name" => "#"
-		],
-		"surname" => [
-			"name" => "Фамилия"
-		],
-		"name" => [
-			"name" => "Имя"
-		],
-		"patronymic" => [
-			"name" => "Отчество"
-		],
-		"card" => [
-			"name" => "Номер карты"
-		],
-		"sender_id" => [
-			"name" => "Направитель"
-		],
-		"analysis_type_id" => [
-			"name" => "Тип анализа"
-		]
-	]
+$table = $this->getWidget("LGridView", [
+    "model" => new LDirection(),
+    "id" => "direction-grid"
 ]);
 ?>
 

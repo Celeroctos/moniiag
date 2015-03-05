@@ -235,4 +235,5 @@ abstract class LFormModel extends CFormModel {
     protected $_labels = null;
     protected $_types = null;
 	protected $_config = null;
+    protected $_data = null;
 } 
