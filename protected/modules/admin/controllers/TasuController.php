@@ -2021,8 +2021,8 @@ class TasuController extends Controller {
             $tasuTapService->created_by = 2;
             $tasuTapService->diagnosisuid_34765 = $tapDiagnosis->uid;
 			if($fullYears >= 18) {
-				if(isset($bufferElement['service_tasu_code'])) {
-					$codeForTasu = str_replace('.', '', $bufferElement['service_tasu_code']);
+				if(isset($greeting['service_tasu_code'])) {
+					$codeForTasu = str_replace('.', '', $greeting['service_tasu_code']);
 					$tasuTapService->servicecode_20924 = $codeForTasu;
 				} else {
 					$tasuTapService->servicecode_20924 = '2329600';
