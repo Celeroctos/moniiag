@@ -47,47 +47,47 @@
                 {
                     'field' : 'oms_number',
                     'op' : 'eq',
-                    'data' :  $('#omsNumber').val()
+                    'data' : $.trim($('#omsNumber').val())
                 },
                 {
                     'field' : 'first_name',
                     'op' : 'eq',
-                    'data' : $('#firstName').val().toUpperCase()
+                    'data' : $.trim($('#firstName').val().toUpperCase())
                 },
                 {
                     'field' : 'middle_name',
                     'op' : 'eq',
-                    'data' : $('#middleName').val().toUpperCase()
+                    'data' : $.trim($('#middleName').val().toUpperCase())
                 },
                 {
                     'field' : 'last_name',
                     'op' : 'eq',
-                    'data' : $('#lastName').val().toUpperCase()
+                    'data' : $.trim($('#lastName').val().toUpperCase())
                 },
                 {
                     'field' : 'address_reg_str',
                     'op' : 'cn',
-                    'data' : $('#addressReg').val()
+                    'data' : $.trim($('#addressReg').val())
                 },
                 {
                     'field' : 'address_str',
                     'op': 'cn',
-                    'data' : $('#address').val()
+                    'data' : $.trim($('#address').val())
                 },
                 {
                     'field' : 'card_number',
                     'op' : 'bw',
-                    'data' : $('#cardNumber').val()
+                    'data' : $.trim($('#cardNumber').val())
                 },
                 {
                     'field' : 'serie',
                     'op' : 'eq',
-                    'data' : $('#serie').val()
+                    'data' : $.trim($('#serie').val())
                 },
                 {
                     'field' : 'docnumber',
                     'op' : 'eq',
-                    'data' : $('#docnumber').val()
+                    'data' : $.trim($('#docnumber').val())
                 },
                 {
                     'field' : 'snils',
@@ -550,7 +550,7 @@
                         '</a>' +
                     '</td>' +
                     '<td>' +
-                        '<a href="#' + data[i].card_number + '" class="writePatientLink">' +
+                        '<a href="#' + data[i].card_number + '" class="writePatientLink" title="Записать пациента к врачу">' +
                             '<span class="glyphicon glyphicon-dashboard"></span>' +
                         '</a>' +
                     '</td>' +

@@ -17,39 +17,45 @@ $(document).ready(function() {
     // Функция определяет, какой контейнер контролов с номером ОМС нужно показать и показывает его
     function omsContainerShow()
     {
-        // Анализируем - какой тип полюсов выбран
-        omsTypeValue = $('#omsType').val();
+        // Анализируем - какой тип полисов выбран
+        omsTypeValue = parseInt($('#omsType').val());
         // Закрываем все контейнеры номеров
         $('.omsNumberContainer').addClass('no-display');
         // Теперь анализируем какое значение у omsType
         switch(omsTypeValue)
         {
-            case '1':
+            case 1:
                 $('.territorialOmsNumber').removeClass('no-display');
                 break;
 
 
-            case '2':
+            case 2:
                 $('.dmsOmsNumber').removeClass('no-display');
                 break;
 
 
-            case '3':
+            case 3:
                 $('.temporaryOmsNumber').removeClass('no-display');
                 break;
 
 
-            case '4':
+            case 4:
                 $('.petitionOmsNumber').removeClass('no-display');
                 break;
 
 
-            case '5':
+            case 5:
                 $('.constantlyOmsNumber').removeClass('no-display');
                 $('#omsSeries').val('');
                 break;
-        }
 
+            case 6 :
+                $('#status,  #policy-givedate-cont').parents('.form-group').addClass('no-display');
+            break;
+        }
+        if(omsTypeValue != 6) {
+            $('#status,  #policy-givedate-cont').parents('.form-group').removeClass('no-display');
+        }
     }
 
     omsContainerShow();
@@ -141,7 +147,7 @@ $(document).ready(function() {
                 if (numberHidden=='')
                 {
                     result = false;
-                    printOmsNumberError('Для выбранного типа полюсов номер должен быть заполнен');
+                    printOmsNumberError('Для выбранного типа полисов номер должен быть заполнен');
 
                 }
 
@@ -176,7 +182,7 @@ $(document).ready(function() {
                 if ((serialHidden.match(/^[0-9]{3}$/)==null) || (numberHidden.match(/^[0-9]{6}$/)==null))
                 {
                     result = false;
-                    printOmsNumberError('Не правильно введён номер ОМС. Для данного типа полюсов предполагается наличие трёх цифр в серии и шести - в номере.');
+                    printOmsNumberError('Не правильно введён номер ОМС. Для данного типа полисов предполагается наличие трёх цифр в серии и шести - в номере.');
                 }
 
                 break;
@@ -190,7 +196,7 @@ $(document).ready(function() {
                 if (numberHidden.match(/^[0-9]{16}$/)==null)
                 {
                     result = false;
-                    printOmsNumberError('Не правильно введён номер ОМС. Для данного типа полюсов предполагается наличие шестнадцати цифр в номере.');
+                    printOmsNumberError('Не правильно введён номер ОМС. Для данного типа полисов предполагается наличие шестнадцати цифр в номере.');
                 }
 
                 break;
@@ -204,7 +210,7 @@ $(document).ready(function() {
             {
                 if ($.fn['regionPolicyChooser'].getChoosed() <= 0)
                 {
-                    alert('Поле "Регион" должно быть заполнено для этого типа полюсов');
+                    printOmsNumberError('Поле "Регион" должно быть заполнено для этого типа полисов');
                     result = false;
                 }
 
@@ -212,7 +218,7 @@ $(document).ready(function() {
                 {
                     if ($.fn['insuranceChooser'].getChoosed() <= 0)
                     {
-                        alert('Поле "Страховая компания" должно быть заполнено для этого типа полюсов');
+                        printOmsNumberError('Поле "Страховая компания" должно быть заполнено для этого типа полисов');
                         result = false;
                     }
                 }
@@ -321,7 +327,7 @@ $(document).ready(function() {
     }
 
     $(".omsNumberContainer input").on("propertychange change paste input", function(e){
-        // Вызываем событие "Номер полюса изменился"
+        // Вызываем событие "Номер полиса изменился"
         $(this).parents('.omsNumberContainer').trigger('omsnumberchanged');
     });
 

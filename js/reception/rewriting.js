@@ -228,7 +228,7 @@ $(document).ready(function() {
             content +=
                 '<td>' +
                     ((greetings[i].medcard_id != null) ?
-                        '<a href="#">' + greetings[i].p_last_name + ' ' + greetings[i].p_first_name + ' ' + greetings[i].p_middle_name + '</a>'
+                        greetings[i].p_last_name + ' ' + greetings[i].p_first_name + ' ' + greetings[i].p_middle_name
                         :
                         greetings[i].m_last_name + ' ' + greetings[i].m_first_name + ' ' + greetings[i].m_middle_name
                         ) +
@@ -266,7 +266,7 @@ $(document).ready(function() {
 
             content += ('<td><nobr>' + timeString + '</nobr></td>');
             content += '<td>' +
-                ((greetings[i].medcard_id != null) ?  '<a href="#" class="cardNumber">' + greetings[i].medcard_id + '</a>' : '-') +
+                ((greetings[i].medcard_id != null) ?  greetings[i].medcard_id : '-') +
                 '</td>';
 
             if(typeof greetings[i].oms_id != 'undefined' && greetings[i].oms_id != null) {
@@ -289,14 +289,14 @@ $(document).ready(function() {
             console.log(greetings[i].mediate_id);
             if (greetings[i].mediate_id != '' && greetings[i].mediate_id != null)
             {
-                content += ('<td><a class="rewrite-link" target="_blank" href="/reception/patient/writepatientwithoutdata?cancelledGreetingId='+ greetings[i].id+'">'+
+                content += ('<td><a class="rewrite-link" href="/reception/patient/writepatientwithoutdata?cancelledGreetingId='+ greetings[i].id+'">'+
                     '<span class="glyphicon glyphicon-pencil" title="Перезаписать пациента"></span>'+
                     '</a></td>');
             }
             else
             {
                 //writepatientsteptwo
-                content += ('<td><a class="rewrite-link" target="_blank" href="/reception/patient/writepatientsteptwo?cancelledGreetingId='+ greetings[i].id+'&cardid='+ greetings[i].medcard_id + waitingLineUrl +'">'+
+                content += ('<td><a class="rewrite-link" href="/reception/patient/writepatientsteptwo?cancelledGreetingId='+ greetings[i].id+'&cardid='+ greetings[i].medcard_id + waitingLineUrl +'">'+
                     '<span class="glyphicon glyphicon-pencil" title="Перезаписать пациента"></span>'+
                     '</a></td>');
             }

@@ -1380,7 +1380,11 @@ function changeControlState(dep, elementValue, container) {
 }
 
 $('#templates-choose-form input[type="submit"]').on('click', function (e) {
-    var checkboxes = $(this).parents('form').find('input[type="checkbox"]');
+    var checkboxes = $(this).parents('form').find('input[type="checkbox"]:checked');
+    if(checkboxes.length == 0) {
+        alert('Вы не выбрали ни одного шаблона для приёма!');
+        return false;
+    }
     $(this).attr('disabled', true);
 	$(this).parents('form').find('.overlayCont').css({
 		'position' : 'static'
@@ -1395,7 +1399,7 @@ $('#templates-choose-form input[type="submit"]').on('click', function (e) {
             return;
         }
     }
-    alert('Вы не выбрали ни одного шаблона для приёма!');
+
     $(this).attr('disabled', false);
     return false;
 });

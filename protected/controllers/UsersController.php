@@ -8,12 +8,11 @@ class UsersController extends Controller {
 	            $formModel->attributes = $_POST['FormLogin'];
 	            if($formModel->validate()) {
 	                $userIdent = new UserIdentity($formModel->login, $formModel->password);
-	                if($userIdent->authenticateStep1()) {
+                    if($userIdent->authenticateStep1()) {
 	                    Yii::app()->user->login($userIdent);
-						if(isset(Yii::app()->user->doctorId) && Yii::app()->user->getState('doctorId', -1) != -1) { // …сли не требуетсЯ второго шага аутентификации..
+						if(isset(Yii::app()->user->doctorId) && Yii::app()->user->getState('doctorId', -1) != -1) { // пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ..
 							echo CJSON::encode(array('success' => 'true',
 													 'data' => Yii::app()->request->baseUrl.''.Yii::app()->user->startpageUrl));
-							exit();
 						} else {
 							Yii::app()->user->setState('authStep', 1);
 							echo CJSON::encode(array(
@@ -24,7 +23,7 @@ class UsersController extends Controller {
 						}
 	                } else {
 	                    $resultCode = 'loginError';
-	                    // анализируем код ошибки из экземпляра класса userIdentity
+	                    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ userIdentity
 	                    if ($userIdent->wrongLogin()) {
 	                        $resultCode = 'notFoundLogin';
 	                    }
@@ -62,7 +61,7 @@ class UsersController extends Controller {
 					exit();
 				} else {
 					$resultCode = 'loginError';
-					// анализируем код ошибки из экземпляра класса userIdentity
+					// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ userIdentity
 					if ($userIdent->wrongLogin()) {
 						$resultCode = 'notFoundLogin';
 					}
@@ -101,7 +100,7 @@ class UsersController extends Controller {
 			$form->attributes = $_POST['FormChooseEmployee'];
 			if($form->validate()) {
 				$userIdent = new UserIdentity(Yii::app()->user->login, Yii::app()->user->password);
-				// Ќа всЯкий случай ещЮ раз проходим первую стадию аутентификации
+				// пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 				if($userIdent->authenticateStep1() && $userIdent->authenticateStep2(false, $form)) {;
 					echo CJSON::encode(array(
 						'success' => 'true',
@@ -116,7 +115,7 @@ class UsersController extends Controller {
 					'success' => 'false',
 					'errors' => array(
 						'employee' => array(
-							'Ќеверный формат сотрудника!'
+							'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!'
 						)
 					)
 				));

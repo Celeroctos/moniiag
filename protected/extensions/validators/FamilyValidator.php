@@ -1,7 +1,7 @@
 <?php
 class FamilyValidator extends CValidator
 {
-		public $pattern='/^([A-Я])([a-я])+(\-[A-Я]([a-я])+)*$/u';
+		public $pattern='/^([A-ЯЁ])([a-яё])+(\-[A-ЯЁ]([a-яё])+)*$/u';
 		// Фамилия может  состоять минимум из двух буков, первая - заглавная 
 	
 		protected function validateAttribute($object,$attribute) {

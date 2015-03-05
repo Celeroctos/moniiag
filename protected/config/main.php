@@ -108,8 +108,8 @@ return array(
 	// application components
 	'components'=>array(
         'request' => array(
-            'enableCsrfValidation' => true,
-            'enableCookieValidation' => true,
+            //'enableCsrfValidation' => true,
+            //'enableCookieValidation' => true,
         ),
         'clientScript' => array(
             'scriptMap' => array(

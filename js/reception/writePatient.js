@@ -44,52 +44,52 @@
                 {
                     'field' : 'oms_number',
                     'op' : 'eq',
-                    'data' :  $('#omsNumber').length > 0 ? $('#omsNumber').val() : ''
+                    'data' : $.trim($('#omsNumber').length) > 0 ? $.trim($('#omsNumber').val()) : ''
                 },
                 {
                     'field' : 'first_name',
                     'op' : 'eq',
-                    'data' :  $('#firstName').length > 0 ? $('#firstName').val().toUpperCase() : ''
+                    'data' : $.trim($('#firstName').length) > 0 ? $.trim($('#firstName').val().toUpperCase()) : ''
                 },
                 {
                     'field' : 'middle_name',
                     'op' : 'eq',
-                    'data' :  $('#middleName').length > 0 ? $('#middleName').val().toUpperCase() : ''
+                    'data' :  $.trim($('#middleName').length) > 0 ? $.trim($('#middleName').val().toUpperCase()) : ''
                 },
                 {
                     'field' : 'last_name',
                     'op' : 'eq',
-                    'data' : $('#lastName').length > 0 ? $('#lastName').val().toUpperCase() : ''
+                    'data' : $.trim($('#lastName').length > 0) ? $.trim($('#lastName').val().toUpperCase()) : ''
                 },
                 {
                     'field' : 'address_reg_str',
                     'op' : 'cn',
-                    'data' : $('#addressReg').val()
+                    'data' : $.trim($('#addressReg').val())
                 },
                 {
                     'field' : 'address_str',
                     'op': 'cn',
-                    'data' : $('#address').val()
+                    'data' : $.trim($('#address').val())
                 },
                 {
                     'field' : 'card_number',
                     'op' : 'bw',
-                    'data' : $('#cardNumber').val()
+                    'data' : $.trim($('#cardNumber').val())
                 },
                 {
                     'field' : 'serie',
                     'op' : 'eq',
-                    'data' : $('#serie').val()
+                    'data' : $.trim($('#serie').val())
                 },
                 {
                     'field' : 'docnumber',
                     'op' : 'eq',
-                    'data' : $('#docnumber').val()
+                    'data' : $.trim($('#docnumber').val())
                 },
                 {
                     'field' : 'snils',
                     'op' : 'eq',
-                    'data' : $('#snils').val()
+                    'data' : $.trim($('#snils').val())
                 },
                 {
                     'field' : 'birthday',

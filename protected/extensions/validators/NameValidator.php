@@ -1,7 +1,7 @@
 <?php
 class NameValidator extends CValidator
 {
-		public $pattern='/^[A-Я]([a-я])+$/u';
+		public $pattern='/^[A-ЯЁ]([a-яё])+$/u';
 		// Имя с большой буквы, остальные буквы маленькие.
 		//   Всё кроме буков запрещено минимальная длина 
 	

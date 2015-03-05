@@ -1,6 +1,7 @@
 <?php
 class SheduleController extends Controller {
     public $layout = 'application.views.layouts.index';
+    public $defaultAction = 'view';
 
     public function actionView() {
         $this->render('view', array());
