@@ -149,16 +149,12 @@ $(document).ready(function() {
                 {
                     result = false;
                     printOmsNumberError('Для выбранного типа полисов номер должен быть заполнен');
-
                 }
 
                 break;
 
 
             case '3':
-                //$('.temporaryOmsNumber input.omsSeriaPart').keyfilter(/^[0-9]{1,3}$/);
-                //$('.temporaryOmsNumber input.omsNumberPart').keyfilter(/^[0-9]{1,6}$/);
-
                 if (serialHidden=='' && numberHidden=='')
                 {
                     result = false;
@@ -183,7 +179,7 @@ $(document).ready(function() {
                 if ((serialHidden.match(/^[0-9]{3}$/)==null) || (numberHidden.match(/^[0-9]{6}$/)==null))
                 {
                     result = false;
-                    printOmsNumberError('Не правильно введён номер ОМС. Для данного типа полисов предполагается наличие трёх цифр в серии и шести - в номере.');
+                    printOmsNumberError('Неправильно введён номер ОМС. Для данного типа полисов предполагается наличие трёх цифр в серии и шести - в номере.');
                 }
 
                 break;

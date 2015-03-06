@@ -46,7 +46,7 @@ class MDirectionsController extends Controller {
                 if(Yii::app()->request->getIsAjaxRequest()) {
                     echo CJSON::encode(array(
                         'success' => true,
-                        'direction' => array()
+                        'directions' => array()
                     ));
                     exit();
                 } else {

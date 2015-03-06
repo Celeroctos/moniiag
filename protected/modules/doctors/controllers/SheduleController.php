@@ -1643,6 +1643,7 @@ class SheduleController extends Controller {
             }
             $sheduleElement->mediate_id = $mediate->id;
         }
+
         if(!$sheduleElement->save()) {
             echo CJSON::encode(array('success' => 'false',
                 'data' => 'Не могу записать пациента!'));
