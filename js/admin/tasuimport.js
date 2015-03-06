@@ -866,7 +866,7 @@
 						paymentType : $.trim($('#paymentTypeEdit').val()),
 						primaryDiagnosisData : primaryDiagnosis[0],
 						secondaryDiagnosisData : secondaryDiagnosisChoosed,
-						serviceId : $.trim($('#serviceCodeEdit').val())
+						serviceCode : $.trim($('#serviceCodeEdit').val())
 					};
 					console.log(forAdd);
 					greetingsTempBuffer[currentRow] = forAdd;
@@ -909,13 +909,7 @@
 		});
 		
 	});
-	
 
-	$('#saveEditPregreetingRow').on('click', function(e) {
-		var currentRow = $('#preGreetings').jqGrid('getGridParam', 'selrow');
-		var rowData = $('#preGreetings').jqGrid('getRowData', rowid);
-	});
-	
 	$('#tasuimport-filter-btn').on('click', function() {
 		var greetingDate = $('#filterGreetingDate').val(); 
 		var doctorId = $('#filterDoctorId').val(); 

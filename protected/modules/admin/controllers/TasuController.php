@@ -2588,7 +2588,7 @@ class TasuController extends Controller {
 	// mode - режим работы, 1 - принудительное обновление, даже если есть данные по региону и страховой
 	public function getTasuPatientByPolicy($oms, $mode = 0) {
 		// Если серии нет, то нужно брать номер полиса в качестве опоры
-       // return true;
+        return true;
 		if($oms->region != null && $oms->insurance != null && !$mode) {
 			return true;
 		}		

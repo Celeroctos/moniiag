@@ -53,7 +53,6 @@ class Oms extends MisActiveRecord
 
     public function afterSave() {
         parent::afterSave();
-        $this->id = Yii::app()->db->getLastInsertID('mis.oms_id_seq');
         return true;
     }
 
