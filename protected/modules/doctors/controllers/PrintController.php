@@ -1,4 +1,4 @@
-<?php
+    <?php
 class PrintController extends Controller {
     public $layout = 'print';
     public $responseData = array();

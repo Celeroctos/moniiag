@@ -29,6 +29,8 @@ class Oms extends MisActiveRecord
 	public $address_reg;
 	public $address;
 	public $snils;
+
+    public $primaryKey = 'id';
 	
     public static function model($className=__CLASS__)
     {
@@ -39,8 +41,23 @@ class Oms extends MisActiveRecord
     {
         return 'mis.oms';
     }
-	
-	public function rules()
+
+    public function primaryKey() {
+        return 'id';
+    }
+
+    public function beforeSave() {
+        parent::beforeSave();
+        return true;
+    }
+
+    public function afterSave() {
+        parent::afterSave();
+        $this->id = Yii::app()->db->getLastInsertID('mis.oms_id_seq');
+        return true;
+    }
+
+    public function rules()
 	{
 		return [
 			['first_name, oms_number, middle_name, last_name, card_number, serie, docnumber, address_reg, address, snils', 'type', 'type'=>'string', 'on'=>'reception.search'],

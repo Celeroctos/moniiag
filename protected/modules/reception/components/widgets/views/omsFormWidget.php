@@ -135,6 +135,13 @@
         </input>
     </div>
 </div>
+<div class="form-group undefinedOmsNumber omsNumberContainer">
+    <label class="col-xs-3 control-label">Номер</label>
+    <div class="col-xs-9">
+        <input class="col-xs-12" data-toggle="tooltip" data-placement="right" type="text">
+        </input>
+    </div>
+</div>
 
 <div class="form-group">
     <?php echo $form->labelEx($model,'status', array(

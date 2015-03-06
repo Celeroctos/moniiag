@@ -871,24 +871,6 @@ class PatientController extends Controller {
                 )));
             exit();
         }
-		/*$year = date('Y');
-        $code = substr($year, mb_strlen($year) - 2);
-	
-		if(is_array($oms)) {
-			$id = $oms['id'];
-		} else {
-			$id = $oms->id;
-		}
-        $medcardSearched = $medcard->getLastMedcardPerYear($code, $id);
-        if($medcardSearched != null) {
-            echo CJSON::encode(array('success' => 'false',
-                'errors' => array(
-                    'id' => array(
-                        'Карта для данного пациента в этом году уже создана!'
-                    )
-                )));
-            exit();
-        }*/
     }
 
     // Добавление полиса
@@ -901,12 +883,13 @@ class PatientController extends Controller {
             $oms->type = $model->omsType;
         }
         // Иначе не меняем значение поля "тип" в моделе
-
         $oms->middle_name = $model->middleName;
         $oms->oms_number = $model->policy;
         $oms->gender = $model->gender;
         $oms->birthday = $model->birthday;
-        $oms->givedate = $model->policyGivedate;
+        if($model->policyGivedate) {
+            $oms->givedate = $model->policyGivedate;
+        }
         $oms->status = $model->status;
         $oms->insurance = $model->insurance;
         $oms->region = $model->region;
@@ -925,13 +908,11 @@ class PatientController extends Controller {
         $oms->first_name = mb_strtoupper($oms->first_name, 'utf-8');
         $oms->last_name = mb_strtoupper($oms->last_name, 'utf-8');
         $oms->middle_name = mb_strtoupper($oms->middle_name, 'utf-8');
-
         if(!$oms->save()) {
             echo CJSON::encode(array('success' => 'false',
                                      'error' => 'Произошла ошибка записи нового полиса.'));
             exit();
         }
-
         return true;
     }
 

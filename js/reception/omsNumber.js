@@ -50,6 +50,7 @@ $(document).ready(function() {
                 break;
 
             case 6 :
+                $('.undefinedOmsNumber').removeClass('no-display');
                 $('#status,  #policy-givedate-cont').parents('.form-group').addClass('no-display');
             break;
         }
@@ -302,8 +303,6 @@ $(document).ready(function() {
 
         }
     });
-
-
 
 
     $('.constantlyOmsNumber input').on('keydown', function (e) {

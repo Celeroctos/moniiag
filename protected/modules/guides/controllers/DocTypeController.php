@@ -84,7 +84,8 @@ class DocTypeController extends Controller {
         //var_dump($doctype);
         //exit();
         if($doctype->save()) {
-            echo CJSON::encode(array('success' => true,
+            echo CJSON::encode(array(
+                    'success' => true,
                     'text' =>  $msg
                 )
             );
