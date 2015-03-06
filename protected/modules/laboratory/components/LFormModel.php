@@ -91,11 +91,6 @@ abstract class LFormModel extends CFormModel {
 
         foreach ($config as $key => &$field) {
 
-            // If programmer forget to get value from model
-            if (!isset($field["value"]) && isset($this->$key)) {
-                $field["value"] = $this->$key;
-            }
-
             // Assign labels and rules arrays
             if (isset($field["label"])) {
                 $this->_labels[$key] = $field["label"];
@@ -103,17 +98,8 @@ abstract class LFormModel extends CFormModel {
                 $this->_labels[$key] = "";
             }
             if (isset($field["rules"])) {
-                $rules = explode(",", $field["rules"]);
-                foreach ($rules as $i => $rule) {
-                    $rule = trim($rule);
-                    if ($rule == "required") { // && class_exists("LRequiredValidator")) {
-                        $rule = "LRequiredValidator";
-                    }
-                    if (!isset($this->_rules[$rule])) {
-                        $this->_rules[$rule] = [];
-                    }
-                    array_push($this->_rules[$rule], $key);
-                }
+				$rules = $field["rules"];
+				$this->buildRules($rules, $key);
             }
             if (isset($field["types"])) {
                 $this->_types[$key] = $field["types"];
@@ -129,6 +115,35 @@ abstract class LFormModel extends CFormModel {
 			}
         }
     }
+
+	/**
+	 * Build rules array for CFormModel
+	 * @param string|array $rules - Array with rules or simple string with imploded by comma rules
+	 * @param string $key - Name of rules key
+	 */
+	private function buildRules($rules, $key) {
+		if (is_string($rules)) {
+			$rules = explode(",", $rules);
+			foreach ($rules as $i => $rule) {
+				$rule = trim($rule);
+				if ($rule == "required") { // && class_exists("LRequiredValidator")) {
+					$rule = "LRequiredValidator";
+				}
+				if (!isset($this->_rules[$rule])) {
+					$this->_rules[$rule] = [];
+				}
+				array_push($this->_rules[$rule], $key);
+			}
+		} else if (is_array($rules)) {
+			foreach ($rules as $key => $rule) {
+				if ($key == "on") {
+//					$this->_strong[$key] = $rule;
+				} else {
+					$this->buildRules($rule, $key);
+				}
+			}
+		}
+	}
 
 	/**
 	 * Get data for key, that method - is result or optimization, when
@@ -209,7 +224,13 @@ abstract class LFormModel extends CFormModel {
                 implode(", ", $rules), $rule
             ]);
         }
-        return $result;
+		if (get_class($this) === "LDepartmentForm") {
+			print "<pre>";
+			print_r($result + $this->_strong);
+			print "</pre>";
+			die;
+		}
+        return $result + $this->_strong;
     }
 
     /**
@@ -232,6 +253,7 @@ abstract class LFormModel extends CFormModel {
 
     protected $_container = [];
     protected $_rules = null;
+	protected $_strong = [];
     protected $_labels = null;
     protected $_types = null;
 	protected $_config = null;

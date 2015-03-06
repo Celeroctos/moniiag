@@ -6,7 +6,7 @@
 
 $this->widget("LModal", [
     "body" => $this->getWidget("LForm", [
-        "model" => new LDirectionForm(),
+        "model" => new LDepartmentForm(),
 		"url" => Yii::app()->getBaseUrl() . "/laboratory/laboratory/register"
     ]),
     "title" => "Создание направления",
@@ -37,7 +37,7 @@ $this->widget("LModal", [
 
 ?>
 
-<button class="btn btn-primary" data-toggle="modal" data-target="#test-modal">Test</button>
+<button class="btn btn-primary" data-toggle="modal" data-target="#add-direction-modal">Test</button>
 
 <script>
 	var reloadPage = function(page) {

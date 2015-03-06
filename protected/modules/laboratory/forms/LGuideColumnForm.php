@@ -60,14 +60,24 @@ class LGuideColumnForm extends LFormModel {
 				"type" => "DropDown",
 				"rules" => "required",
 				"format" => "%{name}",
-				"hidden" => "true"
+				"hidden" => "true",
+				"table" => [
+					"name" => "lis.guide",
+					"key" => "id",
+					"value" => "name"
+				]
 			],
 			"lis_guide_id" => [
 				"label" => "Справочник",
 				"type" => "DropDown",
 				"format" => "%{name}",
 				"hidden" => $this->hasListType(),
-				"update" => "display_id"
+				"update" => "display_id",
+				"table" => [
+					"name" => "lis.guide",
+					"key" => "id",
+					"value" => "name"
+				]
 			],
 			"position" => [
 				"label" => "Позиция",
@@ -90,14 +100,6 @@ class LGuideColumnForm extends LFormModel {
 				"value" => $this->default_value
 			]
 		];
-	}
-
-	public function getGuideId() {
-		return LGuide::model()->findForDropDown();
-	}
-
-	public function getLisGuideId() {
-		return LGuide::model()->findForDropDown();
 	}
 
 	public function getDisplayId() {

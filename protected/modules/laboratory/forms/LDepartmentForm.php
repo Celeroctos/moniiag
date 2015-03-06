@@ -25,12 +25,16 @@ class LDepartmentForm extends LFormModel {
 			"department_id" => [
 				"label" => "Департамент в МИС",
 				"type" => "DropDown",
-				"format" => "%{name}"
+				"table" => [
+					"name" => "mis.wards",
+					"key" => "id",
+					"value" => "name"
+				],
+				"rules" => [
+					"on" => "register",
+					"required"
+				]
 			]
 		];
-	}
-
-	public function getDepartmentId() {
-		return LModel::toDropDownStatic(Ward::model()->findAll());
 	}
 }
