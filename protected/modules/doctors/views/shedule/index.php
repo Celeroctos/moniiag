@@ -935,3 +935,18 @@ $this->widget('application.modules.reception.components.widgets.MedcardFormWidge
         </div>
     </div>
 </div>
+<div class="modal fade error-popup" id="errorPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Ошибка!</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="leaveYesSubmit">Да</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>

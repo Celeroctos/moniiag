@@ -1382,7 +1382,8 @@ function changeControlState(dep, elementValue, container) {
 $('#templates-choose-form input[type="submit"]').on('click', function (e) {
     var checkboxes = $(this).parents('form').find('input[type="checkbox"]:checked');
     if(checkboxes.length == 0) {
-        alert('Вы не выбрали ни одного шаблона для приёма!');
+        $('#errorPopup .row').html($('<p>').text('Вы не выбрали ни одного шаблона для приёма!'));
+        $('#errorPopup').modal({});
         return false;
     }
     $(this).attr('disabled', true);
