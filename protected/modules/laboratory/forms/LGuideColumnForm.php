@@ -41,24 +41,24 @@ class LGuideColumnForm extends LFormModel {
 			"id" => [
 				"label" => "Идентификатор",
 				"type" => "number",
-				"rules" => "required",
+				"rules" => "safe, numerical",
 				"hidden" => "true"
 			],
 			"name" => [
 				"label" => "Название столбца",
 				"type" => "Text",
-				"rules" => "required"
+				"rules" => "safe, required"
 			],
 			"type" => [
 				"label" => "Тип данных",
 				"type" => "DropDown",
-				"rules" => "required",
+				"rules" => "safe, required",
 				"update" => "default_value"
 			],
 			"guide_id" => [
 				"label" => "Справочник",
 				"type" => "DropDown",
-				"rules" => "required",
+				"rules" => "safe, required",
 				"format" => "%{name}",
 				"hidden" => "true",
 				"table" => [
@@ -77,7 +77,8 @@ class LGuideColumnForm extends LFormModel {
 					"name" => "lis.guide",
 					"key" => "id",
 					"value" => "name"
-				]
+				],
+				"rules" => "safe"
 			],
 			"position" => [
 				"label" => "Позиция",
@@ -85,19 +86,22 @@ class LGuideColumnForm extends LFormModel {
 				"hidden" => "true",
 				"options" => [
 					"min" => 1
-				]
+				],
+				"rules" => "safe, required"
 			],
 			"display_id" => [
 				"label" => "Отображаемое значение",
 				"type" => "DropDown",
 				"format" => "%{name}",
 				"hidden" => $this->hasListType(),
-				"update" => "default_value"
+				"update" => "default_value",
+				"rules" => "safe"
 			],
 			"default_value" => [
 				"label" => "Значение по умолчанию",
 				"type" => $this->isActive("type") ? $this->type : "hidden",
-				"value" => $this->default_value
+				"value" => $this->default_value,
+				"rules" => "safe"
 			]
 		];
 	}

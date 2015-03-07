@@ -41,7 +41,7 @@ class LGuideValueEditor extends LWidget {
             $data = [];
         }
         return LFieldCollection::getCollection()->find($type)->renderEx(
-            new CActiveForm(), new LFormModelAdapter(), "", $label, $value, $data
+            new CActiveForm(), new LFormModelAdapter("register"), "", $label, $value, $data
         );
     }
 

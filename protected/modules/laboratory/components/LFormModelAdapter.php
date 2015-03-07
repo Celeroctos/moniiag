@@ -2,20 +2,15 @@
 
 class LFormModelAdapter extends LFormModel {
 
-    /**
-     * @param array|null $config - Model configuration
-     */
-    public function __construct($config = []) {
-        parent::__construct(($this->_config = $config));
-    }
-
-    /**
-     * Put some value to configuration table
-     * @param string $key - Element's key
-     * @param mixed $value - Value to put
-     */
-    public function putValue($key, $value) {
-        $this->_config[$key]["value"] = $value;
+	/**
+	 * Constructor.
+	 * @param string $scenario name of the scenario that this model is used in.
+	 * See {@link CModel::scenario} on how scenario is used by models.
+	 * @param array $config - Dynamic form configuration
+	 * @see getScenario
+	 */
+    public function __construct($scenario, $config = []) {
+        parent::__construct($scenario); $this->_config = $config;
     }
 
     /**

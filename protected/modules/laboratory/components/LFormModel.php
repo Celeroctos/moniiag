@@ -26,7 +26,7 @@ abstract class LFormModel extends CFormModel {
 	 * See {@link CModel::scenario} on how scenario is used by models.
 	 * @see getScenario
 	 */
-	public function __construct($scenario = '') {
+	public function __construct($scenario = "") {
 		parent::__construct($scenario);
 	}
 
@@ -55,7 +55,9 @@ abstract class LFormModel extends CFormModel {
 	 * @return array - Array with rule configuration
 	 */
 	public function backward() {
-		return [];
+		return [
+			[ "id", "required", "on" => [ "update", "search" ] ]
+		];
 	}
 
     /**
@@ -286,7 +288,9 @@ abstract class LFormModel extends CFormModel {
 				]);
 			}
         }
-		return array_merge($result, array_merge($this->_strong, $this->replaceRules($this->backward())));
+		return array_merge($result, array_merge($this->_strong,
+			$this->replaceRules($this->backward())
+		));
     }
 
     /**

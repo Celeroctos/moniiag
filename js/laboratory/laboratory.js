@@ -321,7 +321,7 @@ var GuideTableViewer = {
         panel.find("form").each(function(i, form) {
             serialized.push($(form).serialize());
         });
-        $.get(url("/laboratory/guide/update"), {
+        $.post(url("/laboratory/guide/update"), {
             model: serialized
         }, function(json) {
             if (!json["status"]) {

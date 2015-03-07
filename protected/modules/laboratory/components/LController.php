@@ -211,7 +211,7 @@ abstract class LController extends Controller {
      * @return LFormModel|Array - Model with attributes or array with founded forms
      * @throws CException - If form's model instance don't extends LFormModel
      */
-    public function getFormModel($model = "model", $method = "get") {
+    public function getFormModel($model = "model", $method = "post") {
         $form = $this->$method($model);
         if (!is_array($form)) {
             return $this->getUrlForm($form);

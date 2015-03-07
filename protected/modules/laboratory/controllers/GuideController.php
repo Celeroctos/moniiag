@@ -118,7 +118,11 @@ class GuideController extends LController {
 			}
 			$table->guide_id = $guideId;
 			$table->save();
+			$p = 0;
 			foreach ($row as $c) {
+				if (!isset($c["position"]) || $c["position"] == "") {
+					$c["position"] = ++$p;
+				}
 				/** @var $column LGuideColumn */
 				$column = LGuideColumn::model()->find("guide_id = :guide_id and position = :position", [
 					":guide_id" => $guideId,

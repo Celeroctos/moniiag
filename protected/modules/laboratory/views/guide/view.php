@@ -12,7 +12,7 @@ $this->widget("LConfirmDelete", [
 $this->widget("LModal", [
     "body" => $this->getWidget("LForm", [
         "url" => Yii::app()->getBaseUrl()."/laboratory/guide/register",
-        "model" => new LGuideForm(),
+        "model" => new LGuideForm("register"),
         "id" => "guide-register-form"
     ]),
     "title" => "Добавление справочника",
