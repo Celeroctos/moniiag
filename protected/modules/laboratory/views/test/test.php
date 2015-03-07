@@ -6,7 +6,7 @@
 
 $this->widget("LModal", [
     "body" => $this->getWidget("LForm", [
-        "model" => new LDepartmentForm(),
+        "model" => new LAnalysisParamForm("update"),
 		"url" => Yii::app()->getBaseUrl() . "/laboratory/laboratory/register"
     ]),
     "title" => "Создание направления",
@@ -19,6 +19,10 @@ $this->widget("LModal", [
         ]
     ]
 ]);
+
+print "<pre>";
+print_r(array_keys($_GET));
+print "</pre>";
 
 $this->widget("LPagination", [
 	"pages" => 50,

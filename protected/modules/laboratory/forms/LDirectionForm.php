@@ -3,6 +3,22 @@
 class LDirectionForm extends LFormModel {
 
 	/**
+	 * Override that method to return additional rule configuration, like
+	 * scenario conditions or others
+	 * @return array - Array with rule configuration
+	 */
+	public function backward() {
+		return [
+
+			// don't require identification number on update or search
+			[ "id", "required", "on" => [ "update", "search" ] ],
+
+			// set maximum length of card number
+			[ "card_number", "length", "max" => 50 ]
+		];
+	}
+
+	/**
 	 * Override that method to return config. Config should return array associated with
 	 * model's variables. Every field must contains 3 parameters:
 	 *  + label - Variable's label, will be displayed in the form

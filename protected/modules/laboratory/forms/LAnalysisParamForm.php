@@ -1,6 +1,12 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Savonin
+ * Date: 2015-03-06
+ * Time: 17:48
+ */
 
-class LDepartmentForm extends LFormModel {
+class LAnalysisParamForm extends LFormModel {
 
 	/**
 	 * Override that method to return additional rule configuration, like
@@ -9,7 +15,15 @@ class LDepartmentForm extends LFormModel {
 	 */
 	public function backward() {
 		return [
-			[ "id", "required", "on" => [ "update", "search" ] ]
+
+			// don't validate 'id' on register
+			[ "id", "required", "on" => [ "update", "search" ] ],
+
+			// set maximum name length
+			[ "name", "length", "max" => 30 ],
+
+			// set maximum long name length
+			[ "long_name", "length", "max" => 200 ]
 		];
 	}
 
@@ -25,24 +39,22 @@ class LDepartmentForm extends LFormModel {
 		return [
 			"id" => [
 				"label" => "Идентификатор",
-				"type" => "number",
-				"hidden" => "true",
-				"rules" => "numerical, required"
+				"type" => "text"
 			],
 			"name" => [
-				"label" => "Название",
+				"label" => "Наименование",
 				"type" => "text",
 				"rules" => "required"
 			],
-			"department_id" => [
-				"label" => "Департамент в МИС",
-				"type" => "DropDown",
-				"table" => [
-					"name" => "mis.enterprise_params",
-					"key" => "id",
-					"value" => "shortname"
-				],
-				"rules" => "required"
+			"long_name" => [
+				"label" => "Описание",
+				"type" => "TextArea",
+				"rules" => "safe"
+			],
+			"comment" => [
+				"label" => "Комментарий",
+				"type" => "TextArea",
+				"rules" => "safe"
 			]
 		];
 	}

@@ -10,8 +10,8 @@ $form = $this->beginWidget('CActiveForm', [
         $this->model, 'name'
     ],
     'id' => $this->id,
+	'enableClientValidation' => true,
     'enableAjaxValidation' => true,
-    'enableClientValidation' => false,
     'action' => CHtml::normalizeUrl($this->url),
     'htmlOptions' => [
         'class' => 'form-horizontal col-xs-12',
@@ -19,9 +19,7 @@ $form = $this->beginWidget('CActiveForm', [
         'data-form' => get_class($this->model),
         'data-widget' => get_class($this)
     ]
-]);
-
-?>
+]); ?>
 
 <? foreach ($model->getContainer() as $key => $value): ?>
     <div class="form-group <?= $this->isHidden($key) ? "hidden" : "" ?>">

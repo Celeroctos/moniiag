@@ -1,6 +1,12 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Savonin
+ * Date: 2015-03-06
+ * Time: 18:02
+ */
 
-class LDepartmentForm extends LFormModel {
+class LAnalyzerTypeAnalysisForm extends LFormModel {
 
 	/**
 	 * Override that method to return additional rule configuration, like
@@ -25,24 +31,27 @@ class LDepartmentForm extends LFormModel {
 		return [
 			"id" => [
 				"label" => "Идентификатор",
-				"type" => "number",
-				"hidden" => "true",
-				"rules" => "numerical, required"
+				"type" => "number"
 			],
-			"name" => [
-				"label" => "Название",
-				"type" => "text",
-				"rules" => "required"
-			],
-			"department_id" => [
-				"label" => "Департамент в МИС",
+			"analyzer_type_id" => [
+				"label" => "Тип анализатора",
 				"type" => "DropDown",
+				"rules" => "required",
 				"table" => [
-					"name" => "mis.enterprise_params",
+					"name" => "lis.analyzer_types",
 					"key" => "id",
-					"value" => "shortname"
-				],
-				"rules" => "required"
+					"value" => "name"
+				]
+			],
+			"analysis_type_id" => [
+				"label" => "Тип анализа",
+				"type" => "DropDown",
+				"rules" => "required",
+				"table" => [
+					"name" => "lis.analysis_types",
+					"key" => "id",
+					"value" => "short_name"
+				]
 			]
 		];
 	}

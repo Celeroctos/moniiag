@@ -2,7 +2,35 @@
 
 abstract class LFormModel extends CFormModel {
 
-    /**
+	/**
+	 * Override that variable to return list default
+	 * validators aliases and it's replacement
+	 * @var array - Array with replacements
+	 * @see replace
+	 */
+	protected $replace = [
+		"required" => "LRequiredValidator",
+		"hidden" => "LHiddenValidator"
+	];
+
+	/**
+	 * Array with configuration (for future optimization)
+	 * @var array - Array with configuration
+	 * @deprecated - Unused
+	 */
+	protected $config = [];
+
+	/**
+	 * Constructor.
+	 * @param string $scenario name of the scenario that this model is used in.
+	 * See {@link CModel::scenario} on how scenario is used by models.
+	 * @see getScenario
+	 */
+	public function __construct($scenario = '') {
+		parent::__construct($scenario);
+	}
+
+	/**
      * Override that method to return config. Config should return array associated with
      * model's variables. Every field must contains 3 parameters:
      *  + label - Variable's label, will be displayed in the form
@@ -11,6 +39,24 @@ abstract class LFormModel extends CFormModel {
      * @return Array - Model's config
      */
     public abstract function config();
+
+	/**
+	 * Override that method to return list with replacements, don't
+	 * forget parents replacements
+	 * @return array - Array with rules replacements
+	 */
+	public function replace() {
+		return $this->replace;
+	}
+
+	/**
+	 * Override that method to return additional rule configuration, like
+	 * scenario conditions or others
+	 * @return array - Array with rule configuration
+	 */
+	public function backward() {
+		return [];
+	}
 
     /**
      * That function will check model's field for valid for drop down list
@@ -36,14 +82,6 @@ abstract class LFormModel extends CFormModel {
 		$type = strtolower($this->_config[$field]["type"]);
 		return $type == "dropdown" || $type == "multiple";
 	}
-
-    /**
-     * Construct table with configuration build
-     * @param array|null $config - Array with model's configuration
-     */
-    public function __construct($config = null) {
-		$this->_buildFromConfig($config);
-    }
 
     /**
      * That method will return declared variable from models
@@ -72,7 +110,7 @@ abstract class LFormModel extends CFormModel {
      * Build form from models configuration
      * @param array|null $config - Array with model's configuration
      */
-    protected function _buildFromConfig($config = null) {
+    private function buildConfig($config = null) {
 
         // If we have rules and labels then skip it
         if ($this->_rules && $this->_labels && $this->_types) {
@@ -81,13 +119,14 @@ abstract class LFormModel extends CFormModel {
 
         // Get model's configuration
         if ($config == null) {
-            $config = $this->config();
+			$config = $this->config();
         }
 
         // Reset rules and labels arrays
         $this->_rules = [];
         $this->_labels = [];
         $this->_types = [];
+		$this->_strong = [];
 
         foreach ($config as $key => &$field) {
 
@@ -98,8 +137,7 @@ abstract class LFormModel extends CFormModel {
                 $this->_labels[$key] = "";
             }
             if (isset($field["rules"])) {
-				$rules = $field["rules"];
-				$this->buildRules($rules, $key);
+				$this->_rules = $this->buildRules($field["rules"], $key);
             }
             if (isset($field["types"])) {
                 $this->_types[$key] = $field["types"];
@@ -117,32 +155,49 @@ abstract class LFormModel extends CFormModel {
     }
 
 	/**
+	 * Find and replace validation rule for fields configuration
+	 * @param string|array $rule - Rule options
+	 * @return array|string - Sent rule options
+	 */
+	private function replaceRules(&$rule) {
+		if (is_string($rule)) {
+			foreach ($this->replace as $old => $new) {
+				$rule = str_replace($old, $new, $rule);
+			}
+			$result = [];
+			foreach (explode(",", $rule) as $r) {
+				$result[] = trim($r);
+			}
+			$rule = implode(",", $result);
+		} else if (is_array($rule)) {
+			foreach ($rule as &$r) {
+				$this->replaceRules($r);
+			}
+		}
+		return $rule;
+	}
+
+	/**
 	 * Build rules array for CFormModel
 	 * @param string|array $rules - Array with rules or simple string with imploded by comma rules
 	 * @param string $key - Name of rules key
+	 * @return array - Array with built rules
 	 */
 	private function buildRules($rules, $key) {
+		$container = $this->_rules;
 		if (is_string($rules)) {
-			$rules = explode(",", $rules);
-			foreach ($rules as $i => $rule) {
+			foreach (explode(",", $rules) as $i => $rule) {
 				$rule = trim($rule);
-				if ($rule == "required") { // && class_exists("LRequiredValidator")) {
-					$rule = "LRequiredValidator";
+				$this->replaceRules($rule);
+				if (!isset($container[$rule])) {
+					$container[$rule] = [];
 				}
-				if (!isset($this->_rules[$rule])) {
-					$this->_rules[$rule] = [];
-				}
-				array_push($this->_rules[$rule], $key);
+				array_push($container[$rule], $key);
 			}
 		} else if (is_array($rules)) {
-			foreach ($rules as $key => $rule) {
-				if ($key == "on") {
-//					$this->_strong[$key] = $rule;
-				} else {
-					$this->buildRules($rule, $key);
-				}
-			}
+			$this->_strong[] = array_merge([$key], $this->replaceRules($rules));
 		}
+		return $container;
 	}
 
 	/**
@@ -199,15 +254,16 @@ abstract class LFormModel extends CFormModel {
     /**
      * Reset configuration
      */
-    protected function reset() {
+    private function reset() {
 
         // Reset arrays
         $this->_rules = null;
         $this->_labels = null;
         $this->_types = null;
+		$this->_strong = null;
 
         // Recompute configuration
-        $this->_buildFromConfig();
+        $this->buildConfig();
     }
 
     /**
@@ -216,21 +272,21 @@ abstract class LFormModel extends CFormModel {
      */
     public function rules() {
         if (!$this->_rules) {
-            $this->_buildFromConfig();
+            $this->buildConfig();
         }
         $result = [];
         foreach ($this->_rules as $rule => $rules) {
-            array_push($result, [
-                implode(", ", $rules), $rule
-            ]);
+			if (is_string($rules)) {
+				array_push($result, [
+					implode(", ", $rules), $rule
+				]);
+			} else {
+				array_push($result, [
+					$rules, $rule
+				]);
+			}
         }
-		if (get_class($this) === "LDepartmentForm") {
-			print "<pre>";
-			print_r($result + $this->_strong);
-			print "</pre>";
-			die;
-		}
-        return $result + $this->_strong;
+		return array_merge($result, array_merge($this->_strong, $this->replaceRules($this->backward())));
     }
 
     /**
@@ -239,7 +295,7 @@ abstract class LFormModel extends CFormModel {
      */
     public function attributeLabels() {
         if (!$this->_labels) {
-            $this->_buildFromConfig();
+            $this->buildConfig();
         }
         return $this->_labels;
     }
@@ -248,14 +304,17 @@ abstract class LFormModel extends CFormModel {
      * @return Array - Array with declared variables
      */
     public function getContainer() {
+		if (!$this->_rules) {
+			$this->buildConfig();
+		}
         return $this->_container;
     }
 
     protected $_container = [];
     protected $_rules = null;
-	protected $_strong = [];
+	protected $_strong = null;
     protected $_labels = null;
     protected $_types = null;
 	protected $_config = null;
     protected $_data = null;
-} 
+}

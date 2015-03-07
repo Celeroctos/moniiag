@@ -1,6 +1,12 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Savonin
+ * Date: 2015-03-06
+ * Time: 17:51
+ */
 
-class LDepartmentForm extends LFormModel {
+class LAnalysisSampleTypeForm extends LFormModel {
 
 	/**
 	 * Override that method to return additional rule configuration, like
@@ -9,7 +15,12 @@ class LDepartmentForm extends LFormModel {
 	 */
 	public function backward() {
 		return [
-			[ "id", "required", "on" => [ "update", "search" ] ]
+
+			// don't validate identification number on register
+			[ "id", "required", "on" => [ "update", "search" ] ],
+			
+			// set maximum length of type and subtype
+			[ ["type", "subtype"], "length", "max" => 100 ]
 		];
 	}
 
@@ -25,23 +36,16 @@ class LDepartmentForm extends LFormModel {
 		return [
 			"id" => [
 				"label" => "Идентификатор",
-				"type" => "number",
-				"hidden" => "true",
-				"rules" => "numerical, required"
+				"type" => "number"
 			],
-			"name" => [
-				"label" => "Название",
+			"type" => [
+				"label" => "Тип образца",
 				"type" => "text",
 				"rules" => "required"
 			],
-			"department_id" => [
-				"label" => "Департамент в МИС",
-				"type" => "DropDown",
-				"table" => [
-					"name" => "mis.enterprise_params",
-					"key" => "id",
-					"value" => "shortname"
-				],
+			"subtype" => [
+				"label" => "Подтип образца",
+				"type" => "text",
 				"rules" => "required"
 			]
 		];
