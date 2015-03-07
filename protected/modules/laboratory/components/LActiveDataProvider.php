@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitry
- * Date: 2015-03-04
- * Time: 16:31
- */
 
 class LActiveDataProvider extends CActiveDataProvider {
 

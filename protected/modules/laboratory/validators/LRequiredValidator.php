@@ -9,10 +9,10 @@ class LRequiredValidator extends CRequiredValidator {
 	 * @param string $attribute the name of the attribute to be validated.
 	 */
 	protected function validateAttribute($object, $attribute) {
-		if ($attribute == "id") {
-			return ;
-		}
-		if ($this->isEmpty($object->$attribute)) {
+//		if ($attribute == "id") {
+//			return ;
+//		}
+		if ($this->isEmpty($object->$attribute, true)) {
 			$this->error($object, $attribute); return ;
 		}
 		if (!($object instanceof LFormModel)) {

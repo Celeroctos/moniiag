@@ -187,10 +187,8 @@ abstract class LController extends Controller {
         if (!($form instanceof LFormModel)) {
             throw new CException("Form must be instance of LFormModel class");
         }
-        $form->attributes = $array;
-        foreach ($array as $i => $value) {
-            $form->$i = $value;
-        }
+		$form->setAttributes($array);
+		$form->attributes = $array;
         if (!$form->validate()) {
             if ($error) {
                 $this->leave([
@@ -329,11 +327,15 @@ abstract class LController extends Controller {
 			if (($table = $this->getModel()) == null) {
 				throw new CException("Your controller must override LController::getModel method");
 			}
-			foreach ($model->attributes as $key => $value) {
-				$table->__set($key, $value);
+			$attributes = $model->getContainer();
+			if (isset($attributes)) {
+				unset($attributes["id"]);
 			}
-			$table->__unset("id");
-			$table->save();
+			foreach ($attributes as $key => $value) {
+				$table->$key = $value;
+			}
+			$table->attributes = $attributes;
+			$table->save(false);
 			$this->leave([
 				"message" => "Данные успешно сохранены"
 			]);

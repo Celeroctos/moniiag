@@ -12,11 +12,15 @@ class TestController extends LController {
         ]);
     }
 
-    /**
+	public function actionRegister() {
+		parent::actionRegister();
+	}
+
+	/**
      * Override that method to return controller's model
      * @return LModel - Controller's model instance
      */
     public function getModel() {
-        return null;
+        return new LTest();
     }
 }

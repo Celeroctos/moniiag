@@ -31,18 +31,28 @@ $this->widget("LPagination", [
 	"action" => "reloadPage.call"
 ]);
 
+
 $this->widget("LModal", [
-    "body" => $this->widget("LForm", [
-        "model" => new LMedcardForm(),
-        "id" => "test-form"
-    ], true),
-    "id" => "test-modal"
+	"body" => $this->getWidget("LForm", [
+		"model" => new LTestForm("register"),
+		"id" => "test-form",
+		"url" => "/moniiag/laboratory/test/register"
+	]),
+	"title" => "Создание тестовых данных",
+	"id" => "test-modal",
+	"buttons" => [
+		"register" => [
+			"class" => "btn btn-primary",
+			"type" => "submit",
+			"text" => "Сохранить"
+		]
+	]
 ]);
 
 ?>
 
-<button class="btn btn-primary" data-toggle="modal" data-target="#add-direction-modal">Test</button>
-
+<br><br><br><br>
+<button class="btn btn-primary" data-toggle="modal" data-target="#test-modal">Test</button>
 <script>
 	var reloadPage = function(page) {
 		window.location.href = "/moniiag/laboratory/test/view?page=" + page;

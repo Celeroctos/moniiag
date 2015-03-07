@@ -7,7 +7,10 @@ abstract class LModel extends CActiveRecord {
 	 * @param string $className - Class's name
 	 * @return LGuide - Cached model instance
 	 */
-	public static function model($className = __CLASS__) {
+	public static function model($className = null) {
+		if ($className == null) {
+			$className = get_called_class();
+		}
 		return parent::model($className);
 	}
 
