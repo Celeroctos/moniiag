@@ -2,12 +2,49 @@
 
 abstract class LDropDown extends LField {
 
-    /**
+	/**
+	 * Override that method to get current field instance
+	 * @param string $class - Name of field's class
+	 * @return LDropDown - Field object
+	 */
+	public static function field($class = __CLASS__) {
+		return parent::field($class);
+	}
+
+	/**
      * Override that method to return associative array
      * for drop down list
      * @return array - Array with data
      */
     public abstract function data();
+
+	/**
+	 * Get some drop down list option by it's key
+	 * @param string $key - Data key to get
+	 * @return mixed - Value
+	 */
+	public function getOption($key) {
+		$data = $this->getData();
+		if (isset($data[$key])) {
+			return $data[$key];
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Get cached array with drop down list data
+	 * @return array - Array with drop down list
+	 */
+	public function getData() {
+		if ($this->data == null) {
+			return ($this->data = $this->data());
+		} else {
+			return $this->data;
+		}
+	}
+
+	private $data = null;
 
 	/**
 	 * @param CActiveForm $form
