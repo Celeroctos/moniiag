@@ -135,7 +135,7 @@ class AnalyzerType extends MisActiveRecord
                     'notes'
                 ],
                 'defaultOrder'=>[
-                    'id'=>CSort::SORT_DESC,
+                    'type'=>CSort::SORT_ASC,
                 ],
             ],
         ]);

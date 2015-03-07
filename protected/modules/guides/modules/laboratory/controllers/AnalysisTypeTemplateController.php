@@ -68,10 +68,11 @@ class AnalysisTypeTemplateController extends Controller
      * Lists all models.
      */
     public function actionIndex() {
-        $model = new AnalysisTypeTemplate('search');
+        $model=new AnalysisType;
+#        $model = new AnalysisTypeTemplate('search');
         $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['AnalysisTypeTemplate']))
-            $model->attributes = $_GET['AnalysisTypeTemplate'];
+ #       if (isset($_GET['AnalysisTypeTemplate']))
+ #           $model->attributes = $_GET['AnalysisTypeTemplate'];
 
         $this->render('index', array(
             'model' => $model,

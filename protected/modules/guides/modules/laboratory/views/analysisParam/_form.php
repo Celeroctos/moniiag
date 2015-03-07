@@ -1,4 +1,5 @@
-<div class="modal-dialog">
+<!--<div class="modal-dialog">-->
+    <div class="form">
     <?php
     $form = $this->beginWidget('CActiveForm', array(
         'id' => 'analysis-param-form',
@@ -73,7 +74,7 @@
     </div> 
 
 
-    <div class="modal-footer">
+    <div class="modal-footer"> 
         <?php
         $this->widget('zii.widgets.jui.CJuiButton', array(
             'name' => 'submit_' . rand(),
@@ -89,7 +90,7 @@
 					window.location.reload();
                                     }
                                     else{
-					$("#DialogCRUDForm").html(r).dialog("option", "title", "' . ($model->isNewRecord ? 'Create' : 'Update') . ' AnalysisType").dialog("open"); return false;
+					$("#DialogCRUDForm").html(r).dialog("option", "title", "' . ($model->isNewRecord ? 'Create' : 'Update') . ' AnalysisParam").dialog("open"); return false;
                                     }
 				}',
                 ),
@@ -111,6 +112,6 @@
             ),
         ));
         ?>
-    </div>
     <?php $this->endWidget(); ?>
+</div>
 </div>

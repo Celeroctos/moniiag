@@ -140,7 +140,7 @@ class AnalysisParam extends MisActiveRecord
                     'comment'
                 ],
                 'defaultOrder'=>[
-                    'id'=>CSort::SORT_DESC,
+                    'name'=>CSort::SORT_ASC,
                 ],
             ],
         ]);

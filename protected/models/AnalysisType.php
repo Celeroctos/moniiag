@@ -9,15 +9,16 @@ class AnalysisType extends MisActiveRecord
 //    public $short_name;
 //    public $automatic;
 //    public $manual;
-    public $automatic_n;
-    public $manual_n;
+    public $metodics_n;
     public $param_count;
     public $analysis_type_id;
 
-    const TRUE_ID=1;
-    const FALSE_ID=0;
-    const TRUE_NAME='Да';
-    const FALSE_NAME='Нет';
+    const UNDEF_ID=0;
+    const AUTOMATIC_ID=1;
+    const MANUAL_ID=2;
+    const UNDEF_NAME='Не определена';
+    const AUTOMATIC_NAME='Автоматическая';
+    const MANUAL_NAME='Ручная';
 
     public static function model($className=__CLASS__)
     {
@@ -29,15 +30,15 @@ class AnalysisType extends MisActiveRecord
         return [
             ['name', 'required', 'on'=>'analysistypes.update'],
             ['name, short_name', 'type', 'type'=>'string', 'on'=>'analysistypes.update'],
-            ['id, automatic, manual', 'type', 'type'=>'integer', 'on'=>'analysistypes.update'], //[controller].[action]
-            ['automatic, manual', 'safe', 'on'=>'analysistypes.update'],
+            ['id, metodics', 'type', 'type'=>'integer', 'on'=>'analysistypes.update'], //[controller].[action]
+            ['metodics', 'safe', 'on'=>'analysistypes.update'],
 
             ['name', 'required', 'on'=>'analysistypes.create'],
             ['name, short_name', 'type', 'type'=>'string', 'on'=>'analysistypes.create'],
-            ['id, automatic, manual', 'type', 'type'=>'integer', 'on'=>'analysistypes.create'], //[controller].[action]
-            ['automatic, manual', 'safe', 'on'=>'analysistypes.create'],
+            ['id, metodics', 'type', 'type'=>'integer', 'on'=>'analysistypes.create'], //[controller].[action]
+            ['metodics', 'safe', 'on'=>'analysistypes.create'],
 
-            ['id, name, short_name, automatic, manual', 'safe', 'on'=>'analysistypes.search'],
+            ['id, name, short_name, metodics', 'safe', 'on'=>'analysistypes.search'],
         ];
     }
 
@@ -115,10 +116,9 @@ class AnalysisType extends MisActiveRecord
     public function attributeLabels() {
         return [
             'id'=>'#ID',
-            'name'=>'Наименование анализа',
-            'short_name'=>'Краткое наименование анализа',
-            'automatic'=>'Автоматическая методика',
-            'manual'=>'Ручная методика',
+            'name'=>'Наименование типа анализа',
+            'short_name'=>'Краткое наименование типа анализа',
+            'metodics'=>'Методика:',
             'param_count'=>'Количество параметров',
         ];
     }
@@ -134,9 +134,8 @@ class AnalysisType extends MisActiveRecord
         {
             $criteria->compare('id', $this->id, false);
             $criteria->compare('name', $this->name, true);
-            $criteria->compare('short_name', $this->name, true);
-            $criteria->compare('automatic', $this->name, true);
-            $criteria->compare('manual', $this->name, true);
+            $criteria->compare('short_name', $this->short_name, true);
+            $criteria->compare('metodics', $this->metodics, true);
         }
         /*        else
         {
@@ -151,11 +150,10 @@ class AnalysisType extends MisActiveRecord
                     'id', 
                     'name', 
                     'short_name', 
-                    'automatic', 
-                    'manual'
+                    'metodics'
                 ],
                 'defaultOrder'=>[
-                    'id'=>CSort::SORT_DESC,
+                    'name'=>CSort::SORT_ASC,
                 ],
             ],
         ]);
@@ -165,15 +163,18 @@ class AnalysisType extends MisActiveRecord
     * Используется в CGridView
     * @return array
     */
-    public function getBool($id)
+    public function getMetodics($id)
     {
         switch($id)
         {
-            case self::TRUE_ID:
-                return self::TRUE_NAME;
+            case self::UNDEF_ID:
+                return self::UNDEF_NAME;
                 break;
-            case self::FALSE_ID:
-                return self::FALSE_NAME;
+            case self::AUTOMATIC_ID:
+                return self::AUTOMATIC_NAME;
+                break;
+            case self::MANUAL_ID:
+                return self::MANUAL_NAME;
                 break;
             default:
                 return 'Не указано';
@@ -185,6 +186,7 @@ class AnalysisType extends MisActiveRecord
         $criteria=new CDbCriteria;
             $criteria->select = 't.id, t.name, count(att.*) as param_count';
             $criteria->group = 't.id, t.name';
+            $criteria->order = 't.name';
              $criteria->join = 'LEFT JOIN lis.analysis_type_templates att ON att.analysis_type_id = t.id';
         $qq = new CActiveDataProvider($this, [
             'pagination'=>['pageSize'=>10],

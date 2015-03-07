@@ -94,10 +94,25 @@ $this->widget('zii.widgets.grid.CGridView', array(
     ],
     'columns' => array(
 #		'id',
-        'name',
-        'short_name',
-	'automatic',
-	'manual',
+        [
+            'name'=>'name',
+            'headerHtmlOptions'=>[
+                'class'=>'col-md-4',
+            ],
+        ],
+        [
+            'name'=>'short_name',
+            'headerHtmlOptions'=>[
+                'class'=>'col-md-2',
+            ],
+        ],
+        [
+            'name'=>'metodics',
+            'value'=>'$data->getMetodics($data->metodics)',
+            'headerHtmlOptions'=>[
+                'class'=>'col-md-1',
+            ],
+        ],
         array(
             'class' => 'CButtonColumn',
             'deleteConfirmation' => "js:'Вы уверены, что хотите удалить тип анализа \'' + $(this).parent().parent().children(':nth-child(1)').text() + '\'?'",

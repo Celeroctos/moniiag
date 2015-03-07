@@ -57,8 +57,8 @@ class AnalyzerTypeAnalysis extends MisActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'analyser_type_id' => 'Analyser Type',
-			'analysis_type_id' => 'Analysis Type',
+			'analyser_type_id' => 'Тип анализатора',
+			'analysis_type_id' => 'Тип анализа',
 		);
 	}
 

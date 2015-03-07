@@ -132,7 +132,7 @@ class AnalysisSampleType extends MisActiveRecord
                     'subtype'
                 ],
                 'defaultOrder'=>[
-                    'id'=>CSort::SORT_DESC,
+                    'type'=>CSort::SORT_ASC,
                 ],
             ],
         ]);

@@ -1,70 +1,109 @@
+<!--<div class="modal-dialog">-->
 <div class="form">
 
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'analysis-type-form',
-	'enableAjaxValidation'=>false,
-)); ?>
+    <?php
+    $form = $this->beginWidget('CActiveForm', array(
+        'id' => 'analysis-type-form',
+        'enableAjaxValidation' => false,
+    ));
+    ?>
 
-	<p class="note">Поля помеченные <span class="required">*</span> обязательны для заполнения.</p>
+    <div class="modal-body">
+        <div class="col-xs-12">
+            <div class="row"> 
+                <div class="form-group">
+                    <?php
+                    echo $form->labelEx($model, 'name', array(
+                        'class' => 'col-xs-3 control-label'
+                    ));
+                    ?>
+                    <div class="col-xs-9">
+                        <?php
+                        echo $form->textField($model, 'name', array(
+                            'id' => 'name',
+                            'class' => 'form-control',
+                            'placeholder' => 'Наименование типа анализа'
+                        ));
+                        ?>
+                        <?php echo $form->error($model, 'name'); ?>
+                    </div>
+                </div>
+            </div>
+            <div class="row"> 
+                <div class="form-group">
+                    <?php
+                    echo $form->labelEx($model, 'short_name', array(
+                        'class' => 'col-xs-3 control-label'
+                    ));
+                    ?>
+                    <div class="col-xs-9">
+                        <?php
+                        echo $form->textField($model, 'short_name', array(
+                            'id' => 'short_name',
+                            'class' => 'form-control',
+                            'placeholder' => 'Краткое наименование типа анализа'
+                        ));
+                        ?>
+                        <?php echo $form->error($model, 'short_name'); ?>
+                    </div>
+                </div>
+            </div>
+            <div class="row"> 
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'metodics'); ?>
+                    <?php
+                    echo $form->radioButtonList($model, 'metodics', array('Не определена', 'Автоматическая', 'Ручная'), array(
+                        'id' => 'metodics',
+#                            'class' => 'form-control',
+                        'separator' => '',
+                    ));
+                    ?>
+                    <?php echo $form->error($model, 'metodics'); ?>
+                </div>
+            </div>
+        </div> 
+    </div> 
 
-	<?php echo $form->errorSummary($model); ?>
+    <div class="modal-footer">
+        <?php
+        $this->widget('zii.widgets.jui.CJuiButton', array(
+            'name' => 'submit_' . rand(),
+            'caption' => $model->isNewRecord ? 'Создать' : 'Сохранить',
+            'htmlOptions' => array(
+                'class' => 'btn btn-primary',
+                'ajax' => array(
+                    'url' => $model->isNewRecord ? $this->createUrl('create') : $this->createUrl('update', array('id' => $model->id)),
+                    'type' => 'post',
+                    'data' => 'js:jQuery(this).parents("form").serialize()',
+                    'success' => 'function(r){
+                                    if(r=="success"){
+					window.location.reload();
+                                    }
+                                    else{
+					$("#DialogCRUDForm").html(r).dialog("option", "title", "' . ($model->isNewRecord ? 'Create' : 'Update') . ' AnalysisType").dialog("open"); return false;
+                                    }
+				}',
+                ),
+            ),
+        ));
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'name'); ?>
-		<?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>200)); ?>
-		<?php echo $form->error($model,'name'); ?>
-	</div>
+        $this->widget('zii.widgets.jui.CJuiButton', array(
+            'buttonType' => 'button',
+            'name' => 'close_' . rand(),
+            'caption' => 'Закрыть',
+            'htmlOptions' => array('class' => 'btn btn-default',
+                'ajax' => array(
+                    'url' => '#',
+                    'type' => 'post',
+                    'success' => 'function(r){
+                                    window.location.reload();
+				}',
+                ),
+            ),
+        ));
+        ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'short_name'); ?>
-		<?php echo $form->textField($model,'short_name',array('size'=>20,'maxlength'=>20)); ?>
-		<?php echo $form->error($model,'short_name'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'automatic'); ?>
-		<?php echo $form->textField($model,'automatic'); ?>
-		<?php echo $form->error($model,'automatic'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'manual'); ?>
-		<?php echo $form->textField($model,'manual'); ?>
-		<?php echo $form->error($model,'manual'); ?>
-	</div>
-
-	<?php if (!Yii::app()->request->isAjaxRequest): ?>
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Создать' : 'Сохранить'); ?>
-	</div>
-	
-	<?php else: ?>
-	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-		<div class="ui-dialog-buttonset">
-		<?php			$this->widget('zii.widgets.jui.CJuiButton', array(
-				'name'=>'submit_'.rand(),
-				'caption'=>$model->isNewRecord ? 'Создать' : 'Сохранить',
-				'htmlOptions'=>array(
-					'ajax' => array(
-						'url'=>$model->isNewRecord ? $this->createUrl('create') : $this->createUrl('update', array('id'=>$model->id)),
-						'type'=>'post',
-						'data'=>'js:jQuery(this).parents("form").serialize()',
-						'success'=>'function(r){
-							if(r=="success"){
-								window.location.reload();
-							}
-							else{
-								$("#DialogCRUDForm").html(r).dialog("option", "title", "'.($model->isNewRecord ? 'Create' : 'Update').' AnalysisType").dialog("open"); return false;
-							}
-						}', 
-					),
-				),
-			));
-		?>
-		</div>
-	</div>
-	<?php endif; ?>
-
-<?php $this->endWidget(); ?>
+        <?php $this->endWidget(); ?>
+    </div>
 
 </div><!-- form -->

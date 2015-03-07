@@ -133,6 +133,8 @@ class AnalysisTypeTemplate extends MisActiveRecord
             'id'=>'#ID',
             'analysis_type'=>'Наименование типа анализа',
             'analysis_param'=>'Наименование параметра анализа',
+            'analysis_type_id'=>'Наименование типа анализа',
+            'analysis_param_id'=>'Наименование параметра анализа',
             'is_default'=>'Включен по умолчанию?'
         ];
     }
@@ -212,7 +214,7 @@ class AnalysisTypeTemplate extends MisActiveRecord
             $criteria->select = 't.id, ap.name, t.is_default';
             $criteria->condition = 't.analysis_type_id=' . $id;
              $criteria->join = 'JOIN lis.analysis_params ap ON t.analysis_param_id = ap.id';
-             $criteria->order = 't.id';
+             $criteria->order = 'ap.name';
         $qq = new CActiveDataProvider($this, [
             'pagination'=>['pageSize'=>10],
             'criteria'=>$criteria,

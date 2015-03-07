@@ -94,8 +94,18 @@ $this->widget('zii.widgets.grid.CGridView', array(
     ],
     'columns' => array(
 #		'id',
-        'type',
-        'subtype',
+        [
+            'name' => 'type',
+            'headerHtmlOptions' => [
+                'class' => 'col-md-4',
+            ],
+        ],
+        [
+            'name' => 'subtype',
+            'headerHtmlOptions' => [
+                'class' => 'col-md-4',
+            ],
+        ],
 #		'comment',
         array(
             'class' => 'CButtonColumn',

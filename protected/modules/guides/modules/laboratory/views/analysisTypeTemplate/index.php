@@ -6,7 +6,7 @@
 $this->widget('application.modules.guides.components.widgets.LaboratoryTabMenu', array());
 ?>
 <?php
-$this->pageTitle = 'Параметры анализов';
+$this->pageTitle = 'Шаблоны типов анализов';
 ?>
 <h4>Шаблоны типов анализов</h4>
 
@@ -74,7 +74,8 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'analysis-param-grid',
     'ajaxUpdate' => false,
-    'dataProvider' => $model->search(),
+//    'dataProvider'=>$model->search(),
+    'dataProvider' => $model->templates(),
 //	'filter'=>$model,
     'itemsCssClass' => 'table table-bordered',
     'pager' => [
@@ -87,9 +88,21 @@ $this->widget('zii.widgets.grid.CGridView', array(
     ],
     'columns' => array(
 #		'id',
-        'analysis_type_id',
-        'analysis_param_id',
-	'is_default',
+        [
+            'name' => 'name',
+            'headerHtmlOptions' => [
+                'class' => 'col-md-4',
+            ],
+        ],
+        [
+            'name' => 'param_count',
+            'headerHtmlOptions' => [
+                'class' => 'col-md-4',
+            ],
+        ],
+#        'analysis_type_id',
+#        'analysis_param_id',
+#	'is_default',
         array(
             'class' => 'CButtonColumn',
             'template' => $template,

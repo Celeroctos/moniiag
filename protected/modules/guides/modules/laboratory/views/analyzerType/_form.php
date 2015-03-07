@@ -1,64 +1,107 @@
-<div class="form">
+<div class="modal-dialog">
+    <!--<div class="form">-->
 
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'analyzer-type-form',
-	'enableAjaxValidation'=>false,
-)); ?>
+    <?php
+    $form = $this->beginWidget('CActiveForm', array(
+        'id' => 'analyzer-type-form',
+        'enableAjaxValidation' => false,
+    ));
+    ?>
 
-	<p class="note">Поля помеченные <span class="required">*</span> обязательны для заполнения.</p>
+    <div class="modal-body">
+        <div class="col-xs-12">
+            <div class="row"> 
+                <div class="form-group">
+                    <?php
+                    echo $form->labelEx($model, 'type', array(
+                        'class' => 'col-xs-3 control-label'
+                    ));
+                    ?>
+                    <div class="col-xs-9">
+                        <?php
+                        echo $form->textField($model, 'type', array(
+                            'id' => 'type',
+                            'class' => 'form-control',
+                            'placeholder' => 'Краткое наименование параметра анализа'
+                        ));
+                        ?>
+                        <?php echo $form->error($model, 'type'); ?>
+                    </div>
+                </div>
+            </div>
+            <div class="row"> 
+                <div class="form-group">
+                    <?php
+                    echo $form->textField($model, 'name', array(
+                        'id' => 'name',
+                        'class' => 'form-control',
+                        'placeholder' => 'Краткое наименование параметра анализа'
+                    ));
+                    ?>
+                    'class' => 'col-xs-3 control-label'
+                    ));
+                    ?>
+                    <div class="col-xs-9">
+                        <?php echo $form->textField($model, 'name', array('size' => 60, 'maxlength' => 100)); ?>
+                        <?php echo $form->error($model, 'name'); ?>
+                    </div>
+                </div>
+            </div>
+            <div class="row"> 
+                <div class="form-group">
+                    <?php
+                    echo $form->labelEx($model, 'notes', array(
+                        'class' => 'col-xs-3 control-label'
+                    ));
+                    ?>
+                    <div class="col-xs-9">
+                        <?php echo $form->textArea($model, 'notes', array('rows' => 6, 'cols' => 50)); ?>
+                        <?php echo $form->error($model, 'notes'); ?>
+                    </div>
+                </div> 
+            </div> 
+        </div> 
+    </div> 
 
-	<?php echo $form->errorSummary($model); ?>
+    <div class="modal-footer">
+        <?php
+        $this->widget('zii.widgets.jui.CJuiButton', array(
+            'name' => 'submit_' . rand(),
+            'caption' => $model->isNewRecord ? 'Создать' : 'Сохранить',
+            'htmlOptions' => array(
+                'class' => 'btn btn-primary',
+                'ajax' => array(
+                    'url' => $model->isNewRecord ? $this->createUrl('create') : $this->createUrl('update', array('id' => $model->id)),
+                    'type' => 'post',
+                    'data' => 'js:jQuery(this).parents("form").serialize()',
+                    'success' => 'function(r){
+                                    if(r=="success"){
+					window.location.reload();
+                                    }
+                                    else{
+					$("#DialogCRUDForm").html(r).dialog("option", "title", "' . ($model->isNewRecord ? 'Create' : 'Update') . ' AnalyzerType").dialog("open"); return false;
+                                    }
+				}',
+                ),
+            ),
+        ));
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'type'); ?>
-		<?php echo $form->textField($model,'type',array('size'=>60,'maxlength'=>100)); ?>
-		<?php echo $form->error($model,'type'); ?>
-	</div>
+        $this->widget('zii.widgets.jui.CJuiButton', array(
+            'buttonType' => 'button',
+            'name' => 'close_' . rand(),
+            'caption' => 'Закрыть',
+            'htmlOptions' => array('class' => 'btn btn-default',
+                'ajax' => array(
+                    'url' => '#',
+                    'type' => 'post',
+                    'success' => 'function(r){
+                                    window.location.reload();
+				}',
+                ),
+            ),
+        ));
+        ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'name'); ?>
-		<?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>100)); ?>
-		<?php echo $form->error($model,'name'); ?>
-	</div>
+        <?php $this->endWidget(); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'notes'); ?>
-		<?php echo $form->textArea($model,'notes',array('rows'=>6, 'cols'=>50)); ?>
-		<?php echo $form->error($model,'notes'); ?>
-	</div>
-
-	<?php if (!Yii::app()->request->isAjaxRequest): ?>
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Создать' : 'Сохранить'); ?>
-	</div>
-	
-	<?php else: ?>
-	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-		<div class="ui-dialog-buttonset">
-		<?php			$this->widget('zii.widgets.jui.CJuiButton', array(
-				'name'=>'submit_'.rand(),
-				'caption'=>$model->isNewRecord ? 'Создать' : 'Сохранить',
-				'htmlOptions'=>array(
-					'ajax' => array(
-						'url'=>$model->isNewRecord ? $this->createUrl('create') : $this->createUrl('update', array('id'=>$model->id)),
-						'type'=>'post',
-						'data'=>'js:jQuery(this).parents("form").serialize()',
-						'success'=>'function(r){
-							if(r=="success"){
-								window.location.reload();
-							}
-							else{
-								$("#DialogCRUDForm").html(r).dialog("option", "title", "'.($model->isNewRecord ? 'Create' : 'Update').' AnalyzerType").dialog("open"); return false;
-							}
-						}', 
-					),
-				),
-			));
-		?>
-		</div>
-	</div>
-	<?php endif; ?>
-
-<?php $this->endWidget(); ?>
-
-</div><!-- form -->
+    </div><!-- form -->
