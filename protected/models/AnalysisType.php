@@ -27,12 +27,12 @@ class AnalysisType extends MisActiveRecord
     public function rules()
     {
         return [
-            ['name, short_name', 'required', 'on'=>'analysistypes.update'],
+            ['name', 'required', 'on'=>'analysistypes.update'],
             ['name, short_name', 'type', 'type'=>'string', 'on'=>'analysistypes.update'],
             ['id, automatic, manual', 'type', 'type'=>'integer', 'on'=>'analysistypes.update'], //[controller].[action]
             ['automatic, manual', 'safe', 'on'=>'analysistypes.update'],
 
-            ['name, short_name', 'required', 'on'=>'analysistypes.create'],
+            ['name', 'required', 'on'=>'analysistypes.create'],
             ['name, short_name', 'type', 'type'=>'string', 'on'=>'analysistypes.create'],
             ['id, automatic, manual', 'type', 'type'=>'integer', 'on'=>'analysistypes.create'], //[controller].[action]
             ['automatic, manual', 'safe', 'on'=>'analysistypes.create'],
@@ -180,7 +180,7 @@ class AnalysisType extends MisActiveRecord
                 break;
         }
     }
-    public function templates()
+   public function templates()
     {
         $criteria=new CDbCriteria;
             $criteria->select = 't.id, t.name, count(att.*) as param_count';

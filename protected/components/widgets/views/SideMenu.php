@@ -134,9 +134,6 @@
                 <li <?php echo ($controller == 'test' && $action == 'view') ? 'class="active"' : ''; ?>>
                     <?php echo CHtml::link('Тест', array('/laboratory/test/view')) ?>
                 </li>
-                <li <?php echo $module == 'guides' ? 'class="active"' : ''; ?>>
-                    <?php echo CHtml::link('Справочники', array('/guides/analysistypes/view')) ?>
-                </li>
             <?php } ?>
         </ul>
     </li>
@@ -184,11 +181,11 @@
         <?php echo CHtml::link('<img src="'.Yii::app()->getBaseUrl().'/images/icons/admin.png" width="32" height="32" alt="" />Сервис', array('#')) ?>
         <ul class="nav">
             <?php if(Yii::app()->user->checkAccess('menuOrgGuides')) { ?>
-            <li <?php echo $module == 'guides' || ($module == 'admin' && $action == 'shedulesettings') ? 'class="active"' : ''; ?>>
+            <li <?php echo strstr($module, "guides") || ($module == 'admin' && $action == 'shedulesettings') ? 'class="active"' : ''; ?>>
                 <?php echo CHtml::link('Организационные справочники', array('#')) ?>
                 <ul class="nav">
                     <?php if(Yii::app()->user->checkAccess('menuGuides')) { ?>
-                        <li <?php echo $module == 'guides' ? 'class="active"' : ''; ?>>
+                        <li <?php echo strstr($module, "guides") ? 'class="active"' : ''; ?>>
                             <?php echo CHtml::link('Справочники', array('/guides/enterprises/view')) ?>
                         </li>
                     <?php } ?>

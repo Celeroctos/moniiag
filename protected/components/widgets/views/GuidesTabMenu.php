@@ -38,7 +38,8 @@
 	<li <?php echo $controller == 'medcards' ? 'class="active"' : ''; ?>>
         <?php echo CHtml::link('Номера медкарт', array('/guides/medcards/viewprefixes')) ?>
     </li>
-    <li <?php echo $controller == 'laboratory' ? 'class="active"' : ''; ?>>
-        <?php echo CHtml::link('Лаборатория', array('/guides/laboratory/listanalysisparams')) ?>
+    <li <?php echo 
+	($controller == 'analysisparam') ? 'class="active"' : ''; ?>>
+        <?php echo CHtml::link('Лаборатория', array('/guides/laboratory/analysisparam')) ?>
     </li>
 </ul>

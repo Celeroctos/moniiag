@@ -35,7 +35,8 @@ return array(
 		'application.models.*',
         'application.models.forms.*',
 		'application.components.*',
-        'application.controllers.*'
+		'application.components.widgets.*',
+        'application.controllers.*',
 	),
 
 	'modules'=>array(
@@ -173,12 +174,12 @@ return array(
 //					'levels'=>'error, warning, trace, profile, info',
 					'levels'=>'error, warning, info',
 				),
-                array(
-                    'class' => 'CWebLogRoute',
+//                array(
+//                    'class' => 'CWebLogRoute',
 //                    'categories' => 'application',
 //                    'levels'=>'error, warning, trace, profile, info',
-                    'showInFireBug' => true
-                ),
+//                    'showInFireBug' => true
+//                ),
 			),
 		),
         'ePdf' => array(
