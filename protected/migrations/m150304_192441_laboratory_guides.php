@@ -6,28 +6,28 @@ class m150304_192441_laboratory_guides extends CDbMigration {
 
         $this->createTable("lis.analysis_params", [
             "id" => "serial primary key",
-            "name" => "varchar(30) not null",
+            "name" => "varchar(30) not null unique",
             "long_name" => "varchar(200)",
             "comment" => "text"
         ]);
 
         $this->createTable("lis.analysis_sample_types", [
             "id" => "serial primary key",
-            "type" => "varchar(100) not null",
+            "type" => "varchar(100) not null unique",
             "subtype" => "varchar(100)"
         ]);
 
         $this->createTable("lis.analysis_types", [
             "id" => "serial primary key",
-            "name" => "varchar(200) not null",
+            "name" => "varchar(200) not null unique",
             "short_name" => "varchar(20)",
             "automatic" => "int not null default 0",
             "manual" => "int not null default 0"
         ]);
 
         $this->createTable("lis.analyzer_types", [
-            "id" => "int primary key",
-            "type" => "varchar(100) not null",
+            "id" => "serial primary key",
+            "type" => "varchar(100) not null unique",
             "name" => "varchar(100)",
             "notes" => "text"
         ]);
