@@ -1,0 +1,6 @@
+/protected/runtime/
+/.htaccess
+/protected/config/db/db.php
+/.idea/
+/assets/
+/uploads/
