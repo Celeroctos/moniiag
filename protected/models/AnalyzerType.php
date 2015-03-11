@@ -2,13 +2,8 @@
 /**
 * AR-модель для работы с analysis_params
 */
-class AnalysisParam extends MisActiveRecord 
+class AnalyzerType extends MisActiveRecord 
 {
-/*    public $id;
-    public $name;
-    public $long_name;
-    public $comment;
-*/
     public static function model($className=__CLASS__)
     {
         return parent::model($className);
@@ -17,21 +12,21 @@ class AnalysisParam extends MisActiveRecord
     public function rules()
     {
         return [
-            ['name', 'required', 'on'=>'analysisparams.update'],
-            ['name, long_name, comment', 'type', 'type'=>'string', 'on'=>'analysisparams.update'],
-            ['id', 'type', 'type'=>'integer', 'on'=>'analysisparams.update'], //[controller].[action]
+            ['type', 'required', 'on'=>'analyzertypes.update'],
+            ['type, name, notes', 'type', 'type'=>'string', 'on'=>'analyzertypes.update'],
+            ['id', 'type', 'type'=>'integer', 'on'=>'analyzertypes.update'], //[controller].[action]
 
-            ['name', 'required', 'on'=>'analysisparams.create'],
-            ['name, long_name, comment', 'type', 'type'=>'string', 'on'=>'analysisparams.create'],
-            ['id', 'type', 'type'=>'integer', 'on'=>'analysisparams.create'], //[controller].[action]
+            ['type', 'required', 'on'=>'analyzertypes.create'],
+            ['type, name, notes', 'type', 'type'=>'string', 'on'=>'analyzertypes.create'],
+            ['id', 'type', 'type'=>'integer', 'on'=>'analyzertypes.create'], //[controller].[action]
 
-            ['id, name, long_name, comment', 'safe', 'on'=>'analysisparams.search'],
+            ['id, type, name, notes', 'safe', 'on'=>'analyzertypes.search'],
         ];
     }
 
     public function tableName()
     {
-        return 'lis.analysis_params';
+        return 'lis.analyzer_types';
     }
 
     /**
@@ -39,33 +34,33 @@ class AnalysisParam extends MisActiveRecord
     * @param string $typeQuery Добавить/обновить
     * @return array
     */
-    public static function getAnalysisParamListData($typeQuery)
+    public static function getAnalyzerTypeListData($typeQuery)
     {
-        $model=new AnalysisParam;
+        $model=new AnalyzerType;
         $criteria=new CDbCriteria;
-        $criteria->select='id, name';
-        $analysisparamList=$model->findAll($criteria);
+        $criteria->select='id, type';
+        $analyzertypeList=$model->findAll($criteria);
 
         return CHtml::listData(
             CMap::mergeArray([
                 [
                     'id'=>$typeQuery=='insert' ? null : null,
-                    'name'=>'',
+                    'type'=>'',
                 ]
-                ], $analysisparamList),
+                ], $analyzertypeList),
             'id',
-            'name'
+            'type'
         );
     }	
 /*
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
         $connection = Yii::app()->db;
-        $analysisparams = $connection->createCommand()
+        $analyzertypes = $connection->createCommand()
         ->select('at.*')
         ->from('lis.analysis_params ap');
 
         if($filters !== false) {
-            $this->getSearchConditions($analysisparams, $filters, array(
+            $this->getSearchConditions($analyzertypes, $filters, array(
                 ), array(
                     'ap' => array('analysis_param', 'name')
                 ), array(
@@ -74,26 +69,26 @@ class AnalysisParam extends MisActiveRecord
         }
 
         if($sidx !== false && $sord !== false) {
-            $analysisparams->order($sidx.' '.$sord);
+            $analyzertypes->order($sidx.' '.$sord);
         }
         if($start !== false && $limit !== false) {
-            $analysisparams->limit($limit, $start);
+            $analyzertypes->limit($limit, $start);
         }
 
-        return $analysisparams->queryAll();
+        return $analyzertypes->queryAll();
     }
 */
 
     public function getOne($id) {
         try {
             $connection = Yii::app()->db;
-            $analysisparam = $connection->createCommand()
-            ->select('ap.*')
-            ->from('lis.analysis_params ap')
-            ->where('ap.id = :id', array(':id' => $id))
+            $analyzertype = $connection->createCommand()
+            ->select('at.*')
+            ->from('lis.analyzer_types at')
+            ->where('at.id = :id', array(':id' => $id))
             ->queryRow();
 
-            return $analysisparam;
+            return $analyzertype;
 
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -104,9 +99,9 @@ class AnalysisParam extends MisActiveRecord
     public function attributeLabels() {
         return [
             'id'=>'#ID',
-            'name'=>'Краткое наименование параметра анализа',
-            'long_name'=>'Полное наименование параметра анализа',
-            'comment'=>'Примечания'
+            'type'=>'Тип анализатора',
+            'name'=>'Название анализатора',
+            'notes'=>'Пометки'
         ];
     }
 
@@ -120,9 +115,9 @@ class AnalysisParam extends MisActiveRecord
         //        if($this->validate())
         {
             $criteria->compare('id', $this->id, false);
+            $criteria->compare('type', $this->type, true);
             $criteria->compare('name', $this->name, true);
-            $criteria->compare('long_name', $this->long_name, true);
-            $criteria->compare('comment', $this->comment, true);
+            $criteria->compare('notes', $this->notes, true);
         }
         /*        else
         {
@@ -135,15 +130,14 @@ class AnalysisParam extends MisActiveRecord
             'sort'=>[
                 'attributes'=>[
                     'id', 
+                    'type', 
                     'name', 
-                    'long_name', 
-                    'comment'
+                    'notes'
                 ],
                 'defaultOrder'=>[
-                    'name'=>CSort::SORT_ASC,
+                    'type'=>CSort::SORT_ASC,
                 ],
             ],
         ]);
     }
-
 }
