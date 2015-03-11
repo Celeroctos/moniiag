@@ -8,7 +8,7 @@ class LMedcardEditor extends LWidget {
 	 */
 	public function run() {
 		$this->render(__CLASS__, [
-			"model" => new LPatientForm(),
+			"model" => new LPatientFormOLD(),
 			"privileges" => $this->getPrivileges()
 		]);
 	}

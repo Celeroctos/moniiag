@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Savonin
- * Date: 2015-03-06
- * Time: 18:04
- */
 
 class LAnalyzerTypeForm extends LFormModel {
 

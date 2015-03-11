@@ -1,6 +1,6 @@
 <?php
 
-class LAnalysisTypeForm extends LFormModel {
+class LAddressForm extends LFormModel {
 
 	/**
 	 * Override that method to return additional rule configuration, like
@@ -9,15 +9,9 @@ class LAnalysisTypeForm extends LFormModel {
 	 */
 	public function backward() {
 		return [
-
-			// don't validate identification number on register
-			[ "id", "required", "on" => [ "update", "search" ] ],
-
-			// set maximum length of name field
-			[ "name", "length", "max" => 200 ],
-
-			// set maximum length of short name field
-			[ "short_name", "length", "max" => 20 ]
+			[ "street_name", "length", "max" => 200 ],
+			[ [ "house_number", "flag_number" ], "length", "max" => 10 ],
+			[ "city", "length", "max" => 50 ]
 		];
 	}
 
@@ -33,26 +27,32 @@ class LAnalysisTypeForm extends LFormModel {
 		return [
 			"id" => [
 				"label" => "Идентификатор",
-				"type" => "number"
+				"type" => "number",
+				"rules" => "safe, numerical"
 			],
-			"name" => [
-				"label" => "Наименование",
+			"street_name" => [
+				"label" => "Название улицы",
 				"type" => "text",
 				"rules" => "required"
 			],
-			"short_name" => [
-				"label" => "Краткое наименование анализа",
+			"house_number" => [
+				"label" => "Номер дома",
 				"type" => "text",
 				"rules" => "required"
 			],
-			"automatic" => [
-				"label" => "Ручная методика",
-				"type" => "YesNo",
+			"flat_number" => [
+				"label" => "Номер квартиры",
+				"type" => "text",
 				"rules" => "required"
 			],
-			"manual" => [
-				"label" => "Автоматическая методика",
-				"type" => "YesNo",
+			"post_index" => [
+				"label" => "Почтовый индекс",
+				"type" => "text",
+				"rules" => "safe"
+			],
+			"city" => [
+				"label" => "Город",
+				"type" => "text",
 				"rules" => "required"
 			]
 		];

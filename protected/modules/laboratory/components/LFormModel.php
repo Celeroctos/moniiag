@@ -9,8 +9,7 @@ abstract class LFormModel extends CFormModel {
 	 * @see replace
 	 */
 	protected $replace = [
-		"required" => "LRequiredValidator",
-		"hidden" => "LHiddenValidator"
+		"required" => "LRequiredValidator"
 	];
 
 	/**
@@ -41,9 +40,28 @@ abstract class LFormModel extends CFormModel {
     public abstract function config();
 
 	/**
+	 * Get configuration for specific key all for all form
+	 * @param string $key - One configuration key name
+	 * @return array - Array with configuration
+	 */
+	public function getConfig($key = null) {
+		if (!$this->_config) {
+			$this->_config = $this->config();
+		}
+		if ($key == null) {
+			return $this->_config;
+		}
+		if (isset($this->_config[$key])) {
+			return $this->_config[$key];
+		} else {
+			return null;
+		}
+	}
+
+	/**
 	 * Override that method to return list with replacements, don't
 	 * forget parents replacements
-	 * @return array - Array with rules replacements
+	 * @return array - Array with replacements
 	 */
 	public function replace() {
 		return $this->replace;
@@ -76,7 +94,7 @@ abstract class LFormModel extends CFormModel {
 	 */
 	public function isDropDown($field) {
 		if (!$this->_config) {
-			$this->_config = $this->config();
+			$this->_config = $this->getConfig();
 		}
 		if (!isset($this->_config[$field]) || (!isset($this->_config[$field]["type"]))) {
 			return false;
@@ -121,7 +139,7 @@ abstract class LFormModel extends CFormModel {
 
         // Get model's configuration
         if ($config == null) {
-			$config = $this->config();
+			$config = $this->getConfig();
         }
 
         // Reset rules and labels arrays
@@ -154,7 +172,41 @@ abstract class LFormModel extends CFormModel {
 				$this->_container[$key] = null;
 			}
         }
+
+		$this->_backward = $this->backward();
+
+		foreach ($this->_backward as $i => &$b) {
+			if (isset($b[1]) && $b[1] == "hide") {
+				if (is_array($b[0]) && $this->checkScenario($b["on"])) {
+					foreach ($b[0] as $r) {
+						$this->_config[$r]["type"] = "hidden";
+					}
+				} else if ($this->checkScenario($b["on"])) {
+					$this->_config[$b[0]]["type"] = "hidden";
+				}
+				array_splice($this->_backward, $i, 1);
+			}
+		}
     }
+
+	/**
+	 * Check if current model has been loaded with that
+	 * one of that scenario
+	 * @param array|string $scenario - Scenario name or array with names
+	 * @return bool - True if scenario exists
+	 */
+	private function checkScenario($scenario) {
+		if (is_array($scenario)) {
+			foreach ($scenario as $s) {
+				if (!strcasecmp($s, $this->scenario)) {
+					return true;
+				}
+			}
+		} else {
+			return !strcasecmp($scenario, $this->scenario);
+		}
+		return false;
+	}
 
 	/**
 	 * Find and replace validation rule for fields configuration
@@ -163,7 +215,7 @@ abstract class LFormModel extends CFormModel {
 	 */
 	private function replaceRules(&$rule) {
 		if (is_string($rule)) {
-			foreach ($this->replace as $old => $new) {
+			foreach ($this->replace() as $old => $new) {
 				$rule = str_replace($old, $new, $rule);
 			}
 			$result = [];
@@ -207,6 +259,7 @@ abstract class LFormModel extends CFormModel {
 	 * all data stuff was in basic configuration
 	 * @param string $key - Name of unique field's identification number
 	 * @return array - Array with data or null, if method hasn't been declared
+	 * @deprecated - Use table configuration for it
 	 */
 	public function getKeyData($key) {
 		$method = "get".self::changeNotation($key);
@@ -254,30 +307,18 @@ abstract class LFormModel extends CFormModel {
     }
 
     /**
-     * Reset configuration
-     */
-    private function reset() {
-
-        // Reset arrays
-        $this->_rules = null;
-        $this->_labels = null;
-        $this->_types = null;
-		$this->_strong = null;
-
-        // Recompute configuration
-        $this->buildConfig();
-    }
-
-    /**
      * Get form model's rules associated with fields names
      * @return Array - Rules for form's mode;
      */
     public function rules() {
-        if (!$this->_rules) {
-            $this->buildConfig();
-        }
-        $result = [];
-        foreach ($this->_rules as $rule => $rules) {
+		if ($this->_cached != null) {
+			return $this->_cached;
+		}
+		if (!$this->_rules) {
+			$this->buildConfig();
+		}
+		$result = [];
+		foreach ($this->_rules as $rule => $rules) {
 			if (is_string($rules)) {
 				array_push($result, [
 					implode(", ", $rules), $rule
@@ -287,11 +328,13 @@ abstract class LFormModel extends CFormModel {
 					$rules, $rule
 				]);
 			}
-        }
-		return array_merge($result, array_merge($this->_strong,
-			$this->replaceRules($this->backward())
+		}
+		return $this->_cached = array_merge($result, array_merge($this->_strong,
+			$this->replaceRules($this->_backward)
 		));
-    }
+	}
+
+	private $_cached = null;
 
     /**
      * Get form model's labels
@@ -314,11 +357,12 @@ abstract class LFormModel extends CFormModel {
         return $this->_container;
     }
 
-    protected $_container = [];
-    protected $_rules = null;
+	protected $_container = [];
+	protected $_rules = null;
 	protected $_strong = null;
-    protected $_labels = null;
-    protected $_types = null;
+	protected $_labels = null;
+	protected $_types = null;
 	protected $_config = null;
-    protected $_data = null;
+	protected $_data = null;
+	protected $_backward = null;
 }

@@ -14,7 +14,9 @@ class LDirectionForm extends LFormModel {
 			[ "id", "required", "on" => [ "update", "search" ] ],
 
 			// set maximum length of card number
-			[ "card_number", "length", "max" => 50 ]
+			[ "card_number", "length", "max" => 50 ],
+
+			[ "sender_id", "default", "value" => LUserIdentity::get("doctorId") ]
 		];
 	}
 
@@ -53,8 +55,8 @@ class LDirectionForm extends LFormModel {
                     "value" => "name"
                 ]
 			],
-            "card_number" => [
-                "label" => "Номер карты",
+            "patient_id" => [
+                "label" => "Пациент",
                 "type" => "text"
             ],
             "history" => [
@@ -69,7 +71,6 @@ class LDirectionForm extends LFormModel {
 				"label" => "Врач",
 				"type" => "number",
 				"rules" => "required",
-                "value" => Yii::app()->user->getState("doctorId"),
                 "hidden" => "true"
 			],
             "department_id" => [
