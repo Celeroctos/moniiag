@@ -17,6 +17,11 @@ class LMedcardForm extends LFormModel {
 				"type" => "number",
 				"hidden" => "true"
 			],
+			"card_number" => [
+				"label" => "Номер карты",
+				"type" => "text",
+				"rules" => "required"
+			],
 			"mis_medcard" => [
 				"label" => "Идентификатор в МИС",
 				"type" => "number",
@@ -34,7 +39,7 @@ class LMedcardForm extends LFormModel {
 			],
 			"patient_id" => [
 				"label" => "Информаия о пациенте",
-				"type" => "number",
+				"type" => "form",
 				"rules" => "required",
 				"form" => "LPatientForm"
 			]
