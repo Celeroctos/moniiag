@@ -57,7 +57,14 @@ class LDirectionForm extends LFormModel {
 			],
             "patient_id" => [
                 "label" => "Пациент",
-                "type" => "text"
+                "type" => "DropDown",
+				"rules" => "required",
+				"table" => [
+					"name" => "lis.patient",
+					"key" => "id",
+					"format" => "%{surname} %{name}",
+					"value" => "surname, name"
+				]
             ],
             "history" => [
                 "label" => "Медикаментозный анамнез",

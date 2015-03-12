@@ -22,8 +22,7 @@ class LDirection extends LModel {
             ->leftJoin("lis.medcard as m", "m.id = d.medcard_id");
         $array = $query->queryAll();
         foreach ($array as &$value) {
-            $value["status"] = LDirectionStatusField::field()
-                ->getOption($value["status"]);
+            $value["status"] = LDirectionStatusField::field()->getOption($value["status"]);
         }
         return $array;
     }

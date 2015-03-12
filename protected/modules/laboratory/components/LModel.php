@@ -182,7 +182,7 @@ abstract class LModel extends CActiveRecord {
 	 */
 	public function getTableCount(CDbCriteria $criteria = null) {
 		$query = $this->getDbConnection()->createCommand()
-			->select("count(*) as count")
+			->select("count(1) as count")
 			->from($this->tableName());
 		if ($criteria != null && $criteria instanceof CDbCriteria) {
 			$query->andWhere($criteria->condition, $criteria->params);

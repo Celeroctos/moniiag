@@ -440,12 +440,16 @@ abstract class LController extends Controller {
         die(json_encode($parameters));
     }
 
-    /**
-     * Post error message and terminate script evaluation
-     * @param $exception Exception - Exception
-     */
+	/**
+	 * Post error message and terminate script evaluation
+	 * @param $exception Exception - Exception
+	 * @throws Exception - It will be thrown for not ajax requests
+	 */
     public function exception(Exception $exception) {
         $method = $exception->getTrace()[0];
+		if (!Yii::app()->getRequest()->getIsAjaxRequest()) {
+			throw $exception;
+		}
         $this->leave([
             "message" => basename($method["file"])."[".$method["line"]."] ".$method["class"]."::".$method["function"]."(): \"".$exception->getMessage()."\"",
             "file" => basename($method["file"]),

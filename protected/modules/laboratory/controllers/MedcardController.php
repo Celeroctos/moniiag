@@ -30,6 +30,31 @@ class MedcardController extends LController {
 	}
 
 	/**
+	 * That action will load full information about medcard with
+	 * patient's addresses
+	 *
+	 * @in (POST):
+	 *  + number - Medcard number
+	 * @out (JSON):
+	 *  + model - Model with full information about medcard
+	 *  + status - True on success
+	 *  + [message] - Message with response
+	 */
+	public function actionLoad() {
+		try {
+			$row = LMedcard::model()->fetchInformation($this->get("number"));
+			if ($row == null) {
+				throw new CException("Unresolved medcard number \"{$this->get("number")}\"");
+			}
+			$this->leave([
+				"model" => $row
+			]);
+		} catch (Exception $e) {
+			$this->exception($e);
+		}
+	}
+
+	/**
 	 * Search action, which accepts array with search serialized form
 	 * models (LMedcardSearchForm + LSearchRangeForm). That action will
 	 * fetch form's values and build search condition form form model
@@ -43,7 +68,6 @@ class MedcardController extends LController {
 	 */
 	public function actionSearch() {
 		try {
-			// Build an array with search parameters
 			$like = [];
 			$compare = [];
 			foreach ($this->getFormModel("model", "post") as $model) {

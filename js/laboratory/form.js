@@ -11,46 +11,6 @@ var Laboratory = Laboratory || {};
             url: null,
             parent: null
         }, selector);
-        this.property("parent") && this.property("parent").find(".form-search-button").each(function(i, item) {
-			var form = $(item).parent("a").data("form");
-			console.log(form);
-			$(item).click(function() {
-				if (!$(item).data("popover")) {
-					$.get(url("/laboratory/laboratory/getWidget"), {
-						class: "LForm",
-						model: form
-					}, function(json) {
-						if (!Message.display(json)) {
-							return void 0;
-						}
-						var component = $(json["component"]);
-						component.find(".form-group div")
-							.removeClass("col-xs-7")
-							.addClass("col-xs-8");
-						component.find(".form-group .glyphicon")
-							.remove();
-						component.find("form").css("width", "300px");
-						$(item).popover({
-							content: $("<div>", {
-								style: "margin: 0; padding 0;"
-							}).append(component).append(
-								$("<div>", {
-									style: "width: 100%; text-align: center"
-								}).append(
-									$("<button>", {
-										text: "Добавить",
-										class: "btn btn-default btn-sm btn-block"
-									})
-								)
-							),
-							placement: "top",
-							title: "Быстрое добавление",
-							html: true
-						}).popover("show").data("popover", true);
-					}, "json");
-				}
-			});
-        });
     };
 
     Laboratory.extend(Form, Laboratory.Component);
@@ -207,7 +167,6 @@ var Laboratory = Laboratory || {};
     };
 
     $(document).ready(function() {
-        Multiple.construct();
         $("[id$='-panel'], [id$='-modal']").each(function(i, item) {
             if (!$(item).find("form").length) {
                 return void 0;
@@ -233,16 +192,16 @@ var Laboratory = Laboratory || {};
                 }
             });
         });
-        $("[id$='-modal']").on("show.bs.modal", function() {
-            $(this).draggable("disable");
-            var form = $(this).find("form");
-            if (!form.length) {
-                return void 0;
-            }
-            form.find("input, textarea").val("");
-            form.find("select", -1);
-            form.find(".form-group").removeClass("has-error");
-        });
+        //$("[id$='-modal']").on("show.bs.modal", function() {
+        //    $(this).draggable("disable");
+        //    var form = $(this).find("form");
+        //    if (!form.length) {
+        //        return void 0;
+        //    }
+        //    form.find("input, textarea").val("");
+        //    form.find("select", -1);
+        //    form.find(".form-group").removeClass("has-error");
+        //});
     });
 
 })(Laboratory);

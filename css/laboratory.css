@@ -122,6 +122,19 @@
 }
 
 /* From Bootstrap 3.3.2 */
+@media (min-width: 768px) {
+    .modal-dialog {
+        width: 600px;
+        margin: 30px auto;
+    }
+    .modal-content {
+        -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+    }
+    .modal-sm {
+        width: 300px;
+    }
+}
 @media (min-width: 992px) {
     .modal-lg {
         width: 900px;
@@ -227,6 +240,10 @@
     vertical-align: middle;
 }
 
+.treatment-header .dropdown-menu li {
+    text-align: left;
+}
+
 .treatment-header-wrapper .active {
     background-color: #47a347;
     color: white;
@@ -239,4 +256,29 @@
     border: 1px darkred solid;
     background-color: white;
     color: black;
+}
+
+#direction-mode-modal .modal-body button {
+    margin: 5px;
+}
+
+#medcard-search-modal button#load {
+    min-width: 150px;
+    width: auto;
+}
+
+.treatment-header-wrapper .dropdown-menu a[data-toggle] {
+    cursor: pointer;
+}
+
+#medcard-editable-viewer-form .text-center b {
+    font-size: 15px;
+}
+
+.medcard-editable-viewer-number b {
+    font-size: 20px;
+}
+
+.medcard-editable-viewer-number #card_number:empty:after {
+    content: '0000/00';
 }

@@ -144,7 +144,7 @@ class LForm extends LWidget {
         $config = $this->model->config()[$key];
 
         if (isset($config["type"])) {
-            $type = $config["type"];
+            $type = strtolower($config["type"]);
         } else {
             $type = "text";
         }

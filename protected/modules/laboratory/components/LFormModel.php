@@ -78,6 +78,24 @@ abstract class LFormModel extends CFormModel {
 		];
 	}
 
+	/**
+	 * Create filter for specific scenario to set fields
+	 * without hidden property
+	 * @param string $scenario - Name of scenario
+	 * @param array $allowed - Array with visible fields
+	 * @return array - Row for backward method
+	 * @see LFormModel::backward
+	 */
+	public function createFilter($scenario, $allowed) {
+		$locked = [];
+		foreach (array_keys($this->getConfig()) as $key) {
+			if (!in_array($key, $allowed)) {
+				$locked[] = $key;
+			}
+		}
+		return [ $locked, "hide", "on" => $scenario ];
+	}
+
     /**
      * That function will check model's field for valid for drop down list
      * @param string $field - Field's name

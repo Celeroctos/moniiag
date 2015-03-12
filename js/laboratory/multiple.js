@@ -112,4 +112,5 @@ $(document).ready(function() {
     $("select[multiple]").each(function() {
         Multiple.load(this);
     });
+	Multiple.construct();
 });

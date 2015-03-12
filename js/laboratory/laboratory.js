@@ -535,7 +535,7 @@ var MedcardSearch = {
 
 var TreatmentViewHeader = {
 	construct: function() {
-		$("button.treatment-header-rounded[data-toggle!='modal']").click(function() {
+		$("button.treatment-header-rounded:not([data-toggle])").click(function() {
 			TreatmentViewHeader.activate($(this));
 		});
 		$("#direction-register-modal").on("show.bs.modal", function() {
@@ -545,10 +545,32 @@ var TreatmentViewHeader = {
 			});
 			$(this).find("select[multiple]").val("");
 		});
+		this.active = $(".treatment-header").find("button.active");
+		if (!this.active.length) {
+			this.active = null;
+		}
 	},
 	activate: function(item) {
 		this.active && this.active.removeClass("active");
 		return (this.active = item.addClass("active"));
+	},
+	load: function(model) {
+		var modal = $("#medcard-editable-viewer-modal");
+		for (var i in model) {
+			var offset = 0;
+			var chances = [
+				model[i], -1, 0, 1
+			];
+			var field = modal.find("#" + i);
+			do {
+				modal.find("#" + i).val(chances[offset]);
+				if (++offset > chances.length) {
+					break;
+				}
+			} while (field.val() === null);
+		}
+		modal.modal();
+		console.log(model);
 	},
 	active: null
 };
@@ -566,6 +588,43 @@ var LogoutButton = {
 	}
 };
 
+var MedcardSearchModal = {
+	construct: function() {
+		var modal = $("#medcard-search-modal");
+		modal.on("show.bs.modal", function() {
+			$(this).find("#load").prop("disabled", true);
+		});
+		modal.on("click", "#medcard-table tr[data-id]", function() {
+			MedcardSearchModal.id = $(this).data("id");
+			modal.find("#load").text("Открыть (" + MedcardSearchModal.id + ")").removeProp("disabled");
+		});
+		modal.find("#load").click(function() {
+			if (!MedcardSearchModal.id) {
+				return void 0;
+			}
+			var text = $(this).text();
+			var btn = $(this).button("loading");
+			$.get(url("laboratory/medcard/load"), {
+				number: MedcardSearchModal.id
+			}, function(json) {
+				if (!Message.display(json)) {
+					return void 0;
+				}
+				TreatmentViewHeader.load(json["model"]);
+				modal.modal("hide");
+			}, "json")
+				.always(function() {
+					btn.button("reset").text(text);
+				}).fail(function() {
+					Laboratory.createMessage({
+						message: "Произошла ошибка при отправке запроса. Обратитесь к администратору"
+					});
+				})
+		});
+	},
+	id: null
+};
+
 $(document).ready(function() {
 	GuideColumnEditor.construct();
 	ConfirmDelete.construct();
@@ -575,4 +634,5 @@ $(document).ready(function() {
 	MedcardSearch.construct();
 	TreatmentViewHeader.construct();
 	LogoutButton.construct();
+	MedcardSearchModal.construct();
 });

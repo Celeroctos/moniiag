@@ -65,6 +65,92 @@ class LMedcard extends LModel {
     }
 
 	/**
+	 * Fetch full information about medcard with patient info and others
+	 * @param string $number - Number of medcard to find
+	 * @return mixed - Found rows
+	 * @throws CDbException
+	 * @throws CException
+	 */
+	public function fetchInformation($number) {
+		$row = $this->getDbConnection()->createCommand()
+			->select("*")
+			->from("mis.medcards as m")
+			->join("mis.oms as o", "m.policy_id = o.id")
+			->where("m.card_number = :number", [
+				":number" => $number
+			])->queryRow();
+		if (!$row) {
+			return null;
+		}
+		$row["address"] = $this->getAddressInfo(
+			json_decode($row["address"], true)
+		);
+		$row["address_reg"] = $this->getAddressInfo(
+			json_decode($row["address_reg"], true)
+		);
+		return $row;
+	}
+
+	/**
+	 * Fetch information about address from cladr
+	 * @param array $row - Array with parsed json object from [mis.medcards.address]
+	 * @return array - Array with received information about address
+	 * @throws CDbException - Database exceptions
+	 * @throws CException - If some identification number broken
+	 */
+	protected function getAddressInfo($row) {
+		$address = [
+			"region" => null,
+			"district" => null,
+			"street" => null,
+			"house" => null,
+			"flag" => null,
+			"building" => null,
+			"post" => null
+		];
+		if (isset($row["regionId"])) {
+			$region = $this->getDbConnection()->createCommand()
+				->select("*")
+				->from("mis.cladr_regions")
+				->where("id = :id", [
+					":id" => $row["regionId"]
+				])
+				->queryRow();
+			if (!$region) {
+				throw new CException("Unresolved region identification number \"{$row["regionId"]}\"");
+			}
+			$address["region"] = $region;
+		}
+		if (isset($row["districtId"])) {
+			$district = $this->getDbConnection()->createCommand()
+				->select("*")
+				->from("mis.cladr_districts")
+				->where("id = :id", [
+					":id" => $row["districtId"]
+				])
+				->queryRow();
+			if (!$district) {
+				throw new CException("Unresolved region identification number \"{$row["districtId"]}\"");
+			}
+			$address["district"] = $district;
+		}
+		if (isset($row["streetId"])) {
+			$street = $this->getDbConnection()->createCommand()
+				->select("*")
+				->from("mis.cladr_streets")
+				->where("id = :id", [
+					":id" => $row["streetId"]
+				])
+				->queryRow();
+			if (!$street) {
+				throw new CException("Unresolved street identification number \"{$row["streetId"]}\"");
+			}
+			$address["street"] = $street;
+		}
+		return $address + $row;
+	}
+
+	/**
 	 * Override that method to return count of rows in table
 	 * @param CDbCriteria $criteria - Search criteria
 	 * @return int - Count of rows in current table
@@ -72,7 +158,7 @@ class LMedcard extends LModel {
 	 */
 	public function getTableCount(CDbCriteria $criteria = null) {
 		$query = $this->getDbConnection()->createCommand()
-			->select("count(*) as count")
+			->select("count(1) as count")
 			->from("mis.medcards as m")
 			->join("mis.oms as o", "m.policy_id = o.id")
 			->leftJoin("lis.analysis as a", "a.medcard_number = m.card_number");

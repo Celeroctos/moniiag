@@ -20,12 +20,35 @@ $this->widget("LModal", [
 	]
 ]);
 
-$table = $this->getWidget("LGridView", [
-    "model" => new LDirection(),
-    "id" => "direction-grid"
+$this->widget("LModal", [
+	"title" => "Поиск медкарты",
+	"body" => CHtml::tag("div", [
+		"style" => "padding: 10px"
+	], $this->getWidget("LMedcardSearch")),
+	"id" => "medcard-search-modal",
+	"buttons" => [
+		"load" => [
+			"text" => "Открыть",
+			"class" => "btn btn-primary",
+			"attributes" => [
+				"data-loading-text" => "Загрузка ..."
+			],
+			"type" => "button"
+		]
+	],
+	"class" => "modal-lg"
 ]);
-?>
 
+$this->widget("LModal", [
+	"title" => "Медицинская карта",
+	"body" => $this->getWidget("LMedcardEditableViewer", [
+		"number" => "0/12"
+	]),
+	"id" => "medcard-editable-viewer-modal",
+	"class" => "modal-lg"
+]);
+
+?>
 <div class="treatment-header-wrapper">
 	<div align="center" class="col-xs-12 col-xs-offset-6 treatment-header">
 		<div class="col-xs-12">
@@ -40,7 +63,7 @@ $table = $this->getWidget("LGridView", [
 			</div>
 		</div>
 		<div class="col-xs-4">
-			<button class="btn btn-default btn-block treatment-header-rounded" type="button">
+			<button class="btn btn-default btn-block treatment-header-rounded active" type="button">
 				<span>Направления</span>
 			</button>
 		</div>
@@ -51,12 +74,20 @@ $table = $this->getWidget("LGridView", [
 			</button>
 		</div>
 		<div class="col-xs-4">
-			<button class="btn btn-default btn-block treatment-header-rounded" type="button" data-toggle="modal" data-target="#direction-register-modal">
+			<button class="btn btn-default btn-block treatment-header-rounded" type="button" data-toggle="dropdown" aria-expanded="false">
 				<span>Создать направление</span>
+				<span class="caret"></span>
 			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a data-toggle="modal" data-target="#medcard-search-modal"">Для существующего пациента</a></li>
+				<li><a data-toggle="modal" data-target="#medcard-editable-viewer-modal">Для нового пациента</a></li>
+			</ul>
 		</div>
 	</div>
 	<div class="col-xs-12 treatment-table-wrapper">
-		<?= $table ?>
+		<?= $this->getWidget("LGridView", [
+			"model" => new LDirection(),
+			"id" => "direction-grid"
+		]) ?>
 	</div>
 </div>
