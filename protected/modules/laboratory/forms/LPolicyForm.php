@@ -104,8 +104,7 @@ class LPolicyForm extends LFormModel {
 			],
 			"oms_series" => [
 				"label" => "Серия",
-				"type" => "text",
-				"rules" => "required"
+				"type" => "text"
 			],
 			"oms_series_number" => [
 				"label" => "Серия и номер ОМС (дефисы, пробелы)",

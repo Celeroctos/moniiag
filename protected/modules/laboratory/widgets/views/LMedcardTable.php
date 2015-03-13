@@ -1,11 +1,12 @@
 <?php
 /**
  * @var LMedcardTable $this - Self instance
+ * @var LModel $model - Model to search
  */
 
 $this->widget("LTable", [
 	"widget" => $this,
-    "table" => new LMedcard(),
+    "table" => $model,
     "header" => [
         "number" => [
             "label" => "Номер ЛКП",

@@ -26,7 +26,7 @@ class LTable extends LWidget {
 		// Copy parameters from parent widget
 		if ($this->widget) {
 			foreach ($this->widget as $key => $value) {
-				if (!empty($value)) {
+				if (!empty($value) && $key != "mode") {
 					$this->$key = $value;
 				}
 			}
@@ -53,9 +53,9 @@ class LTable extends LWidget {
 		$total = $this->table->getTableCount($this->criteria);
 
 		// Get command for current table
-		$command = $this->table->getTable($this->conditions, $this->parameters)->order(
+		$command = $this->table->getTable()->order(
 			$this->sort.($this->desc ? " desc" : "")
-		);
+		)->andWhere($this->condition, $this->parameters);
 
 		// Attach criteria condition to query
 		if ($this->criteria) {

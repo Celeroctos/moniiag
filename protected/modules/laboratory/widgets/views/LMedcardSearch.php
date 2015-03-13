@@ -25,7 +25,7 @@
 		<button id="medcard-search-button" class="btn btn-success btn-block" type="button" data-loading-text="Загрузка...">Поиск</button>
 		<hr>
 		<div id="medcard-search-table-wrapper">
-			<? $this->widget("LMedcardTable") ?>
+			<? $this->widget("LMedcardTable", [ "mode" => $this->mode ]) ?>
 		</div>
 	</div>
 </div>

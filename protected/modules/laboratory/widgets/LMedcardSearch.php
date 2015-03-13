@@ -1,14 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitry
- * Date: 2015-02-18
- * Time: 17:24
- */
 
 class LMedcardSearch extends LWidget {
 
+	/**
+	 * @var string - Search mode (lis or mis)
+	 * @see LMedcardTable::mode
+	 */
+	public $mode = "mis";
+
     public function run() {
-        $this->render(__CLASS__, []);
+        $this->render(__CLASS__);
     }
 } 

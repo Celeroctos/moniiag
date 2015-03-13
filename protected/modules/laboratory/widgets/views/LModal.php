@@ -20,12 +20,18 @@
                 <table width="100%">
                 <tr>
                 <td align="left">
-                    <span class="glyphicon glyphicon-refresh refresh-button hidden"></span>
+					<? foreach ($this->buttons as $i => $button): ?>
+						<? if (isset($button["align"]) && $button["align"] == "left") : ?>
+							<button id="<?=$i?>" <?=isset($button["attributes"]) ? $button["attributes"] : ""?> type="<?=$button["type"]?>" class="<?=$button["class"]?>"><?=$button["text"]?></button>
+						<? endif ?>
+					<? endforeach; ?>
                 </td>
                 <td>
                     <button type="button" class="btn btn-default" data-dismiss="modal"><?= "Закрыть" ?></button>
                     <? foreach ($this->buttons as $i => $button): ?>
-                        <button id="<?=$i?>" <?=isset($button["attributes"]) ? $button["attributes"] : ""?> type="<?=$button["type"]?>" class="<?=$button["class"]?>"><?=$button["text"]?></button>
+						<? if (!isset($button["align"]) || $button["align"] != "left") : ?>
+                        	<button id="<?=$i?>" <?=isset($button["attributes"]) ? $button["attributes"] : ""?> type="<?=$button["type"]?>" class="<?=$button["class"]?>"><?=$button["text"]?></button>
+						<? endif ?>
                     <? endforeach; ?>
                 </td>
                 </tr>

@@ -262,7 +262,7 @@
     margin: 5px;
 }
 
-#medcard-search-modal button#load {
+#medcard-search-modal button#load-button {
     min-width: 150px;
     width: auto;
 }

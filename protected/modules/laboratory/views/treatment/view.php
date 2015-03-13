@@ -21,11 +21,13 @@ $this->widget("LModal", [
 ]);
 
 $this->widget("LModal", [
-	"title" => "Поиск медкарты",
+	"title" => "Поиск медкарты в МИС",
 	"body" => CHtml::tag("div", [
 		"style" => "padding: 10px"
-	], $this->getWidget("LMedcardSearch")),
-	"id" => "medcard-search-modal",
+	], $this->getWidget("LMedcardSearch", [
+		"mode" => "mis"
+	])),
+	"id" => "mis-medcard-search-modal",
 	"buttons" => [
 		"load" => [
 			"text" => "Открыть",
@@ -40,12 +42,64 @@ $this->widget("LModal", [
 ]);
 
 $this->widget("LModal", [
-	"title" => "Медицинская карта",
-	"body" => $this->getWidget("LMedcardEditableViewer", [
-		"number" => "0/12"
-	]),
-	"id" => "medcard-editable-viewer-modal",
+	"title" => "Поиск медкарты в ЛИС",
+	"body" => CHtml::tag("div", [
+		"style" => "padding: 10px"
+	], $this->getWidget("LMedcardSearch", [
+		"mode" => "lis"
+	])),
+	"id" => "lis-medcard-search-modal",
+	"buttons" => [
+		"load" => [
+			"text" => "Открыть",
+			"class" => "btn btn-primary",
+			"attributes" => [
+				"data-loading-text" => "Загрузка ..."
+			],
+			"type" => "button"
+		]
+	],
 	"class" => "modal-lg"
+]);
+
+$this->widget("LModal", [
+	"title" => "Новое направление",
+	"body" => CHtml::tag("div", [
+		"style" => "padding: 10px"
+	], $this->getWidget("LDirectionCreator"))
+]);
+
+$this->widget("LModal", [
+	"title" => "Медицинская карта № " . CHtml::tag("span", [
+			"id" => "card_number"
+		], ""),
+	"body" => $this->getWidget("LMedcardEditableViewer"),
+	"id" => "medcard-editable-viewer-modal",
+	"buttons" => [
+		"save-button" => [
+			"text" => "Сохранить",
+			"type" => "button",
+			"class" => "btn btn-primary"
+		],
+		"copy-button" => [
+			"text" => "Копировать",
+			"class" => "btn btn-default",
+			"type" => "button",
+			"align" => "left"
+		],
+		"insert-button" => [
+			"text" => "Вставить",
+			"class" => "btn btn-default",
+			"type" => "button",
+			"align" => "left"
+		],
+		"clear-button" => [
+			"text" => "Очистить",
+			"class" => "btn btn-warning",
+			"type" => "button",
+			"align" => "left"
+		]
+	]
 ]);
 
 ?>
@@ -79,7 +133,8 @@ $this->widget("LModal", [
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" role="menu">
-				<li><a data-toggle="modal" data-target="#medcard-search-modal"">Для существующего пациента</a></li>
+				<li><a data-toggle="modal" data-target="#mis-medcard-search-modal">Для пациента из МИС</a></li>
+				<li><a data-toggle="modal" data-target="#lis-medcard-search-modal">Для пациента из ЛИС</a></li>
 				<li><a data-toggle="modal" data-target="#medcard-editable-viewer-modal">Для нового пациента</a></li>
 			</ul>
 		</div>

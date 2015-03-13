@@ -42,7 +42,7 @@ class MedcardController extends LController {
 	 */
 	public function actionLoad() {
 		try {
-			$row = LMedcard::model()->fetchInformation($this->get("number"));
+			$row = LMedcard2::model()->fetchInformation($this->get("number"));
 			if ($row == null) {
 				throw new CException("Unresolved medcard number \"{$this->get("number")}\"");
 			}
@@ -68,6 +68,11 @@ class MedcardController extends LController {
 	 */
 	public function actionSearch() {
 		try {
+			if (isset($_POST["mode"])) {
+				$mode = $_POST["mode"];
+			} else {
+				$mode = "mis";
+			}
 			$like = [];
 			$compare = [];
 			foreach ($this->getFormModel("model", "post") as $model) {
@@ -99,7 +104,8 @@ class MedcardController extends LController {
 			}
 			$this->leave([
 				"component" => $this->getWidget("LMedcardTable", [
-					"criteria" => $criteria
+					"criteria" => $criteria,
+					"mode" => $mode,
 				])
 			]);
 		} catch (Exception $e) {

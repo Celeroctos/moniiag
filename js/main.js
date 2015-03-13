@@ -655,7 +655,7 @@ $('select[multiple="multiple"]').each(function(index, select) {
 
     /* Двигающиеся модалки */
     $('.modal').draggable({
-        handle: ".modal-header"
+        handle: ".modal-header" // Only header please
     });
 
     // По нажатию на кнопку "удалить" - спрашиваем подтверждение на удаление

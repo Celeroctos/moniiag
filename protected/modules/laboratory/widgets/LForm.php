@@ -41,7 +41,7 @@ class LForm extends LWidget {
             $config = [];
             foreach ($this->model as $i => $model) {
                 if ($this->test($model)) {
-                    $config += $model->config();
+                    $config += $model->getConfig();
                 }
             }
             $this->model = new LFormModelAdapter($config);
@@ -141,7 +141,7 @@ class LForm extends LWidget {
      */
     public function renderField($form, $key) {
 
-        $config = $this->model->config()[$key];
+        $config = $this->model->getConfig()[$key];
 
         if (isset($config["type"])) {
             $type = strtolower($config["type"]);
@@ -201,7 +201,7 @@ class LForm extends LWidget {
      * @return bool - True if type if equal else false
      */
     public function checkType($key, $type) {
-        $config = $this->model->config()[$key];
+        $config = $this->model->getConfig()[$key];
         if (!isset($config["type"])) {
             $config["type"] = "text";
         }
@@ -214,7 +214,7 @@ class LForm extends LWidget {
 	 * @return bool - True if field must be hidden
 	 */
 	public function getForm($key) {
-		$config = $this->model->config()[$key];
+		$config = $this->model->getConfig()[$key];
 		if (!isset($config["form"])) {
 			return false;
 		}
@@ -227,7 +227,7 @@ class LForm extends LWidget {
      * @return bool - True if field must be hidden
      */
     public function isHidden($key) {
-        $config = $this->model->config()[$key];
+        $config = $this->model->getConfig()[$key];
         if (!isset($config["hidden"])) {
             return false;
         }

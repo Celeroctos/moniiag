@@ -15,13 +15,19 @@ class LMedcardEditableViewer extends LWidget {
 	public function run() {
 		if ($this->number == null) {
 			$generator = new CardNumberGenerator();
-			// TODO - "Fix it by adding new medcard rule for laboratory"
-			$number = $generator->generateNumber(20);
+			$rule = MedcardRule::model()->find("name = :name", [
+				":name" => "Лаборатория"
+			]);
+			if ($rule == null) {
+				throw new CException("Can't resolve medcard rule for laboratory");
+			}
+			$generator->setPrevNumber("");
+			$number = $generator->generateNumber($rule["id"]);
 		} else {
 			$number = $this->number;
 		}
 		if ($this->number != null) {
-			if (!($model = LMedcard::model()->fetchInformation($this->number))) {
+			if (!($model = LMedcard2::model()->fetchInformation($this->number))) {
 				throw new CException("Unresolved medcard number \"{$this->number}\"");
 			}
 		} else {

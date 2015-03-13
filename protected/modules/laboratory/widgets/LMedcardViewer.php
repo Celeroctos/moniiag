@@ -14,7 +14,7 @@ class LMedcardViewer extends LWidget {
 			throw new CException("Medcard viewer requires medcard number, see LMedcardViewer::number");
 		}
 
-		if (($model = LMedcard::model()->fetchByNumber($this->number)) == null) {
+		if (($model = LMedcard2::model()->fetchByNumber($this->number)) == null) {
 			throw new CException("Unresolved medcard number \"{$this->number}\"");
 		}
 

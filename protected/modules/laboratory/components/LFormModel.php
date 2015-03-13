@@ -144,10 +144,11 @@ abstract class LFormModel extends CFormModel {
         $this->_container[$name] = $value;
     }
 
-    /**
-     * Build form from models configuration
-     * @param array|null $config - Array with model's configuration
-     */
+	/**
+	 * Build form from models configuration
+	 * @param array|null $config - Array with model's configuration
+	 * @throws CException
+	 */
     private function buildConfig($config = null) {
 
         // If we have rules and labels then skip it
@@ -165,6 +166,29 @@ abstract class LFormModel extends CFormModel {
         $this->_labels = [];
         $this->_types = [];
 		$this->_strong = [];
+
+		$this->_backward = $this->backward();
+
+		foreach ($this->_backward as $i => &$b) {
+			if (isset($b[1]) && $b[1] == "hide") {
+				$checked = $this->checkScenario($b["on"]);
+				$keys = $b[0];
+				if (is_array($keys)) {
+					if ($checked) {
+						foreach ($keys as $r) {
+							$this->_config[$r]["hidden"] = true;
+						}
+					}
+				} else if (is_string($keys)) {
+					if ($checked) {
+						$this->_config[$keys]["hidden"] = true;
+					}
+				} else {
+					throw new CException("Illegal key type, found \"" . gettype($keys) . "\", require array or string");
+				}
+				array_splice($this->_backward, $i, 1);
+			}
+		}
 
         foreach ($config as $key => &$field) {
 
@@ -190,21 +214,6 @@ abstract class LFormModel extends CFormModel {
 				$this->_container[$key] = null;
 			}
         }
-
-		$this->_backward = $this->backward();
-
-		foreach ($this->_backward as $i => &$b) {
-			if (isset($b[1]) && $b[1] == "hide") {
-				if (is_array($b[0]) && $this->checkScenario($b["on"])) {
-					foreach ($b[0] as $r) {
-						$this->_config[$r]["type"] = "hidden";
-					}
-				} else if ($this->checkScenario($b["on"])) {
-					$this->_config[$b[0]]["type"] = "hidden";
-				}
-				array_splice($this->_backward, $i, 1);
-			}
-		}
     }
 
 	/**
@@ -216,12 +225,12 @@ abstract class LFormModel extends CFormModel {
 	private function checkScenario($scenario) {
 		if (is_array($scenario)) {
 			foreach ($scenario as $s) {
-				if (!strcasecmp($s, $this->scenario)) {
+				if (!strcasecmp($s, $this->getScenario())) {
 					return true;
 				}
 			}
 		} else {
-			return !strcasecmp($scenario, $this->scenario);
+			return !strcasecmp($scenario, $this->getScenario());
 		}
 		return false;
 	}

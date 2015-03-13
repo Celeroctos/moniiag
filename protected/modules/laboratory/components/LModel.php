@@ -162,16 +162,13 @@ abstract class LModel extends CActiveRecord {
 
 	/**
 	 * Override that method to return command for table widget
-	 * @param string $condition - Where conditions
-	 * @param array $parameters - Query parameters
 	 * @return CDbCommand - Command with selection query
 	 * @throws CDbException
 	 */
-	public function getTable($condition = "", $parameters = []) {
+	public function getTable() {
 		return $this->getDbConnection()->createCommand()
 			->select("*")
-			->from($this->tableName())
-			->where($condition, $parameters);
+			->from($this->tableName());
 	}
 
 	/**

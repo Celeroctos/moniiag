@@ -2,6 +2,7 @@
 
 /**
  * @var LMedcardEditableViewer $this - Self widget instance
+ * @var string $number - Generated card number
  */
 
 $this->beginWidget("CActiveForm", [
@@ -16,37 +17,62 @@ $this->beginWidget("CActiveForm", [
 ]); ?>
 
 <div class="row">
-	<div class="col-xs-12 text-center medcard-editable-viewer-number">
-		<b>Медицинская карта №&nbsp;<span id="card_number"></span><b>
-	</div>
 	<div class="col-xs-12">
-		<div class="col-xs-6 text-center">
+		<div class="col-xs-12 text-center">
 			<b>ОМС</b>
-			<hr>
+			<br><br>
 			<? $this->widget("LForm", [
 				"model" => new LPolicyForm("treatment.policy")
 			]) ?>
-		</div>
-		<div class="col-xs-6 text-center">
-			<b>Сведения о работе</b>
 			<hr>
+		</div>
+		<div class="col-xs-12 text-center">
+			<b>Сведения о работе</b>
+			<br><br>
 			<? $this->widget("LForm", [
 				"model" => new LMedcardForm2("treatment.show")
 			]) ?>
+			<hr>
 		</div>
-	</div>
-</div>
-<br>
-<div class="row">
-	<div class="col-xs-12 text-center">
-		<span><b>Личные данные<b></span>
-		<hr>
-		<div class="col-xs-11 text-center">
+		<div class="col-xs-12 text-center">
+			<b>Личные данные</b>
+			<br><br>
 			<? $this->widget("LForm", [
 				"model" => new LPolicyForm("treatment.patient")
 			]) ?>
 		</div>
 	</div>
 </div>
+
+<!--<div class="row">-->
+<!--	<div class="col-xs-12">-->
+<!--		<div class="col-xs-6 text-center">-->
+<!--			<b>ОМС</b>-->
+<!--			<hr>-->
+<!--			--><?// $this->widget("LForm", [
+//				"model" => new LPolicyForm("treatment.policy")
+//			]) ?>
+<!--		</div>-->
+<!--		<div class="col-xs-6 text-center">-->
+<!--			<b>Сведения о работе</b>-->
+<!--			<hr>-->
+<!--			--><?// $this->widget("LForm", [
+//				"model" => new LMedcardForm2("treatment.show")
+//			]) ?>
+<!--		</div>-->
+<!--	</div>-->
+<!--</div>-->
+<!--<br>-->
+<!--<div class="row">-->
+<!--	<div class="col-xs-12 text-center">-->
+<!--		<b>Сведения о работе</b>-->
+<!--		<hr>-->
+<!--		<div class="col-xs-6 col-xs-offset-3 text-center">-->
+<!--			--><?// $this->widget("LForm", [
+//				"model" => new LPolicyForm("treatment.patient")
+//			]) ?>
+<!--		</div>-->
+<!--	</div>-->
+<!--</div>-->
 
 <? $this->endWidget() ?>

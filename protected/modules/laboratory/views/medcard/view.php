@@ -19,7 +19,9 @@ $this->widget("LModal", [
 	"id" => "patient-medcard-edit-modal"
 ]);
 
-$this->widget("LMedcardSearch");
+$this->widget("LMedcardSearch", [
+	"mode" => "mis"
+]);
 
 ?>
 <hr>
